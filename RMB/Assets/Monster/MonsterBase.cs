@@ -16,7 +16,7 @@ public class MonsterBase : MonoBehaviour
 
     protected int type;                     //属性
     protected bool catchFlg = false;        //プレイヤーに持たれているかどうか
-    protected float delTimer = 60.0f; //消去されるまでの時間
+    protected float delTimer = 100.0f;      //消去されるまでの時間
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +25,13 @@ public class MonsterBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
+        //持たれていなければ
+        if (!catchFlg)
+        {
+            SurvivalTimer();
+        }
         
     }
 
@@ -35,7 +40,7 @@ public class MonsterBase : MonoBehaviour
     //================================
     virtual public void Attack()
     {
-        Debug.Log("attack");
+       Debug.Log("attack");
     }
     
     //================================
@@ -51,6 +56,7 @@ public class MonsterBase : MonoBehaviour
     //======================================
     protected void SurvivalTimer()
     {
+        //Debug.Log("timer" + delTimer);
         delTimer -= Time.deltaTime;     //カウントを減らしていく
 
         //delTimerが0になったら削除開始
@@ -65,15 +71,24 @@ public class MonsterBase : MonoBehaviour
     //======================================
     protected void DestroyMonster()
     {
-        DelMonster();
+        Debug.Log("destroy");
+        DelReport();
         Destroy(this.gameObject);
     }
 
     //======================================
     //消えたときGameManagerに報告
     //======================================
-    protected void DelMonster()
+    protected void DelReport()
     {
         //ToDo:GameManagerに報告するための処理を書く
+    }
+
+    //======================================
+    //持たれているかどうかのフラグセッター
+    //======================================
+    public void SetCatchFlg(bool _flg)
+    {
+        catchFlg = _flg;
     }
 }
