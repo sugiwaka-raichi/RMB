@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonobitEngine;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 public class NetworkControl : MonobitEngine.MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
     /** 準備完了カウント. */
     int readyCount = 0;
+
+    /** ゲーム中フラグ. */
+    bool playingGame = false;
 
     /** ウィンドウ表示フラグ. */
     private bool bDisplayWindow = false;
@@ -164,60 +168,67 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         // MUNサーバに接続している場合
         if(MonobitNetwork.isConnect)
         {
-            // ボタン入力でサーバから切断＆シーンリセット
-            if(GUILayout.Button("Disconnect", GUILayout.Width(150)))
+            if (!playingGame)
             {
-                // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
-                bDisconnect = true;
+                // ボタン入力でサーバから切断＆シーンリセット
+                if (GUILayout.Button("Disconnect", GUILayout.Width(150)))
+                {
+                    // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
+                    bDisconnect = true;
 
-                // サーバから切断する
-                MonobitNetwork.DisconnectServer();
+                    // サーバから切断する
+                    MonobitNetwork.DisconnectServer();
 
-                // シーンをリロードする
+                    // シーンをリロードする
 #if UNITY_5_3_OR_NEWER || UNITY_5_3
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                    string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
 #else
                 Application.LoadLevel(Application.loadedLevelName);
 #endif
+                }
             }
 
             // ルームに入室している場合
             if (MonobitNetwork.inRoom)
             {
-                // ボタン入力でルームから退室
-                if(GUILayout.Button("Leave Room", GUILayout.Width(150)))
-                {
-                    LeaveRoom();
-                }
 
-                readyCount = 0;
-                foreach (MonobitPlayer player in MonobitNetwork.playerList)
+                if (!playingGame)
                 {
-                    string playerInfo =
-                        string.Format("{0} {1}",
-                            player.ID, player.name);
-                    GUILayout.Label(playerInfo);
-
-                    if ((bool)player.customParameters["ready"])
+                    // ボタン入力でルームから退室
+                    if (GUILayout.Button("Leave Room", GUILayout.Width(150)))
                     {
-                        readyCount++;
-
-                        if (readyCount == MonobitNetwork.playerList.Length)
-                        {
-                            StartGame();
-                        }
+                        LeaveRoom();
                     }
 
-                    Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
-                }
-
-                if (MonobitNetwork.playerList.Length >= 1)
-                {
-                    if(GUILayout.Button("StartGame"))
+                    readyCount = 0;
+                    foreach (MonobitPlayer player in MonobitNetwork.playerList)
                     {
-                        customParams["ready"] = true;
-                        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+                        string playerInfo =
+                            string.Format("{0} {1}",
+                                player.ID, player.name);
+                        GUILayout.Label(playerInfo);
+
+                        if ((bool)player.customParameters["ready"])
+                        {
+                            readyCount++;
+
+                            if (readyCount == MonobitNetwork.playerList.Length)
+                            {
+                                StartGame();
+                            }
+                        }
+
+                        Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
+                    }
+
+                    if (MonobitNetwork.playerList.Length >= 1)
+                    {
+                        if (GUILayout.Button("StartGame"))
+                        {
+                            customParams["ready"] = true;
+                            MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+                        }
                     }
                 }
             }
@@ -247,7 +258,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 // 現在存在するルームからランダムに入室する
                 if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
                 {
-                    MonobitNetwork.JoinRandomRoom();
+                    JoinRandomRoom();
                 }
 
                 // ルーム一覧から選択式で入室する
@@ -261,7 +272,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
                     if(GUILayout.Button("Enter Room : "  + strRoomInfo))
                     {
-                        MonobitNetwork.JoinRoom(room.name);
+                        JoinRoom(room.name);
                     }
                 }
             }
@@ -339,12 +350,49 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
     void StartGame()
     {
+        playingGame = true;
+
         // プレイヤーキャラクタが未搭乗の場合に登場させる
         if (playerObject == null)
         {
+            Vector3 playerpos = Vector3.zero;
+            switch (MonobitNetwork.player.ID)
+            {
+                case 1:
+                    playerpos = new Vector3(-10.0f, 1.0f, 10.0f);
+                    break;
+                case 2:
+                    playerpos = new Vector3(10.0f, 1.0f, -10.0f);
+                    break;
+                case 3:
+                    playerpos = new Vector3(10.0f, 1.0f, 10.0f);
+                    break;
+                case 4:
+                    playerpos = new Vector3(-10.0f, 1.0f, -10.0f);
+                    break;
+                case 5:
+                    playerpos = new Vector3(-5.0f, 1.0f, 5.0f);
+                    break;
+                case 6:
+                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
+                    break;
+                case 7:
+                    playerpos = new Vector3(5.0f, 1.0f, 5.0f);
+                    break;
+                case 8:
+                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
+                    break;
+                case 9:
+                    playerpos = new Vector3(-2.0f, 1.0f, 0.0f);
+                    break;
+                case 10:
+                    playerpos = new Vector3(2.0f, 1.0f, 0.0f);
+                    break;
+            }
+
             playerObject = MonobitNetwork.Instantiate(
                             "Player",
-                            new Vector3(0.0f, 1.09f, 0.0f),
+                            playerpos,
                             Quaternion.identity,
                             0);
         }
