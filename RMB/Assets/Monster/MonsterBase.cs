@@ -5,7 +5,7 @@ using UnityEngine;
 public class MonsterBase : MonoBehaviour
 {
     //===============================
-    //モンスターの属性
+    //モンスターの属性値
     //===============================
     public enum MONSTER_TYPE
     {
@@ -14,7 +14,9 @@ public class MonsterBase : MonoBehaviour
         MT_PLANT
     }
 
-    private int type;
+    protected int type;                     //属性
+    protected bool catchFlg = false;        //プレイヤーに持たれているかどうか
+    protected float delTimer = 60.0f; //消去されるまでの時間
 
     // Start is called before the first frame update
     void Start()
@@ -44,5 +46,34 @@ public class MonsterBase : MonoBehaviour
         return type;
     }
     
+    //======================================
+    //一定時間捕まえられなかったら消える
+    //======================================
+    protected void SurvivalTimer()
+    {
+        delTimer -= Time.deltaTime;     //カウントを減らしていく
 
+        //delTimerが0になったら削除開始
+        if (delTimer <= 0)
+        {
+            DestroyMonster();
+        }
+    } 
+
+    //======================================
+    //削除命令関数
+    //======================================
+    protected void DestroyMonster()
+    {
+        DelMonster();
+        Destroy(this.gameObject);
+    }
+
+    //======================================
+    //消えたときGameManagerに報告
+    //======================================
+    protected void DelMonster()
+    {
+        //ToDo:GameManagerに報告するための処理を書く
+    }
 }
