@@ -12,6 +12,8 @@ public class SoundManager : MonoBehaviour
     //==================================================
     public static bool PlayeMusic(string _musicName)
     {
+        CheckGameObject();
+
         if (!audioDic.ContainsKey(_musicName))
         {
 
@@ -45,6 +47,8 @@ public class SoundManager : MonoBehaviour
     //==================================================
     public static bool PlaySE(string _seName)
     {
+        CheckGameObject();
+
         //再生する音がロードされているかどうか
         if (!audioDic.ContainsKey(_seName))
         {
@@ -96,8 +100,21 @@ public class SoundManager : MonoBehaviour
     }
 
     //=========================================================
-    //
+    //オーディオソースをアタッチするオブジェクトが登録されたか
     //=========================================================
+    private static void CheckGameObject()
+    {
+        if (soundObject == null)
+        {
+            //登録されていない
+            soundObject = new GameObject();     //空のオブジェクトを作る
+            soundObject.name = "new Audio Source";      //新しいオーディオソース
+        }
+        else
+        {
+            //あるのでどうでもいい
+        }
+    }
 
     //=========================================================
     //
