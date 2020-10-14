@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterBase : MonoBehaviour
+public class MonsterBase : MonobitEngine.MonoBehaviour
 {
     //===============================
     //モンスターの属性値
@@ -42,7 +42,15 @@ public class MonsterBase : MonoBehaviour
     {
        Debug.Log("attack");
     }
-    
+
+    //================================
+    //防御の仮想関数
+    //================================
+    virtual public void Deffence()
+    {
+        Debug.Log("Diffence");
+    }
+
     //================================
     //モンスターの属性値を取得する
     //================================
