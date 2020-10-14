@@ -9,9 +9,9 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //===============================
     public enum MONSTER_TYPE
     {
-        MT_WARTER = 0,
-        MT_FIRE,
-        MT_PLANT
+        MT_WARTER = 0,      //水属性のモンスター
+        MT_FIRE,            //火属性のモンスター
+        MT_PLANT            //木属性のモンスター
     }
 
     protected int type;                     //属性
@@ -30,7 +30,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         //持たれていなければ
         if (!catchFlg)
         {
-            SurvivalTimer();
+            SurvivalTimer();        //生存時間
         }
         
     }
