@@ -7,6 +7,17 @@ public class SoundManager : MonoBehaviour
 {
     static Dictionary<string,AudioSource> audioDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
     static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
+    static AudioMixerGroup groupMusic;
+    static AudioMixerGroup groupSE;
+
+    //=============================================
+    //外部クラスから設定してあげる
+    //=============================================
+    public static void SetGroup(AudioMixerGroup _groupMusic, AudioMixerGroup _groupSE)
+    {
+        groupMusic = _groupMusic;
+        groupSE = _groupSE;
+    }
 
     //==================================================
     // 音楽再生
@@ -21,6 +32,7 @@ public class SoundManager : MonoBehaviour
         {
             //オーディオソース作成
             AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = groupMusic;     //グループを設定してあげる
             audioSource.clip = LoadMusic(_musicName);       //音楽の読み込み
             if (audioSource.clip == null)
             {
@@ -28,7 +40,7 @@ public class SoundManager : MonoBehaviour
                 return false;
             }
 
-            audioDic.Add("_musicName", audioSource);        //オーディオソースを記録
+            audioDic.Add(_musicName, audioSource);        //オーディオソースを記録
         }
         audioDic[_musicName].Play();                             //音楽再生
 
@@ -44,7 +56,6 @@ public class SoundManager : MonoBehaviour
         if (audioDic.ContainsKey(_musicName))       //キー値が存在するかどうか
         {
             audioDic[_musicName].Stop();     //停止
-            audioDic.Remove(_musicName);     //再生中のオーディオソースをなくす
         }
     }
 
@@ -94,7 +105,6 @@ public class SoundManager : MonoBehaviour
         if (audioDic.ContainsKey(_seName))       //キー値が存在するかどうか
         {
             audioDic[_seName].Stop();     //停止
-            audioDic.Remove(_seName);     //再生中のオーディオソースをなくす
         }
     }
 
@@ -123,25 +133,18 @@ public class SoundManager : MonoBehaviour
     }
 
     //=========================================================
-    //オーディオソースをアタッチするオブジェクトが登録されたか
+    //ゲームオブジェクト登録有無
     //=========================================================
     private static void CheckGameObject()
     {
+        //オーディオソースをアタッチするオブジェクトが登録されたか
         if (soundObject == null)
         {
             //登録されていない
             soundObject = new GameObject();     //空のオブジェクトを作る
             soundObject.name = "new Audio Source";      //新しいオーディオソース
         }
-        else
-        {
-            //あるのでどうでもいい
-        }
     }
-
-    //=========================================================
-    //
-    //=========================================================
 
     //=========================================================
     //オーディオソースを適応させるオブジェクトの設定
@@ -151,4 +154,3 @@ public class SoundManager : MonoBehaviour
         soundObject = gameObject;
     }
 }
-
