@@ -34,7 +34,7 @@ public class SoundManager : MonobitEngine.MonoBehaviour
             //存在すれば中身があるか確認
             if (ValueNullCheck(musicDic[_musicName]))
             {
-                musicDic[_musicName].Play();                             //音楽再生
+                musicDic[_musicName].Play();      //音楽再生
 
                 return true;        //再生して終了
 
