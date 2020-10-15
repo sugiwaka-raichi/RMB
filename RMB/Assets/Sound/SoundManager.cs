@@ -221,11 +221,26 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     {
         if (seDic.ContainsKey(_se))
         {
+            if(seDic[_se] == null)
+            {
+                CheckGameObject();
+                AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
+                audioSource.outputAudioMixerGroup = groupSE;      //グループ設定
+                audioSource.clip = LoadSE(_se);                   //SE読み込み
+                seDic[_se] = audioSource;
+            }
             return seDic[_se];        //一致するソースを渡す
         }
         else
         {
-            return null;        //何も返さない
+            CheckGameObject();
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
+            audioSource.outputAudioMixerGroup = groupSE;      //グループ設定
+            audioSource.clip = LoadSE(_se);                   //SE読み込み
+
+            seDic.Add(_se, audioSource);                      //新規登録
+
+            return audioSource;        //新規作成したものを渡す
         }
     }
 
