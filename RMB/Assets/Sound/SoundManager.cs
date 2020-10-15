@@ -6,8 +6,8 @@ using MonobitEngine;
 
 public class SoundManager : MonobitEngine.MonoBehaviour
 {
-    static Dictionary<string,AudioSource> musicDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
-    static Dictionary<string,AudioSource> seDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
+    static Dictionary<string,AudioSource> musicDic = new Dictionary<string,AudioSource>();      //再生中のMusicのリスト
+    static Dictionary<string,AudioSource> seDic = new Dictionary<string,AudioSource>();      //再生中のSEのリスト
     static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
     
     //グループ
