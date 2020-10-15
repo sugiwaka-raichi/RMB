@@ -1,22 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
     static Dictionary<string,AudioSource> audioDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
-    static GameObject soundObject;                                                              //どこにオーディオソースをつけるかを保持する
+    static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
 
     //==================================================
     // 音楽再生
     //==================================================
     public static bool PlayeMusic(string _musicName)
     {
+        //ゲームオブジェクトが指定されているかどうか
         CheckGameObject();
 
+        //キー値が存在しなければ
         if (!audioDic.ContainsKey(_musicName))
         {
-
             //オーディオソース作成
             AudioSource audioSource = soundObject.AddComponent<AudioSource>();
             audioSource.clip = LoadMusic(_musicName);       //音楽の読み込み
@@ -25,6 +27,7 @@ public class SoundManager : MonoBehaviour
                 //再生失敗
                 return false;
             }
+
             audioDic.Add("_musicName", audioSource);        //オーディオソースを記録
         }
         audioDic[_musicName].Play();                             //音楽再生
@@ -38,8 +41,23 @@ public class SoundManager : MonoBehaviour
     public static void StopMusic(string _musicName)
     {
         //再生中の停止
-        audioDic[_musicName].Stop();     //停止
-        audioDic.Remove(_musicName);     //再生中のオーディオソースをなくす
+        if (audioDic.ContainsKey(_musicName))       //キー値が存在するかどうか
+        {
+            audioDic[_musicName].Stop();     //停止
+            audioDic.Remove(_musicName);     //再生中のオーディオソースをなくす
+        }
+    }
+
+    //==================================================
+    //音楽の一時停止
+    //==================================================
+    public static void PauseMusic(string _musicName)
+    {
+        //一時停止
+        if (audioDic.ContainsKey(_musicName))       //キー値が存在するかどうか
+        {
+            audioDic[_musicName].Pause();     //停止
+        }
     }
 
     //==================================================
@@ -72,7 +90,12 @@ public class SoundManager : MonoBehaviour
     //==================================================
     public static void StopSE(string _seName)
     {
-        
+        //再生中の停止
+        if (audioDic.ContainsKey(_seName))       //キー値が存在するかどうか
+        {
+            audioDic[_seName].Stop();     //停止
+            audioDic.Remove(_seName);     //再生中のオーディオソースをなくす
+        }
     }
 
     //===================================================
@@ -128,3 +151,4 @@ public class SoundManager : MonoBehaviour
         soundObject = gameObject;
     }
 }
+
