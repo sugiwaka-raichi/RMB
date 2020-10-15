@@ -28,9 +28,6 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     //==================================================
     public static bool PlayMusic(string _musicName)
     {
-        //ゲームオブジェクトが指定されているかどうか
-        CheckGameObject();
-
         //キー値が存在するかどうか
         if (musicDic.ContainsKey(_musicName))
         {
@@ -50,9 +47,7 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         }
 
         //オーディオソース作成
-        AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-        audioSource.outputAudioMixerGroup = groupMusic;     //グループを設定してあげる
-        audioSource.clip = LoadMusic(_musicName);       //音楽の読み込み
+        AudioSource audioSource = CreateAudioSource(_musicName, 0);
         if (audioSource.clip == null)
         {
             //再生失敗
@@ -115,9 +110,7 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         }
 
         //オーディオソース作成
-        AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-        audioSource.outputAudioMixerGroup = groupSE;     //グループを設定してあげる
-        audioSource.clip = LoadSE(_seName);       //音楽の読み込み
+        AudioSource audioSource = CreateAudioSource(_seName, 1);
         if (audioSource.clip == null)
         {
             //再生失敗
@@ -223,20 +216,15 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         {
             if(seDic[_se] == null)
             {
-                CheckGameObject();
-                AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
-                audioSource.outputAudioMixerGroup = groupSE;      //グループ設定
-                audioSource.clip = LoadSE(_se);                   //SE読み込み
+                //生成処理
+                AudioSource audioSource = CreateAudioSource(_se, 1);
                 seDic[_se] = audioSource;
             }
             return seDic[_se];        //一致するソースを渡す
         }
         else
         {
-            CheckGameObject();
-            AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
-            audioSource.outputAudioMixerGroup = groupSE;      //グループ設定
-            audioSource.clip = LoadSE(_se);                   //SE読み込み
+            AudioSource audioSource = CreateAudioSource(_se, 1);
 
             seDic.Add(_se, audioSource);                      //新規登録
 
@@ -244,4 +232,25 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         }
     }
 
+    //===========================================================
+    //オーディオソースを作成 0|music 1|se
+    //===========================================================
+    private static AudioSource CreateAudioSource(string _name,int type)
+    {
+        CheckGameObject();      //設定先のゲームオブジェクトが存在するかどうか
+        AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
+
+        if (type == 0)
+        {
+            audioSource.outputAudioMixerGroup = groupMusic;      //グループ設定
+            audioSource.clip = LoadMusic(_name);                   //SE読み込み
+        }
+        else
+        {
+            audioSource.outputAudioMixerGroup = groupSE;      //グループ設定
+            audioSource.clip = LoadSE(_name);                   //SE読み込み
+        }
+
+        return audioSource;
+    }
 }
