@@ -208,28 +208,16 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     }
 
     //==========================================================
-    //getオーディオソース
+    //SEを任意のオブジェクトにつける
     //==========================================================
-    public static AudioSource GetSESource(string _se)
+    public static AudioSource GetSESource(string _se, GameObject _gameObject)
     {
-        if (seDic.ContainsKey(_se))
-        {
-            if(seDic[_se] == null)
-            {
-                //生成処理
-                AudioSource audioSource = CreateAudioSource(_se, 1);
-                seDic[_se] = audioSource;
-            }
-            return seDic[_se];        //一致するソースを渡す
-        }
-        else
-        {
-            AudioSource audioSource = CreateAudioSource(_se, 1);
+        SetGameObj(_gameObject);
 
-            seDic.Add(_se, audioSource);                      //新規登録
+        //生成処理
+        AudioSource audioSource = CreateAudioSource(_se, 1);
+        return audioSource;        //新規作成したものを渡す
 
-            return audioSource;        //新規作成したものを渡す
-        }
     }
 
     //===========================================================
