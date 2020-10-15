@@ -9,7 +9,7 @@ public class player : MonobitEngine.MonoBehaviour
     // MonobitView コンポーネント
     MonobitEngine.MonobitView m_MonobitView = null;
 
-    string powertag = "powaer";
+    [SerializeField] string powertag = "";
 
     bool havemonster = false;
 
@@ -122,7 +122,7 @@ public class player : MonobitEngine.MonoBehaviour
 
         if(collision.transform.tag == powertag)
         {
-            Damage(20);
+            Destroy(this.gameObject);
         }
     }
 
@@ -140,7 +140,6 @@ public class player : MonobitEngine.MonoBehaviour
     // 
     void LoosePlayer()
     {
-
     }
 
     
