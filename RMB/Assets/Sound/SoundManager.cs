@@ -6,9 +6,11 @@ using MonobitEngine;
 
 public class SoundManager : MonobitEngine.MonoBehaviour
 {
-    static Dictionary<string,AudioSource> audioDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
+    static Dictionary<string,AudioSource> musicDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
+    static Dictionary<string,AudioSource> seDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
     static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
-    //グループ分
+    
+    //グループ
     static AudioMixerGroup groupMusic;
     static AudioMixerGroup groupSE;
 
@@ -29,24 +31,38 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         //ゲームオブジェクトが指定されているかどうか
         CheckGameObject();
 
-        //キー値が存在しなければ
-        if (!audioDic.ContainsKey(_musicName))
+        //キー値が存在するかどうか
+        if (musicDic.ContainsKey(_musicName))
         {
-            //オーディオソース作成
-            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-            audioSource.outputAudioMixerGroup = groupMusic;     //グループを設定してあげる
-            audioSource.clip = LoadMusic(_musicName);       //音楽の読み込み
-            if (audioSource.clip == null)
+            //存在すれば中身があるか確認
+            if (ValueNullCheck(musicDic[_musicName]))
             {
-                //再生失敗
-                return false;
+                musicDic[_musicName].Play();                             //音楽再生
+
+                return true;        //再生して終了
+
             }
-
-            audioDic.Add(_musicName, audioSource);        //オーディオソースを記録
         }
-        audioDic[_musicName].Play();                             //音楽再生
+        else
+        {
+            //存在しないので
+            musicDic.Add(_musicName, null);     //空を作る
+        }
 
-        return true;
+        //オーディオソース作成
+        AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = groupMusic;     //グループを設定してあげる
+        audioSource.clip = LoadMusic(_musicName);       //音楽の読み込み
+        if (audioSource.clip == null)
+        {
+            //再生失敗
+            return false;
+        }
+
+        musicDic[_musicName] = audioSource;        //オーディオソースを記録
+        musicDic[_musicName].Play();                             //音楽再生
+        return true;        //再生して終了
+
     }
 
     //==================================================
@@ -55,9 +71,9 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     public static void StopMusic(string _musicName)
     {
         //再生中の停止
-        if (audioDic.ContainsKey(_musicName))       //キー値が存在するかどうか
+        if (musicDic.ContainsKey(_musicName))       //キー値が存在するかどうか
         {
-            audioDic[_musicName].Stop();     //停止
+            musicDic[_musicName].Stop();     //停止
         }
     }
 
@@ -67,9 +83,9 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     public static void PauseMusic(string _musicName)
     {
         //一時停止
-        if (audioDic.ContainsKey(_musicName))       //キー値が存在するかどうか
+        if (musicDic.ContainsKey(_musicName))       //キー値が存在するかどうか
         {
-            audioDic[_musicName].Pause();     //停止
+            musicDic[_musicName].Pause();     //停止
         }
     }
 
@@ -80,23 +96,37 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     {
         CheckGameObject();
 
-        //再生する音がロードされているかどうか
-        if (!audioDic.ContainsKey(_seName))
+        //キー値が存在するかどうか
+        if (seDic.ContainsKey(_seName))
         {
-            //されていなければオーディオソース作成
-            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-            audioSource.outputAudioMixerGroup = groupSE;     //グループを設定してあげる
-            audioSource.clip = LoadSE(_seName);       //音楽の読み込み
-            if (audioSource.clip == null)
+            //存在すれば中身があるか確認
+            if (ValueNullCheck(seDic[_seName]))
             {
-                //再生失敗
-                return false;
-            }
-            audioDic.Add(_seName, audioSource);        //オーディオソースを記録
-        }
-        audioDic[_seName].Play();                             //音楽再生
+                seDic[_seName].Play();   //音楽再生
 
-        return true;
+                return true;        //再生して終了
+
+            }
+        }
+        else
+        {
+            //存在しないので
+            seDic.Add(_seName, null);     //空を作る
+        }
+
+        //オーディオソース作成
+        AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+        audioSource.outputAudioMixerGroup = groupSE;     //グループを設定してあげる
+        audioSource.clip = LoadSE(_seName);       //音楽の読み込み
+        if (audioSource.clip == null)
+        {
+            //再生失敗
+            return false;
+        }
+
+        seDic[_seName] = audioSource;        //オーディオソースを記録
+        seDic[_seName].Play();                             //音楽再生
+        return true;        //再生して終了
     }
 
     //==================================================
@@ -105,9 +135,9 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     public static void StopSE(string _seName)
     {
         //再生中の停止
-        if (audioDic.ContainsKey(_seName))       //キー値が存在するかどうか
+        if (seDic.ContainsKey(_seName))       //キー値が存在するかどうか
         {
-            audioDic[_seName].Stop();     //停止
+            seDic[_seName].Stop();     //停止
         }
     }
 
@@ -117,9 +147,9 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     public static void PauseSE(string _seName)
     {
         //再生中の停止
-        if (audioDic.ContainsKey(_seName))       //キー値が存在するかどうか
+        if (seDic.ContainsKey(_seName))       //キー値が存在するかどうか
         {
-            audioDic[_seName].Pause();
+            seDic[_seName].Pause();
         }
     }
 
@@ -164,8 +194,23 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     //=========================================================
     //オーディオソースを適応させるオブジェクトの設定
     //=========================================================
-    public static void SetGameObj(GameObject gameObject)
+    public static void SetGameObj(GameObject _gameObject)
     {
-        soundObject = gameObject;
+        soundObject = _gameObject;
+    }
+
+    //=========================================================
+    //valueの中身がnullでないか確認する
+    //=========================================================
+    private static bool ValueNullCheck(AudioSource _audioSource)
+    {
+        if (_audioSource == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
