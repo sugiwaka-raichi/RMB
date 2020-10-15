@@ -213,4 +213,20 @@ public class SoundManager : MonobitEngine.MonoBehaviour
             return true;
         }
     }
+
+    //==========================================================
+    //getオーディオソース
+    //==========================================================
+    public static AudioSource GetSESource(string _se)
+    {
+        if (seDic.ContainsKey(_se))
+        {
+            return seDic[_se];        //一致するソースを渡す
+        }
+        else
+        {
+            return null;        //何も返さない
+        }
+    }
+
 }
