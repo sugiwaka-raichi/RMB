@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using MonobitEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : MonobitEngine.MonoBehaviour
 {
     static Dictionary<string,AudioSource> audioDic = new Dictionary<string,AudioSource>();      //再生中のサウンドのリスト
     static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
+    //グループ分
     static AudioMixerGroup groupMusic;
     static AudioMixerGroup groupSE;
 
@@ -22,7 +24,7 @@ public class SoundManager : MonoBehaviour
     //==================================================
     // 音楽再生
     //==================================================
-    public static bool PlayeMusic(string _musicName)
+    public static bool PlayMusic(string _musicName)
     {
         //ゲームオブジェクトが指定されているかどうか
         CheckGameObject();
@@ -83,6 +85,7 @@ public class SoundManager : MonoBehaviour
         {
             //されていなければオーディオソース作成
             AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = groupSE;     //グループを設定してあげる
             audioSource.clip = LoadSE(_seName);       //音楽の読み込み
             if (audioSource.clip == null)
             {
