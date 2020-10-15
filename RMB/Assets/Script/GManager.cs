@@ -43,7 +43,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     private float timeElapsedGenerate;                      // 経過時間カウント用
 
     // スタートフラグ
-    private bool bStart = false;
+//    private bool bStart = false;
 
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
@@ -62,7 +62,6 @@ public class GManager : MonobitEngine.MonoBehaviour
     }
 
     // スタート
-
     /*============================= Start =============================*/
     protected void Start()
     {
@@ -79,14 +78,8 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         // ただしぃのシーン完成次第置き換え
-        ChangeScene();          // シーン遷移
+//        ChangeScene();          // シーン遷移
         CreateMonster();
-
-        // ネットワークの部分が完成次第bStartフラグをつかったモンスター生成を開始する処理を追加
-        //if(bStart == true)
-        //{
-        //    CreateMonster();        // モンスター生成
-        //}
 
         // ゲーム中のプレイヤーの状態を取得する処理
     }
@@ -101,7 +94,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         // ロビー
-        if (SceneManager.GetActiveScene().name == "SampleScene" && Input.GetMouseButtonDown(1))
+        if (SceneManager.GetActiveScene().name == "SampleScene" && Input.GetMouseButtonDown(2))
         {
             SceneManager.LoadScene("TitleSample");
         }
@@ -146,7 +139,7 @@ public class GManager : MonobitEngine.MonoBehaviour
                     {
                         monsterArray[Temp] = MonobitNetwork.Instantiate(monsterPrefab[Temp].name, GetRandomPosition(), Quaternion.identity, 0) as GameObject;
                         monsterCount++;     // モンスターの数加算
-                        Debug.Log("MonsterCreated" + Temp);
+                        Debug.Log("MonsterCreated" + monsterCount);
                         break;
                     }
                     else
