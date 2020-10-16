@@ -116,6 +116,17 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         
     }
 
+    // OnGUI is called for rendering and handring GUI events
+    void OnGUI()
+    {
+        // サーバ接続状況に応じて、ウィンドウを表示する
+        if (bDisplayWindow)
+        {
+            GUILayout.Window(0, new Rect(Screen.width / 2 - 100, Screen.height / 2 - 40, 200, 80), WindowControl, "Caution");
+        }
+
+    }
+
     /** ホストかどうか取得. */
     public static bool GetisHost()
     {
@@ -138,8 +149,39 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         MonobitNetwork.ConnectServer(_versionname);
     }
 
+    /** サーバ切断呼出し用. */
     public static void DisconnectServer()
     {
         MonobitNetwork.DisconnectServer();
+    }
+
+    /** ルーム作成名前入力. */
+    public static void CreateRoom(string _roomname)
+    {
+        MonobitNetwork.CreateRoom(_roomname);
+    }
+
+    /** ルーム作成設定入力. */
+    public static void CreateRoom(string _roomname, RoomSettings _roomSettings, LobbyInfo _lobbyInfo)
+    {
+        MonobitNetwork.CreateRoom(_roomname, _roomSettings, _lobbyInfo);
+    }
+
+    /** 入室呼び出し用. */
+    public static void JoinRoom(string _roomname)
+    {
+        MonobitNetwork.JoinRoom(_roomname);
+    }
+
+    /** ランダム入室呼び出し用. */
+    public static void JoinRandomRoom()
+    {
+        MonobitNetwork.JoinRandomRoom();
+    }
+
+    /** ルーム退室呼び出し用. */
+    public static void LeaveRoom()
+    {
+        MonobitNetwork.LeaveRoom();
     }
 }
