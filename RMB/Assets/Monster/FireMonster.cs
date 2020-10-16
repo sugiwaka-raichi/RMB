@@ -24,8 +24,9 @@ public class FireMonster : MonsterBase
         base.Attack();      //攻撃時共通の処理があれば
 
         //ToDo:詳細な攻撃処理は以下に記述
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, transform.position, Quaternion.identity, 0);
-
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, transform.position, Quaternion.identity, 0, null, false, false, true);
+        var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
+        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, scene);
     }
 
     //===========================

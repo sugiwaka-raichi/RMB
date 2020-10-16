@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 6013210836147149767}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -350,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d23305a905bdf443a0a1edc6f89be06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powertag: AtkObj
   HP: 0
   nametxt: {fileID: 7961124167458594065}
   material: {fileID: 2100000, guid: 2e6dcd5febcefec45822ec6d1dab6f01, type: 2}

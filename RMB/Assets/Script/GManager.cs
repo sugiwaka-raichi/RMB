@@ -50,7 +50,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         if (GMInstance == null)
         {
             GMInstance = this;
-            DontDestroyOnLoad(this.gameObject);     // シーンを移動してもオブジェクト破棄されない
+//            DontDestroyOnLoad(this.gameObject);     // シーンを移動してもオブジェクト破棄されない
         }
         else
         {
@@ -62,7 +62,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= Start =============================*/
     protected void Start()
     {
-
+        monsterCount = 0;
     }
 
     /*============================= Update =============================*/
@@ -75,7 +75,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         // ただしぃのシーン完成次第置き換え
-        ChangeScene();          // シーン遷移
+//        ChangeScene();          // シーン遷移
         CreateMonster();
 
         // ゲーム中のプレイヤーの状態を取得する処理
@@ -85,23 +85,27 @@ public class GManager : MonobitEngine.MonoBehaviour
     private void ChangeScene()
     {
         // 最初に今のゲームシーンを取得(Getでもらうと楽)
-        ManageSceneLoader.SceneType sceneType = 0;
+//        string sceneType = (ManageSceneLoader.SceneType)ManageSceneLoader.GetActiveScene();
 
-        if (sceneType == ManageSceneLoader.SceneType.TitleScene)
+
+        var sceneType = (ManageSceneLoader.SceneType)System.Enum.ToObject(typeof(ManageSceneLoader.SceneType), ManageSceneLoader.GetActiveScene());
+
+        // タイトルからロビー
+        if (sceneType == ManageSceneLoader.SceneType.TitleScene && Input.GetKey(KeyCode.Space))
         {
             ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
         }
-        else if (sceneType == ManageSceneLoader.SceneType.LobbyScene)
+
+        // ロビーからステージ
+        else if (sceneType == ManageSceneLoader.SceneType.LobbyScene && Input.GetKey(KeyCode.Space))
         {
             ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
         }
-        else if (sceneType == ManageSceneLoader.SceneType.StageScene)
+
+        // ステージからロビー
+        else if (sceneType == ManageSceneLoader.SceneType.StageScene && Input.GetKey(KeyCode.Space))
         {
-            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.ResultScene);
-        }
-        else if (sceneType == ManageSceneLoader.SceneType.ResultScene)
-        {
-            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.TitleScene);
+            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
         }
     }
 
@@ -136,7 +140,9 @@ public class GManager : MonobitEngine.MonoBehaviour
                     Temp = Random.Range(monsterMin, monsterMax);
                     if (Temp != TempStrage)
                     {
-                        monsterArray[Temp] = MonobitNetwork.Instantiate(monsterPrefab[Temp].name, GetRandomPosition(), Quaternion.identity, 0) as GameObject;
+                        monsterArray[Temp] = MonobitNetwork.Instantiate(monsterPrefab[Temp].name, GetRandomPosition(), Quaternion.identity, 0, null, false,false, true) as GameObject;
+                        var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
+                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(monsterArray[Temp], scene);
                         monsterCount++;     // モンスターの数加算
                         Debug.Log("MonsterCreated" + monsterCount);
                         break;
