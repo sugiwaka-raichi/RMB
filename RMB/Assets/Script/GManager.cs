@@ -11,6 +11,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     // GameManagerのインスタンスを静的確保、ゲッターとセッター
     public static GManager GMInstance { get; private set; }
 
+    private GameObject playerObject;
 
     // モンスターのPrefab情報を格納
     [SerializeField] private GameObject[] monsterPrefab = null;
@@ -62,6 +63,55 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= Start =============================*/
     protected void Start()
     {
+        // プレイヤーキャラクタが未搭乗の場合に登場させる
+        if (playerObject == null)
+        {
+            Vector3 playerpos = Vector3.zero;
+            switch (MonobitNetwork.player.ID)
+            {
+                case 1:
+                    playerpos = new Vector3(-10.0f, 1.0f, 10.0f);
+                    break;
+                case 2:
+                    playerpos = new Vector3(10.0f, 1.0f, -10.0f);
+                    break;
+                case 3:
+                    playerpos = new Vector3(10.0f, 1.0f, 10.0f);
+                    break;
+                case 4:
+                    playerpos = new Vector3(-10.0f, 1.0f, -10.0f);
+                    break;
+                case 5:
+                    playerpos = new Vector3(-5.0f, 1.0f, 5.0f);
+                    break;
+                case 6:
+                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
+                    break;
+                case 7:
+                    playerpos = new Vector3(5.0f, 1.0f, 5.0f);
+                    break;
+                case 8:
+                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
+                    break;
+                case 9:
+                    playerpos = new Vector3(-2.0f, 1.0f, 0.0f);
+                    break;
+                case 10:
+                    playerpos = new Vector3(2.0f, 1.0f, 0.0f);
+                    break;
+            }
+
+            playerObject = MonobitNetwork.Instantiate(
+                            "Player",
+                            playerpos,
+                            Quaternion.identity,
+                            0, 
+                            null, 
+                            false, 
+                            false, 
+                            true);
+            ManageSceneLoader.SceneMoveObject(playerObject, ManageSceneLoader.SceneType.StageScene);
+        }
         monsterCount = 0;
     }
 
@@ -85,9 +135,6 @@ public class GManager : MonobitEngine.MonoBehaviour
     private void ChangeScene()
     {
         // 最初に今のゲームシーンを取得(Getでもらうと楽)
-//        string sceneType = (ManageSceneLoader.SceneType)ManageSceneLoader.GetActiveScene();
-
-
         var sceneType = (ManageSceneLoader.SceneType)System.Enum.ToObject(typeof(ManageSceneLoader.SceneType), ManageSceneLoader.GetActiveScene());
 
         // タイトルからロビー

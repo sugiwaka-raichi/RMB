@@ -149,6 +149,8 @@ public class player : MonobitEngine.MonoBehaviour
         if(havemonster)
         {
             monscript.Attack();
+
+            havemonster = false;
         }
     }
 }

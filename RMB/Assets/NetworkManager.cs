@@ -74,9 +74,10 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
             }
             if (GUILayout.Button("いいえ", GUILayout.Width(50)))
             {
-                // シーンをリロードし、初期化する
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                // シーンをリロードする
+                ManageSceneLoader.SceneType sceneName = ManageSceneLoader.GetSceneType();
+                ManageSceneLoader.SceneChange(sceneName);
+                Debug.Log(sceneName);
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();

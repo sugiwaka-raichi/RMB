@@ -41,6 +41,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Attack()
     {
        Debug.Log("attack");
+        DestroyMonster();
     }
 
     //================================

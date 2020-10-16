@@ -127,8 +127,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 DisconnectServer();
 
                 // シーンをリロードする
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                ManageSceneLoader.SceneType sceneName = ManageSceneLoader.GetSceneType();
+                ManageSceneLoader.SceneChange(sceneName);
+                Debug.Log(sceneName);
             }
 
             // ルームに入室している場合
@@ -163,6 +164,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                             if (readyCount == MonobitNetwork.playerList.Length)
                             {
                                 StartGame();
+                                customParams["ready"] = false;
+                                NetworkManager.SetPlayerCustomParameters(customParams);
                             }
                         }
 
@@ -175,7 +178,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                         {
                             customParams["ready"] = true;
                             customParams["HP"] = 200;
-                            MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+                            NetworkManager.SetPlayerCustomParameters(customParams);
                         }
                     }
                 }
@@ -355,8 +358,10 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         // サーバから切断する
         NetworkManager.DisconnectServer();
 
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        // シーンをリロードする
+        ManageSceneLoader.SceneType sceneName = ManageSceneLoader.GetSceneType();
+        ManageSceneLoader.SceneChange(sceneName);
+        Debug.Log(sceneName);
 
         LobyCanvas.gameObject.SetActive(false);
         RoomCanvas.gameObject.SetActive(false);
@@ -414,7 +419,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     {
         customParams["ready"] = false;
         customParams["HP"] = 200;
-        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+        NetworkManager.SetPlayerCustomParameters(customParams);
         NetworkManager.LeaveRoom();
         RoomCanvas.gameObject.SetActive(false);
         InGameCanvas.gameObject.SetActive(false);
@@ -427,64 +432,15 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     {
         customParams["ready"] = true;
         customParams["HP"] = 200;
-        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+        NetworkManager.SetPlayerCustomParameters(customParams);
     }
-
+    
     /** ゲーム開始. */
     public void StartGame()
     {
-        RoomCanvas.gameObject.SetActive(false);
-        InGameCanvas.gameObject.SetActive(true);
-
+        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
+        Debug.Log("change getter");
         playingGame = true;
-        // プレイヤーキャラクタが未搭乗の場合に登場させる
-        if (playerObject == null)
-        {
-            Vector3 playerpos = Vector3.zero;
-            switch (MonobitNetwork.player.ID)
-            {
-                case 1:
-                    playerpos = new Vector3(-10.0f, 1.0f, 10.0f);
-                    break;
-                case 2:
-                    playerpos = new Vector3(10.0f, 1.0f, -10.0f);
-                    break;
-                case 3:
-                    playerpos = new Vector3(10.0f, 1.0f, 10.0f);
-                    break;
-                case 4:
-                    playerpos = new Vector3(-10.0f, 1.0f, -10.0f);
-                    break;
-                case 5:
-                    playerpos = new Vector3(-5.0f, 1.0f, 5.0f);
-                    break;
-                case 6:
-                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
-                    break;
-                case 7:
-                    playerpos = new Vector3(5.0f, 1.0f, 5.0f);
-                    break;
-                case 8:
-                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
-                    break;
-                case 9:
-                    playerpos = new Vector3(-2.0f, 1.0f, 0.0f);
-                    break;
-                case 10:
-                    playerpos = new Vector3(2.0f, 1.0f, 0.0f);
-                    break;
-            }
-
-            playerObject = MonobitNetwork.Instantiate(
-                            "Player",
-                            playerpos,
-                            Quaternion.identity,
-                            0);
-        }
-
-        GameObject spawnerobj = GameObject.Find("MonsterSpawner");
-        //Spawner spawnerscript = spawnerobj.GetComponent<Spawner>();
-        //spawnerscript.BeginSpawning();
     }
 
     /** ゲーム終了. */

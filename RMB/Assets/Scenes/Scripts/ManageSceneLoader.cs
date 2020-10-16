@@ -63,7 +63,7 @@ public class ManageSceneLoader : MonoBehaviour
         }
         SceneManager.LoadScene(_nextSceneName.ToString(),LoadSceneMode.Additive);       //シーンを加算ロード
         Debug.Log($"{_nextSceneName}へ移動。");
-        //nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
+        nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
     }
 
