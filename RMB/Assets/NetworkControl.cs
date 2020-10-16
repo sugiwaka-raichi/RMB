@@ -43,6 +43,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** プレイヤー数カウント変数. */
     int playerCount = 0;
 
+    /** UI使うかフラグ. */
+    [SerializeField] bool useUIflg = false;
+
     /** UI用. */
     [SerializeField] Canvas BeforeConnectCanvas;
     [SerializeField] Canvas LobyCanvas;
@@ -123,12 +126,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             if (GUILayout.Button("いいえ", GUILayout.Width(50)))
             {
                 // シーンをリロードし、初期化する
-#if UNITY_5_3_OR_NEWER || UNITY_5_3
                 string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
                 UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-#else
-                Application.LoadLevel(Application.loadedLevelName);
-#endif
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -169,7 +168,10 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        NetworkShow();
+        if (useUIflg)
+        {
+            NetworkShow();
+        }
     }
 
     // OnGUI is called for rendering and handring GUI events
@@ -179,6 +181,11 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         if (bDisplayWindow)
         {
             GUILayout.Window(0, new Rect(Screen.width / 2 - 100, Screen.height / 2 - 40, 200, 80), WindowControl, "Caution");
+        }
+
+        if (!useUIflg)
+        {
+            NetworkShowOnGUI();
         }
     }
 
@@ -203,6 +210,141 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         else
         {
             BeforeconnectServerShow();
+        }
+    }
+
+    void NetworkShowOnGUI()
+    {
+        // デフォルトのボタンと被らないように、段下げを行う。
+        GUILayout.Space(24);
+
+        // MUNサーバに接続している場合
+        if (MonobitNetwork.isConnect)
+        {
+            // ボタン入力でサーバから切断＆シーンリセット
+            if (GUILayout.Button("Disconnect", GUILayout.Width(150)))
+            {
+                // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
+                bDisconnect = true;
+
+                // サーバから切断する
+                DisconnectServer();
+
+                // シーンをリロードする
+                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            }
+
+            // ルームに入室している場合
+            if (MonobitNetwork.inRoom)
+            {
+
+                // ボタン入力でルームから退室
+                if (GUILayout.Button("Leave Room", GUILayout.Width(150)))
+                {
+                    customParams["ready"] = false;
+                    customParams["HP"] = 200;
+                    playingGame = false;
+                    MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+                    LeaveRoom();
+                }
+
+                if (!playingGame)
+                {
+                    GUILayout.Label(MonobitNetwork.room.name);
+                    readyCount = 0;
+                    foreach (MonobitPlayer player in MonobitNetwork.playerList)
+                    {
+                        string playerInfo =
+                            string.Format("{0} {1} {2}",
+                                player.ID, player.name, player.customParameters["ready"]);
+                        GUILayout.Label(playerInfo);
+
+                        if ((bool)player.customParameters["ready"])
+                        {
+                            readyCount++;
+
+                            if (readyCount == MonobitNetwork.playerList.Length)
+                            {
+                                StartGame();
+                            }
+                        }
+
+                        Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
+                    }
+
+                    if (MonobitNetwork.playerList.Length >= 1)
+                    {
+                        if (GUILayout.Button("StartGame"))
+                        {
+                            customParams["ready"] = true;
+                            customParams["HP"] = 200;
+                            MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+                        }
+                    }
+                }
+            }
+
+            // ルームに入室していない場合
+            if (!MonobitNetwork.inRoom)
+            {
+                GUILayout.BeginHorizontal();
+
+                // ルーム名の入力
+                GUILayout.Label("RoomName : ");
+                roomName = GUILayout.TextField(roomName, GUILayout.Width(200));
+
+                RoomSettings roomSettings = new RoomSettings();
+                roomSettings.maxPlayers = 10;
+                roomSettings.isVisible = true;
+                roomSettings.isOpen = true;
+
+                // ボタン入力でルーム作成
+                if (GUILayout.Button("Create Room", GUILayout.Width(150)))
+                {
+                    CreateRoom(roomName, roomSettings, null);
+                }
+
+                GUILayout.EndHorizontal();
+
+                // 現在存在するルームからランダムに入室する
+                if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
+                {
+                    JoinRandomRoom();
+                }
+
+                // ルーム一覧から選択式で入室する
+                foreach (RoomData room in MonobitNetwork.GetRoomData())
+                {
+                    string strRoomInfo =
+                        string.Format("{0}({1}/{2})",
+                                      room.name,
+                                      room.playerCount,
+                                      (room.maxPlayers == 0 ? "-" : room.maxPlayers.ToString()));
+
+                    if (GUILayout.Button("Enter Room : " + strRoomInfo))
+                    {
+                        JoinRoom(room.name);
+                    }
+                }
+            }
+        }
+        else
+        {
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Label("PlayerName :");
+            SetPlayerName(GUILayout.TextField((MonobitNetwork.playerName == null) ? "" : MonobitNetwork.playerName,
+                                               GUILayout.Width(200)));
+            GUILayout.EndHorizontal();
+            customParams["ready"] = false;
+            customParams["HP"] = 200;
+            MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+
+            if (GUILayout.Button("Connect Server", GUILayout.Width(200)))
+            {
+                ConnectServer("MonsterBattle_v1.0");
+            }
         }
     }
 
@@ -454,6 +596,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         RoomCanvas.gameObject.SetActive(false);
         InGameCanvas.gameObject.SetActive(true);
 
+        playingGame = true;
         // プレイヤーキャラクタが未搭乗の場合に登場させる
         if (playerObject == null)
         {
