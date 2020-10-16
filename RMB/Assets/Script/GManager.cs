@@ -42,9 +42,6 @@ public class GManager : MonobitEngine.MonoBehaviour
     [SerializeField] private float timeGenerate = 5;       // 生成のディレイタイム指定
     private float timeElapsedGenerate;                      // 経過時間カウント用
 
-    // スタートフラグ
-//    private bool bStart = false;
-
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
     private void Awake()
@@ -78,7 +75,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         // ただしぃのシーン完成次第置き換え
-//        ChangeScene();          // シーン遷移
+        ChangeScene();          // シーン遷移
         CreateMonster();
 
         // ゲーム中のプレイヤーの状態を取得する処理
@@ -87,23 +84,25 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= SceneChange =============================*/
     private void ChangeScene()
     {
-        // タイトル　GetActiveScene：現在アクティブなシーンを取得
-        if (SceneManager.GetActiveScene().name == "TitleSample" && Input.GetMouseButtonDown(0))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+        // 最初に今のゲームシーンを取得(Getでもらうと楽)
+        ManageSceneLoader.SceneType sceneType = 0;
 
-        // ロビー
-        if (SceneManager.GetActiveScene().name == "SampleScene" && Input.GetMouseButtonDown(2))
+        if (sceneType == ManageSceneLoader.SceneType.TitleScene)
         {
-            SceneManager.LoadScene("TitleSample");
+            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
         }
-
-        //// ゲーム
-        //if ()
-        //{
-        //    SceneManager.LoadScene("GameScene");
-        //}
+        else if (sceneType == ManageSceneLoader.SceneType.LobbyScene)
+        {
+            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
+        }
+        else if (sceneType == ManageSceneLoader.SceneType.StageScene)
+        {
+            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.ResultScene);
+        }
+        else if (sceneType == ManageSceneLoader.SceneType.ResultScene)
+        {
+            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.TitleScene);
+        }
     }
 
     /*============================= CreateMonster =============================*/
@@ -148,7 +147,7 @@ public class GManager : MonobitEngine.MonoBehaviour
                     }
                 }
             }
-            TempStrage = Temp;
+            TempStrage = Temp;      // 直前のモンスターの情報(番号)を格納
             timeElapsedGenerate = 0.0f;             // 経過時間リセット
        }
         // 生成タイマ
