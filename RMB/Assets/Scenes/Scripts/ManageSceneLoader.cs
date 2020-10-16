@@ -23,9 +23,10 @@ public class ManageSceneLoader : MonoBehaviour
     }
 
     [SerializeField]
-    SceneType startScene;
+    SceneType startScene;           //開始シーンを設定
 
     static string nowScene = null;         //現在のシーン名
+    static SceneType nowSceneType;
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +63,8 @@ public class ManageSceneLoader : MonoBehaviour
         }
         SceneManager.LoadScene(_nextSceneName.ToString(),LoadSceneMode.Additive);       //シーンを加算ロード
         Debug.Log($"{_nextSceneName}へ移動。");
-        nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
+        //nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
+        nowSceneType = _nextSceneName;              //シーンを設定
     }
 
     //=====================================================
@@ -81,10 +83,29 @@ public class ManageSceneLoader : MonoBehaviour
     //=====================================================
     public static string GetActiveScene()
     {
-        return SceneManager.GetActiveScene().name;
+        return nowScene;
     }
 
-   
+    //======================================================
+    // 杉若
+    // 現在のシーンを取得
+    //======================================================
+    public static SceneType GetSceneType()
+    {
+        return nowSceneType;
+    }
+
+    //======================================================
+    // 杉若
+    // シーンへオブジェクトを移動させる
+    //======================================================
+   public static void SceneMoveObject(GameObject _obj, SceneType _type)
+    {
+        Scene scene = SceneManager.GetSceneByName(_type.ToString());
+        SceneManager.MoveGameObjectToScene(_obj, scene);
+    }
+
+
     // 強制終了で使いたいときに
     public static void GameQuit()
     {
