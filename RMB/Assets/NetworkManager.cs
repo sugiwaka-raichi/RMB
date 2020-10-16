@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class NetworkManager : MonobitEngine.MonoBehaviour
 {
-
     /** ウィンドウ表示フラグ. */
-    private bool bDisplayWindow = false;
+    private static bool bDisplayWindow = false;
 
     /** サーバ途中切断フラグ. */
     private static bool bDisconnect = false;
 
     /** サーバ接続失敗フラグ. */
-    private bool bConnectFailed = false;
+    private static bool bConnectFailed = false;
 
     /**
      * 途中切断コールバック.
@@ -41,6 +40,11 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         Debug.Log("OnConnectToServerFailed : StatusCode = " + parameters);
         bConnectFailed = true;
         bDisplayWindow = true;
+    }
+
+    public static void DisconnectflgOn()
+    {
+        bDisconnect = true;
     }
 
     /**
@@ -137,6 +141,12 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     public static void SetPlayerName(string _playername)
     {
         MonobitNetwork.playerName = _playername;
+    }
+
+    /** プレイヤーカスタムパラメータ設定. */
+    public static void SetPlayerCustomParameters(Hashtable customParams)
+    {
+        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
     }
 
     /** サーバ接続呼出し用. */

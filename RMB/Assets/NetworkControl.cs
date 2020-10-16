@@ -28,15 +28,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ゲーム中フラグ. */
     bool playingGame = false;
 
-    /** ウィンドウ表示フラグ. */
-    private bool bDisplayWindow = false;
-
-    /** サーバ途中切断フラグ. */
-    private static bool bDisconnect = false;
-
-    /** サーバ接続失敗フラグ. */
-    private bool bConnectFailed = false;
-
     /** ルーム数カウント変数. */
     int roomCount = 0;
 
@@ -71,95 +62,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     [SerializeField] Button DisconnectButton;
     [SerializeField] Button LeaveRoomButton;
 
-    /**
-     * 途中切断コールバック.
-     */
-    public void OnDisconnectedFromServer()
-    {
-        Debug.Log("OnDisconnectedFromServer");
-        if (bDisconnect == false)
-        {
-            bDisconnect = true;
-            bDisplayWindow = true;
-        }
-        else
-        {
-            bDisconnect = false;
-        }
-    }
-
-    /**
-     * サーバ接続失敗コールバック.
-     */
-    public void OnConnectToServerFailed(object parameters)
-    {
-        Debug.Log("OnConnectToServerFailed : StatusCode = " + parameters);
-        bConnectFailed = true;
-        bDisplayWindow = true;
-    }
-
-    /**
-     * ウィンドウ表示用メソッド.
-     */
-    void WindowControl(int windowId)
-    {
-        // GUIスタイル設定
-        GUIStyle style = new GUIStyle();
-        style.alignment = TextAnchor.MiddleCenter;
-        GUIStyleState stylestate = new GUIStyleState();
-        stylestate.textColor = Color.white;
-        style.normal = stylestate;
-
-        // 途中切断時の表示
-        if (bDisconnect)
-        {
-            GUILayout.Label("途中切断しました。\n再接続しますか？", style);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("はい", GUILayout.Width(50)))
-            {
-                // もう一度接続処理を実行する
-                MonobitNetwork.ConnectServer("MonsterBattle_v1.0");
-                bDisconnect = false;
-                bDisplayWindow = false;
-            }
-            if (GUILayout.Button("いいえ", GUILayout.Width(50)))
-            {
-                // シーンをリロードし、初期化する
-                string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-            }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            return;
-        }
-
-        // 接続失敗時の表示
-        if (bConnectFailed)
-        {
-            GUILayout.Label("接続に失敗しました。\n再接続しますか？", style);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("はい", GUILayout.Width(50)))
-            {
-                // もう一度接続処理を実行する
-                MonobitNetwork.ConnectServer("MonsterBattle_v1.0");
-                bConnectFailed = false;
-                bDisplayWindow = false;
-            }
-            if (GUILayout.Button("いいえ", GUILayout.Width(50)))
-            {
-                // オフラインモードで起動する
-                MonobitNetwork.offline = true;
-                bConnectFailed = false;
-                bDisplayWindow = false;
-            }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            return;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -177,12 +79,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     // OnGUI is called for rendering and handring GUI events
     void OnGUI()
     {
-        // サーバ接続状況に応じて、ウィンドウを表示する
-        if (bDisplayWindow)
-        {
-            GUILayout.Window(0, new Rect(Screen.width / 2 - 100, Screen.height / 2 - 40, 200, 80), WindowControl, "Caution");
-        }
-
         if (!useUIflg)
         {
             NetworkShowOnGUI();
@@ -225,7 +121,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             if (GUILayout.Button("Disconnect", GUILayout.Width(150)))
             {
                 // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
-                bDisconnect = true;
+                NetworkManager.DisconnectflgOn();
 
                 // サーバから切断する
                 DisconnectServer();
@@ -245,8 +141,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     customParams["ready"] = false;
                     customParams["HP"] = 200;
                     playingGame = false;
-                    MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
-                    LeaveRoom();
+                    NetworkManager.SetPlayerCustomParameters(customParams);
+                    NetworkManager.LeaveRoom();
                 }
 
                 if (!playingGame)
@@ -302,7 +198,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 // ボタン入力でルーム作成
                 if (GUILayout.Button("Create Room", GUILayout.Width(150)))
                 {
-                    CreateRoom(roomName, roomSettings, null);
+                    NetworkManager.CreateRoom(roomName, roomSettings, null);
                 }
 
                 GUILayout.EndHorizontal();
@@ -310,7 +206,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 // 現在存在するルームからランダムに入室する
                 if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
                 {
-                    JoinRandomRoom();
+                    NetworkManager.JoinRandomRoom();
                 }
 
                 // ルーム一覧から選択式で入室する
@@ -324,7 +220,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
                     if (GUILayout.Button("Enter Room : " + strRoomInfo))
                     {
-                        JoinRoom(room.name);
+                        NetworkManager.JoinRoom(room.name);
                     }
                 }
             }
@@ -334,16 +230,16 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             GUILayout.BeginHorizontal();
 
             GUILayout.Label("PlayerName :");
-            SetPlayerName(GUILayout.TextField((MonobitNetwork.playerName == null) ? "" : MonobitNetwork.playerName,
+            NetworkManager.SetPlayerName(GUILayout.TextField((MonobitNetwork.playerName == null) ? "" : MonobitNetwork.playerName,
                                                GUILayout.Width(200)));
             GUILayout.EndHorizontal();
             customParams["ready"] = false;
             customParams["HP"] = 200;
-            MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+            NetworkManager.SetPlayerCustomParameters(customParams);
 
             if (GUILayout.Button("Connect Server", GUILayout.Width(200)))
             {
-                ConnectServer("MonsterBattle_v1.0");
+                NetworkManager.ConnectServer("MonsterBattle_v1.0");
             }
         }
     }
@@ -351,11 +247,11 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** サーバ接続前UI表示. */
     public void BeforeconnectServerShow()
     {
-        SetPlayerName((PlayerNameinputField.text == null) ? "" : PlayerNameinputField.text);
+        NetworkManager.SetPlayerName((PlayerNameinputField.text == null) ? "" : PlayerNameinputField.text);
        
         customParams["ready"] = false;
         customParams["HP"] = 200;
-        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+        NetworkManager.SetPlayerCustomParameters(customParams);
     }
 
     /** ロビー内UI表示. */
@@ -439,55 +335,29 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         return GUILayout.Button(_buttonname, GUILayout.Width(_buttonwidth));
     }
 
-    /** ホストかどうか取得. */
-    public static bool GetisHost()
-    {
-        return MonobitNetwork.isHost;
-    }
-
-    /** プレイヤー名入力. */
-    public static void SetPlayerName(string _playername)
-    {
-        MonobitNetwork.playerName = _playername;
-    }
-
     /** サーバ接続. */
     public void Connectserver()
     {
-        ConnectServer("MonsterBattle_v1.0");
+        NetworkManager.ConnectServer("MonsterBattle_v1.0");
 
         BeforeConnectCanvas.gameObject.SetActive(false);
         LobyCanvas.gameObject.SetActive(true);
         ConnectedCanvas.gameObject.SetActive(true);
     }
 
-    /** サーバ接続呼出し用. */
-    public static void ConnectServer(string _versionname)
-    {
-        // デフォルトロビーへの自動入室を許可する
-        MonobitNetwork.autoJoinLobby = true;
-
-        // MUNサーバに接続する
-        MonobitNetwork.ConnectServer(_versionname);
-    }
 
     /** サーバ切断. */
     public void DisconnectServer()
     {
         // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
-        bDisconnect = true;
+        NetworkManager.DisconnectflgOn();
 
         // サーバから切断する
-        MonobitNetwork.DisconnectServer();
+        NetworkManager.DisconnectServer();
 
-        // シーンをリロードする
-#if UNITY_5_3_OR_NEWER || UNITY_5_3
         string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-#else
-                Application.LoadLevel(Application.loadedLevelName);
-#endif
- 
+
         LobyCanvas.gameObject.SetActive(false);
         RoomCanvas.gameObject.SetActive(false);
         InGameCanvas.gameObject.SetActive(false);
@@ -502,11 +372,11 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         {
             if(roomSettings != null)
             {
-                CreateRoom(roomName, roomSettings, null);
+                NetworkManager.CreateRoom(roomName, roomSettings, null);
             }
             else
             {
-                CreateRoom(roomName);
+                NetworkManager.CreateRoom(roomName);
             }
 
             LobyCanvas.gameObject.SetActive(false);
@@ -515,29 +385,11 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         }
     }
 
-    /** ルーム作成名前入力. */
-    public static void CreateRoom(string _roomname)
-    {
-        MonobitNetwork.CreateRoom(_roomname);
-    }
-
-    /** ルーム作成設定入力. */
-    public static void CreateRoom(string _roomname, RoomSettings _roomSettings, LobbyInfo _lobbyInfo)
-    {
-        MonobitNetwork.CreateRoom(_roomname, _roomSettings, _lobbyInfo);
-    }
-
-    /** 入室呼び出し用. */
-    public static void JoinRoom(string _roomname)
-    {
-        MonobitNetwork.JoinRoom(_roomname);
-    }
-
     /** 入室ボタン用. */
     public void JoinRoom(int roomnum)
     {
         roomName = MonobitNetwork.GetRoomData()[roomnum].name;
-        JoinRoom(roomName);
+        NetworkManager.JoinRoom(roomName);
         LobyCanvas.gameObject.SetActive(false);
         RoomCanvas.gameObject.SetActive(true);
         InRoomCanvas.gameObject.SetActive(true);
@@ -546,7 +398,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ランダム入室ボタン用. */
     public void JoinRandomRoomB()
     {
-        JoinRandomRoom();
+        NetworkManager.JoinRandomRoom();
         
         if (roomCount > 0)
         {
@@ -557,29 +409,17 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
     }
 
-    /** ランダム入室呼び出し用. */
-    public static void JoinRandomRoom()
-    {
-        MonobitNetwork.JoinRandomRoom();
-    }
-
     /** ルーム退室ボタン用. */
     public void LeaveRoomB()
     {
         customParams["ready"] = false;
         customParams["HP"] = 200;
         MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
-        LeaveRoom();
+        NetworkManager.LeaveRoom();
         RoomCanvas.gameObject.SetActive(false);
         InGameCanvas.gameObject.SetActive(false);
         InRoomCanvas.gameObject.SetActive(false);
         LobyCanvas.gameObject.SetActive(true);
-    }
-
-    /** ルーム退室呼び出し用. */
-    public static void LeaveRoom()
-    {
-        MonobitNetwork.LeaveRoom();
     }
 
     /** 準備完了. */
