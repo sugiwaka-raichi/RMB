@@ -65,6 +65,7 @@ public class ManageSceneLoader : MonoBehaviour
         Debug.Log($"{_nextSceneName}へ移動。");
         nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
+        SetActiveScene(nowSceneType);               //アクティブシーンを切り替え
     }
 
     //=====================================================
