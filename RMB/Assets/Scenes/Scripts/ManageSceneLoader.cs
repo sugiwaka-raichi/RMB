@@ -85,7 +85,6 @@ public class ManageSceneLoader : MonoBehaviour
         Debug.Log($"{_nextSceneName}へ移動。");
         nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
-        SetActiveScene(nowSceneType);               //アクティブシーンを切り替え
     }
 
     //=====================================================
@@ -133,6 +132,7 @@ public class ManageSceneLoader : MonoBehaviour
     public static void SetActiveScene(SceneType _type)
     {
         Scene scene = SceneManager.GetSceneByName(_type.ToString());
+        SceneManager.SetActiveScene(scene);
     }
 
     //==========================================================
@@ -149,10 +149,12 @@ public class ManageSceneLoader : MonoBehaviour
         {
             yield return null;
         }
+        Debug.Log("読み込み終了");
         //読み込み終了
         SetActiveScene(_sceneType);
         //コルーチンを終了
         loadCor = null;
+
     }
 
     // 強制終了で使いたいときに
