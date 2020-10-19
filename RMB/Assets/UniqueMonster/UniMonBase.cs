@@ -17,10 +17,10 @@ public class UniMonBase : MonoBehaviour
     protected void Update()
     {
         //持たれていなければ
-        if (!catchFlg)
-        {
-            SurvivalTimer();        //生存時間
-        }
+        //if (!catchFlg)
+        //{
+        //    SurvivalTimer();        //生存時間
+        //}
 
     }
 

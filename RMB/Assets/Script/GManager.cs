@@ -92,6 +92,12 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= Start =============================*/
     protected void Start()
     {
+        // スタートの各処理前にアクティブシーンをステージシーンに切り替え
+        if(ManageSceneLoader.GetActiveScene() == "NetScene")
+        {
+            ManageSceneLoader.SetActiveScene(ManageSceneLoader.SceneType.StageScene);
+        }
+
         // プレイヤーキャラクタが未搭乗の場合に登場させる
         if (playerObject == null)
         {
@@ -139,9 +145,9 @@ public class GManager : MonobitEngine.MonoBehaviour
                             false, 
                             false, 
                             true);
-            ManageSceneLoader.SceneMoveObject(playerObject, ManageSceneLoader.SceneType.StageScene);
         }
         monsterCount = 0;
+        unimonCount = 0;
     }
 
     /*============================= Update =============================*/
@@ -152,8 +158,6 @@ public class GManager : MonobitEngine.MonoBehaviour
         {
             return;
         }
-
-        ManageSceneLoader.GetActiveScene();
 
         // ただしぃのシーン完成次第置き換え
 //        ChangeScene();          // シーン遷移
@@ -219,10 +223,6 @@ public class GManager : MonobitEngine.MonoBehaviour
                     {
                         monsterArray[monsterTemp] = MonobitNetwork.Instantiate(monsterPrefab[monsterTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false,false, true) as GameObject;
 
-                        // Monsterの生成シーンをNetSceneからStageSceneへ移動
-                        var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
-                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(monsterArray[monsterTemp], scene);
-
                         monsterCount++;     // モンスターの数加算
                         Debug.Log("MonsterCreated" + monsterCount);
                         break;
@@ -234,7 +234,7 @@ public class GManager : MonobitEngine.MonoBehaviour
                 }
             }
             monsterTempStrage = monsterTemp;      // 直前のモンスターの情報(番号)を格納
-            monsterElapsedTime = 0.0f;             // 経過時間リセット
+            monsterElapsedTime = 0.0f;            // 経過時間リセット
        }
         // 生成タイマ
         monsterElapsedTime += Time.deltaTime;      // 1秒ずつ加算
@@ -256,10 +256,6 @@ public class GManager : MonobitEngine.MonoBehaviour
                     if (unimonTemp != unimonTempStrage)
                     {
                         unimonArray[unimonTemp] = MonobitNetwork.Instantiate(unimonPrefab[unimonTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false, false, true) as GameObject;
-
-                        // Monsterの生成シーンをNetSceneからStageSceneへ移動
-                        var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
-                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(unimonArray[unimonTemp], scene);
 
                         unimonCount++;     // モンスターの数加算
                         Debug.Log("UnimonCreated" + unimonCount);
