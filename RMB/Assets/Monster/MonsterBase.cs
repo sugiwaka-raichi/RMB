@@ -21,7 +21,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         {
             SurvivalTimer();        //生存時間
         }
-        
+
     }
 
     //================================
@@ -40,8 +40,9 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //================================
     virtual public void Attack()
     {
-       Debug.Log("attack");
-        DestroyMonster();
+        Debug.Log("attack");
+        delTimer = 3;
+        catchFlg = false;
     }
 
     //================================
@@ -59,7 +60,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     {
         return type;
     }
-    
+
     //======================================
     //一定時間捕まえられなかったら消える
     //======================================
@@ -73,7 +74,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         {
             DestroyMonster();
         }
-    } 
+    }
 
     //======================================
     //削除命令関数
