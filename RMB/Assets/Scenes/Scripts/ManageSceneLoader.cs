@@ -28,6 +28,9 @@ public class ManageSceneLoader : MonoBehaviour
     static string nowScene = null;         //現在のシーン名
     static SceneType nowSceneType;
 
+    private static AsyncOperation async;           //非同期動作で使用する
+    private static IEnumerator loadCor = null;     //ロードで使うコルーチン
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +44,21 @@ public class ManageSceneLoader : MonoBehaviour
         SceneChange(startScene);
     }
 
+
+    private void OnEnable()
+    {
+        EditorApplication.update += Update;
+    }
+
     // Update is called once per frame
-    void Update() { }
+    private static void Update()
+    {
+        //ロードコルーチンが作成されていれば
+        if (loadCor != null)
+        {
+            loadCor.MoveNext();         //コルーチンを実行
+        }
+    }
 
     // 他スクリプトへの反映
     //public static void SceneChange(SceneType _nextSceneName)
@@ -61,7 +77,11 @@ public class ManageSceneLoader : MonoBehaviour
         {
             UnLoadScene();
         }
-        SceneManager.LoadScene(_nextSceneName.ToString(), LoadSceneMode.Additive);       //シーンを加算ロード
+        //SceneManager.LoadScene(_nextSceneName.ToString(), LoadSceneMode.Additive);       //シーンを加算ロード
+        loadCor = LoadScene(_nextSceneName);            //コルーチンを作成
+        
+
+
         Debug.Log($"{_nextSceneName}へ移動。");
         nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
@@ -113,7 +133,26 @@ public class ManageSceneLoader : MonoBehaviour
     public static void SetActiveScene(SceneType _type)
     {
         Scene scene = SceneManager.GetSceneByName(_type.ToString());
-        SceneManager.SetActiveScene(scene);
+    }
+
+    //==========================================================
+    //シーン読み込みのコルーチン
+    //==========================================================
+    static IEnumerator LoadScene(SceneType _sceneType)
+    {
+        Debug.Log("シーンをロード");
+        //sceneの読み込みを行う
+        async = SceneManager.LoadSceneAsync(_sceneType.ToString(), LoadSceneMode.Additive);       //シーンを加算ロード
+
+        //読み込みが終わるまで
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+        //読み込み終了
+        SetActiveScene(_sceneType);
+        //コルーチンを終了
+        loadCor = null;
     }
 
     // 強制終了で使いたいときに
