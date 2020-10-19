@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class ManageSceneLoader : MonoBehaviour
 {
@@ -44,14 +43,8 @@ public class ManageSceneLoader : MonoBehaviour
         SceneChange(startScene);
     }
 
-
-    private void OnEnable()
-    {
-        EditorApplication.update += Update;
-    }
-
     // Update is called once per frame
-    private static void Update()
+    private void Update()
     {
         //ロードコルーチンが作成されていれば
         if (loadCor != null)
