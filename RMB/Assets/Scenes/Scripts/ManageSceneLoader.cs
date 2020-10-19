@@ -42,7 +42,7 @@ public class ManageSceneLoader : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){}
+    void Update() { }
 
     // 他スクリプトへの反映
     //public static void SceneChange(SceneType _nextSceneName)
@@ -61,7 +61,7 @@ public class ManageSceneLoader : MonoBehaviour
         {
             UnLoadScene();
         }
-        SceneManager.LoadScene(_nextSceneName.ToString(),LoadSceneMode.Additive);       //シーンを加算ロード
+        SceneManager.LoadScene(_nextSceneName.ToString(), LoadSceneMode.Additive);       //シーンを加算ロード
         Debug.Log($"{_nextSceneName}へ移動。");
         nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
@@ -99,21 +99,30 @@ public class ManageSceneLoader : MonoBehaviour
     // 杉若
     // シーンへオブジェクトを移動させる
     //======================================================
-   public static void SceneMoveObject(GameObject _obj, SceneType _type)
+    public static void SceneMoveObject(GameObject _obj, SceneType _type)
     {
         Scene scene = SceneManager.GetSceneByName(_type.ToString());
         SceneManager.MoveGameObjectToScene(_obj, scene);
     }
 
+    //==========================================================
+    // 杉若
+    // アクティブシーンを変更
+    //==========================================================
+    public static void SetActiveScene(SceneType _type)
+    {
+        Scene scene = SceneManager.GetSceneByName(_type.ToString());
+        SceneManager.SetActiveScene(scene);
+    }
 
     // 強制終了で使いたいときに
     public static void GameQuit()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #elif UNITY_STANDALONE
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
             UnityEngine.Application.Quit();
-        #endif
+#endif
     }
 }
 
