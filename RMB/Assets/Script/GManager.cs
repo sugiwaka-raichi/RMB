@@ -9,42 +9,68 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= 変数宣言 =============================*/
 
     // GameManagerのインスタンスを静的確保、ゲッターとセッター
-    public static GManager GMInstance { get; private set; }
+    public static GManager  GMInstance { get; private set; }
 
-    private GameObject playerObject;
+    private GameObject      playerObject;
 
     // モンスターのPrefab情報を格納
-    [SerializeField] private GameObject[] monsterPrefab = null;
+    [SerializeField]
+    private GameObject[]    monsterPrefab = null;
     // モンスターのPrefabと生成位置、回転などを格納する配列
-    [SerializeField] private GameObject[] monsterArray = null;
+    [SerializeField]
+    private GameObject[]    monsterArray = null;
 
     // モンスターカウント用変数
-    static private int monsterCount = 0;
+    static private int      monsterCount = 0;
     // モンスター上限
-    private const int MONSTER_MAX = 20;
+    private const int       MONSTER_MAX = 20;
     // モンスターの最小数と最大数
-    [SerializeField] private int monsterMin = 0, monsterMax = 3;
-    private int Temp;               // ランダム変数格納用
-    private int TempStrage;         // 情報格納用
+    [SerializeField]
+    private int             monsterMin = 0, monsterMax = 3;
+    private int             monsterTemp;               // ランダム変数格納用
+    private int             monsterTempStrage;         // 情報格納用
+
+    // モンスターのPrefab情報を格納
+    [SerializeField]
+    private GameObject[]    unimonPrefab = null;
+    // モンスターのPrefabと生成位置、回転などを格納する配列
+    [SerializeField]
+    private GameObject[]    unimonArray = null;
+
+    // ユニモンカウント用変数
+    static private int      unimonCount = 0;
+    // ユニモン上限
+    private const int       UNIMON_MAX = 5;
+    // ユニモンの最小数と最大数
+    [SerializeField]
+    private int             unimonMin = 0, unimonMax = 2;
+    private int             unimonTemp;               // ランダム変数格納用
+    private int             unimonTempStrage;         // 情報格納用
 
     // 生成するモンスターのｘ座標の幅(最小値、最大値)
     [Header("Set X Position Min and Max")]
-    [SerializeField] private float xMinPos = -10.0f, xMaxPos = 10.0f;
+    [SerializeField]
+    private float           xMinPos = -10.0f, xMaxPos = 10.0f;
 
     // 生成するモンスターのｙ座標設定(ｙはランダムじゃなくていい)
     [Header("Set Y Position Max")]
-    [SerializeField] private float yMaxPos = 10.0f;
+    [SerializeField]
+    private float           yMaxPos = 10.0f;
 
     // 生成するモンスターのｚ座標の幅(最小値、最大値)
     [Header("Set Z Position Min and Max")]
-    [SerializeField] private float zMinPos = -10.0f, zMaxPos = 10.0f;
+    [SerializeField]
+    private float           zMinPos = -10.0f, zMaxPos = 10.0f;
 
-    // タイマ
-    [SerializeField] private float timeGenerate = 5;       // 生成のディレイタイム指定
-    private float timeElapsedGenerate;                      // 経過時間カウント用
+    // モンスタータイマ
+    [SerializeField]
+    private float           monsterGenerateTime = 5;       // 生成のディレイタイム指定
+    private float           monsterElapsedTime;    // 経過時間カウント用
 
-    // プレイヤー人数情報格納用
-    public int playerNum;
+    // ユニモンタイマ
+    [SerializeField]
+    private float           unimonGenerateTime = 10;       // 生成のディレイタイム指定
+    private float           unimonElapsedTime;    // 経過時間カウント用
 
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
@@ -127,11 +153,12 @@ public class GManager : MonobitEngine.MonoBehaviour
             return;
         }
 
+        ManageSceneLoader.GetActiveScene();
+
         // ただしぃのシーン完成次第置き換え
 //        ChangeScene();          // シーン遷移
         CreateMonster();
-
-        // ゲーム中のプレイヤーの状態を取得する処理
+        CreateUniqueMonster();
     }
 
     /*============================= SceneChange =============================*/
@@ -163,7 +190,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     // モンスター生成の処理
     private void CreateMonster()
     {
-       if (timeElapsedGenerate >= timeGenerate)          // timeGenerateに指定した秒数に達すれば生成
+       if (monsterElapsedTime >= monsterGenerateTime)          // timeGenerateに指定した秒数に達すれば生成
        {
            // 三体同時生成
            // monsterArray配列の長さを調べて格納
@@ -187,14 +214,15 @@ public class GManager : MonobitEngine.MonoBehaviour
             {
                 while (true)
                 {
-                    Temp = Random.Range(monsterMin, monsterMax);
-                    if (Temp != TempStrage)
+                    monsterTemp = Random.Range(monsterMin, monsterMax);
+                    if (monsterTemp != monsterTempStrage)
                     {
-                        monsterArray[Temp] = MonobitNetwork.Instantiate(monsterPrefab[Temp].name, GetRandomPosition(), Quaternion.identity, 0, null, false,false, true) as GameObject;
+                        monsterArray[monsterTemp] = MonobitNetwork.Instantiate(monsterPrefab[monsterTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false,false, true) as GameObject;
 
                         // Monsterの生成シーンをNetSceneからStageSceneへ移動
                         var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
-                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(monsterArray[Temp], scene);
+                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(monsterArray[monsterTemp], scene);
+
                         monsterCount++;     // モンスターの数加算
                         Debug.Log("MonsterCreated" + monsterCount);
                         break;
@@ -205,26 +233,66 @@ public class GManager : MonobitEngine.MonoBehaviour
                     }
                 }
             }
-            TempStrage = Temp;      // 直前のモンスターの情報(番号)を格納
-            timeElapsedGenerate = 0.0f;             // 経過時間リセット
+            monsterTempStrage = monsterTemp;      // 直前のモンスターの情報(番号)を格納
+            monsterElapsedTime = 0.0f;             // 経過時間リセット
        }
         // 生成タイマ
-        timeElapsedGenerate += Time.deltaTime;      // 1秒ずつ加算
+        monsterElapsedTime += Time.deltaTime;      // 1秒ずつ加算
+    }
+
+    /*============================= CreateUniqueMonster =============================*/
+    // ユニークモンスター生成
+    private void CreateUniqueMonster()
+    {
+        if (unimonElapsedTime >= unimonGenerateTime)          // timeGenerateに指定した秒数に達すれば生成
+        {
+            // 一種類のみランダム発生(連続して同じものが発生しない)
+            // モンスターを上限まで生成しているかチェック
+            if (unimonCount < UNIMON_MAX)
+            {
+                while (true)
+                {
+                    unimonTemp = Random.Range(unimonMin, unimonMax);
+                    if (unimonTemp != unimonTempStrage)
+                    {
+                        unimonArray[unimonTemp] = MonobitNetwork.Instantiate(unimonPrefab[unimonTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false, false, true) as GameObject;
+
+                        // Monsterの生成シーンをNetSceneからStageSceneへ移動
+                        var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("StageScene");
+                        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(unimonArray[unimonTemp], scene);
+
+                        unimonCount++;     // モンスターの数加算
+                        Debug.Log("UnimonCreated" + unimonCount);
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+            unimonTempStrage = unimonTemp;      // 直前のモンスターの情報(番号)を格納
+            unimonElapsedTime = 0.0f;             // 経過時間リセット
+        }
+        // 生成タイマ
+        unimonElapsedTime += Time.deltaTime;      // 1秒ずつ加算
     }
 
     /*============================= DestroyedMonster =============================*/
     // モンスターカウントを減らす処理
-    static void DestroyedMonster()
+    static void CountdownMonster()
     {
         monsterCount--;
     }
 
+    /*============================= DestroyedUniqueMonster =============================*/
+    // ユニモンカウントを減らす処理
+    static void CountdownUnimon()
+    {
+        unimonCount--;
+    }
     /*============================= GetPlayerStatus =============================*/
     // プレイヤーの状態を取得、ほかの処理に使用できるようにする
-    protected void GetPlayerNumFromGM()
-    {
-        
-    }
 
     /*============================= GetRandomPosition =============================*/
     //ランダムな位置を生成する関数
