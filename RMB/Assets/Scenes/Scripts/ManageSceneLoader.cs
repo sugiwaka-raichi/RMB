@@ -29,7 +29,7 @@ public class ManageSceneLoader : MonoBehaviour
     static SceneType nowSceneType;
 
     private static AsyncOperation async;           //非同期動作で使用する
-    private static IEnumerator loadCol = null;     //コルーチン用意
+    private static IEnumerator loadCor = null;     //ロードで使うコルーチン
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +44,19 @@ public class ManageSceneLoader : MonoBehaviour
         SceneChange(startScene);
     }
 
+
+    private void OnEnable()
+    {
+        EditorApplication.update += Update;
+    }
+
     // Update is called once per frame
     private static void Update()
     {
-        if (loadCol != null)
+        //ロードコルーチンが作成されていれば
+        if (loadCor != null)
         {
-            loadCol.MoveNext();         //コルーチンを実行
+            loadCor.MoveNext();         //コルーチンを実行
         }
     }
 
@@ -71,8 +78,10 @@ public class ManageSceneLoader : MonoBehaviour
             UnLoadScene();
         }
         //SceneManager.LoadScene(_nextSceneName.ToString(), LoadSceneMode.Additive);       //シーンを加算ロード
-        loadCol = LoadScene(_nextSceneName);            //コルーチンを作成
+        loadCor = LoadScene(_nextSceneName);            //コルーチンを作成
         
+
+
         Debug.Log($"{_nextSceneName}へ移動。");
         nowScene = _nextSceneName.ToString();       //ロードされているシーンを変更
         nowSceneType = _nextSceneName;              //シーンを設定
@@ -124,7 +133,6 @@ public class ManageSceneLoader : MonoBehaviour
     public static void SetActiveScene(SceneType _type)
     {
         Scene scene = SceneManager.GetSceneByName(_type.ToString());
-        SceneManager.SetActiveScene(scene);
     }
 
     //==========================================================
@@ -144,7 +152,7 @@ public class ManageSceneLoader : MonoBehaviour
         //読み込み終了
         SetActiveScene(_sceneType);
         //コルーチンを終了
-        loadCol = null;
+        loadCor = null;
     }
 
     // 強制終了で使いたいときに
