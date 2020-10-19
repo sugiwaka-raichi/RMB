@@ -43,6 +43,9 @@ public class GManager : MonobitEngine.MonoBehaviour
     [SerializeField] private float timeGenerate = 5;       // 生成のディレイタイム指定
     private float timeElapsedGenerate;                      // 経過時間カウント用
 
+    // プレイヤー人数情報格納用
+    public int playerNum;
+
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
     private void Awake()
@@ -218,9 +221,9 @@ public class GManager : MonobitEngine.MonoBehaviour
 
     /*============================= GetPlayerStatus =============================*/
     // プレイヤーの状態を取得、ほかの処理に使用できるようにする
-    protected void GetPlayerStatus()
+    protected void GetPlayerNumFromGM()
     {
-
+        
     }
 
     /*============================= GetRandomPosition =============================*/
