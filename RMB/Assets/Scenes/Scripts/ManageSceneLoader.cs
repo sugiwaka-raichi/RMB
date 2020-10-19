@@ -96,7 +96,7 @@ public class ManageSceneLoader : MonoBehaviour
     //=====================================================
     public static string GetActiveScene()
     {
-        return nowScene;
+        return SceneManager.GetActiveScene().name;
     }
 
     //======================================================
