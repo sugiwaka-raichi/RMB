@@ -25,9 +25,16 @@ public class FireMonster : MonsterBase
         Vector3 vec3 = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z + 1.0f);
 
         //ToDo:詳細な攻撃処理は以下に記述
+
+        //攻撃オブジェクト生成
         GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, vec3, Quaternion.identity, 0, null, false, false, true);
 
-        base.Attack();      //攻撃時共通の処理があれば
+        AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
+
+        attack.SetPlayerID(playerID);       //プレイヤーIDを設定
+
+
+        base.Attack();      //その他攻撃時共通の処理があれば
     }
 
     //===========================
