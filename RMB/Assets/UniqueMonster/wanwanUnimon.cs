@@ -87,7 +87,7 @@ public class WanwanUnimon : UniMonBase
     void OnTriggerEnter(Collider other)
     {
         //ターゲットにしたオブジェクトにタグをつけとく
-        if (other.gameObject.tag == "Player(Clone)")
+        if (other.gameObject.tag == "Player")
         {
             
         }
