@@ -41,8 +41,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Attack()
     {
         Debug.Log("attack");
-        delTimer = 3;
-        catchFlg = false;
+        delTimer = 3;           //三秒後に削除
+        catchFlg = false;       //もたれてるフラグをへし折る
     }
 
     //================================
@@ -51,6 +51,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Deffence()
     {
         Debug.Log("Diffence");
+        Destroy(this.gameObject);       //防御したら消える
     }
 
     //================================
