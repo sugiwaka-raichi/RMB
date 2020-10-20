@@ -30,7 +30,7 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     //=========================================
     //発射したプレイヤーを設定
     //=========================================
-    public virtual void SetPlayerID(int _ID)
+    public void SetPlayerID(int _ID)
     {
         playerID = _ID;
     }
@@ -38,7 +38,7 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     //=========================================
     //発射したプレイヤーの情報を取得
     //=========================================
-    public virtual int GetShotPlayer()
+    public int GetShotPlayer()
     {
         return playerID;
     }
@@ -46,7 +46,7 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     //==========================================
     //攻撃種別を取得
     //==========================================
-    public virtual ATK_TYPE GetType()
+    public ATK_TYPE GetType()
     {
         return atkType;
     }

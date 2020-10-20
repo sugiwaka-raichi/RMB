@@ -17,7 +17,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
 
     protected int type;                     //属性
     protected bool catchFlg = false;        //プレイヤーに持たれているかどうか
-    protected float delTimer = 100.0f;      //消去されるまでの時間
+    protected float delTimer = 10.0f;      //消去されるまでの時間
     protected int playerID = -1;            //保持してるプレイヤーのID(未保持:-1)
 
     // Start is called before the first frame update
@@ -118,6 +118,4 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     {
         playerID = _ID;
     }
-
-
 }
