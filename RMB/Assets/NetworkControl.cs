@@ -16,6 +16,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ルーム設定. */
     RoomSettings roomSettings = null;
 
+    /** ルームカスタムパラメータ. */
+    Hashtable roomParams = new Hashtable();
+
     /** プレイヤーキャラクタ. */
     private GameObject playerObject = null;
 
@@ -89,10 +92,10 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     public void NetworkShow()
     {
         // MUNサーバに接続している場合
-        if (MonobitNetwork.isConnect)
+        if (NetworkManager.GetisConnect())
         {
             // ルームに入室している場合
-            if (MonobitNetwork.inRoom)
+            if (NetworkManager.GetinRoom())
             {
                 RoomShow();
             }
@@ -115,7 +118,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         GUILayout.Space(24);
 
         // MUNサーバに接続している場合
-        if (MonobitNetwork.isConnect)
+        if (NetworkManager.GetisConnect())
         {
             // ボタン入力でサーバから切断＆シーンリセット
             if (GUILayout.Button("Disconnect", GUILayout.Width(150)))
@@ -133,24 +136,22 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             }
 
             // ルームに入室している場合
-            if (MonobitNetwork.inRoom)
+            if (NetworkManager.GetinRoom())
             {
-
                 // ボタン入力でルームから退室
                 if (GUILayout.Button("Leave Room", GUILayout.Width(150)))
                 {
-                    customParams["ready"] = false;
-                    customParams["HP"] = 200;
                     playingGame = false;
-                    NetworkManager.SetPlayerCustomParameters(customParams);
                     NetworkManager.LeaveRoom();
+                    customParams["ready"] = false;
+                    NetworkManager.SetPlayerCustomParameters(customParams);
                 }
 
                 if (!playingGame)
                 {
-                    GUILayout.Label(MonobitNetwork.room.name);
+                    GUILayout.Label(NetworkManager.GetRoom().name);
                     readyCount = 0;
-                    foreach (MonobitPlayer player in MonobitNetwork.playerList)
+                    foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
                     {
                         string playerInfo =
                             string.Format("{0} {1} {2}",
@@ -161,23 +162,25 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                         {
                             readyCount++;
 
-                            if (readyCount == MonobitNetwork.playerList.Length)
+                            if (readyCount == NetworkManager.GetPlayerList().Length)
                             {
                                 StartGame();
                                 customParams["ready"] = false;
+                                customParams["HP"] = 200;
                                 NetworkManager.SetPlayerCustomParameters(customParams);
+                                NetworkManager.GetRoom().open = false;
+                                NetworkManager.GetRoom().visible = false;
                             }
                         }
 
                         Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
                     }
 
-                    if (MonobitNetwork.playerList.Length >= 1)
+                    if (NetworkManager.GetPlayerList().Length >= 1)
                     {
                         if (GUILayout.Button("StartGame"))
                         {
                             customParams["ready"] = true;
-                            customParams["HP"] = 200;
                             NetworkManager.SetPlayerCustomParameters(customParams);
                         }
                     }
@@ -185,7 +188,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             }
 
             // ルームに入室していない場合
-            if (!MonobitNetwork.inRoom)
+            if (!NetworkManager.GetinRoom())
             {
                 GUILayout.BeginHorizontal();
 
@@ -197,7 +200,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 roomSettings.maxPlayers = 10;
                 roomSettings.isVisible = true;
                 roomSettings.isOpen = true;
-
                 // ボタン入力でルーム作成
                 if (GUILayout.Button("Create Room", GUILayout.Width(150)))
                 {
@@ -213,7 +215,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 }
 
                 // ルーム一覧から選択式で入室する
-                foreach (RoomData room in MonobitNetwork.GetRoomData())
+                foreach (RoomData room in NetworkManager.GetRoomData())
                 {
                     string strRoomInfo =
                         string.Format("{0}({1}/{2})",
@@ -228,16 +230,16 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 }
             }
         }
+        // MUNサーバに接続していない場合
         else
         {
             GUILayout.BeginHorizontal();
 
             GUILayout.Label("PlayerName :");
-            NetworkManager.SetPlayerName(GUILayout.TextField((MonobitNetwork.playerName == null) ? "" : MonobitNetwork.playerName,
+            NetworkManager.SetPlayerName(GUILayout.TextField((NetworkManager.GetPlayerName() == null) ? "" : NetworkManager.GetPlayerName(),
                                                GUILayout.Width(200)));
             GUILayout.EndHorizontal();
             customParams["ready"] = false;
-            customParams["HP"] = 200;
             NetworkManager.SetPlayerCustomParameters(customParams);
 
             if (GUILayout.Button("Connect Server", GUILayout.Width(200)))
@@ -250,10 +252,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** サーバ接続前UI表示. */
     public void BeforeconnectServerShow()
     {
-        NetworkManager.SetPlayerName((PlayerNameinputField.text == null) ? "" : PlayerNameinputField.text);
-       
+        NetworkManager.SetPlayerName((PlayerNameinputField.text == "") ? "" : PlayerNameinputField.text);
         customParams["ready"] = false;
-        customParams["HP"] = 200;
         NetworkManager.SetPlayerCustomParameters(customParams);
     }
 
@@ -267,6 +267,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         roomSettings.maxPlayers = 10;
         roomSettings.isVisible = true;
         roomSettings.isOpen = true;
+        roomSettings.roomParameters["GamePlaying"] = false;
 
         for (int i = 0; i < roomCount; i++)
         {
@@ -274,8 +275,14 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         }
         roomCount = 0;
         // ルーム一覧から選択式で入室する
-        foreach (RoomData room in MonobitNetwork.GetRoomData())
+        foreach (RoomData room in NetworkManager.GetRoomData())
         {
+            // プレイ中のルームは表示しない
+            if ((bool)room.customParameters["GamePlaying"])
+            {
+                return;
+            }
+
             string strRoomInfo =
                 string.Format("{0}({1}/{2})",
                               room.name,
@@ -293,7 +300,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     {
         if (roomName == "")
         {
-            roomName = MonobitNetwork.room.name;
+            roomName = NetworkManager.GetRoom().name;
         }
 
         RoomNameInfoLabel.text = roomName;
@@ -303,8 +310,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             PlayerInfoLabel[i].gameObject.SetActive(false);
         }
         playerCount = 0;
-        Debug.Log(MonobitNetwork.player.customParameters["ready"]);
-        foreach (MonobitPlayer player in MonobitNetwork.playerList)
+        Debug.Log(NetworkManager.GetPlayer().customParameters["ready"]);
+        foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
         {
             string playerInfo =
                 string.Format("{0} {1} {2}",
@@ -314,11 +321,16 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             Debug.Log(player.customParameters["ready"]);
             if ((bool)player.customParameters["ready"])
             {
-                Debug.Log(readyCount + " " + MonobitNetwork.playerList.Length);
+                Debug.Log(readyCount + " " + NetworkManager.GetPlayerList().Length);
                 readyCount++;
-                if (readyCount == MonobitNetwork.playerList.Length)
+                if (readyCount == NetworkManager.GetPlayerList().Length)
                 {
                     StartGame();
+                    customParams["ready"] = false;
+                    customParams["HP"] = 200;
+                    NetworkManager.SetPlayerCustomParameters(customParams);
+                    roomParams["GamePlaying"] = true;
+                    NetworkManager.SetRoomParameters(roomParams);
                 }
             }
 
@@ -326,7 +338,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             playerCount++;
         }
 
-        if (MonobitNetwork.playerList.Length >= 1)
+        if (NetworkManager.GetPlayerList().Length >= 1)
         {
             StartGameButton.gameObject.SetActive(true);
         }
@@ -393,7 +405,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** 入室ボタン用. */
     public void JoinRoom(int roomnum)
     {
-        roomName = MonobitNetwork.GetRoomData()[roomnum].name;
+        roomName = NetworkManager.GetRoomData()[roomnum].name;
         NetworkManager.JoinRoom(roomName);
         LobyCanvas.gameObject.SetActive(false);
         RoomCanvas.gameObject.SetActive(true);
@@ -418,7 +430,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     public void LeaveRoomB()
     {
         customParams["ready"] = false;
-        customParams["HP"] = 200;
         NetworkManager.SetPlayerCustomParameters(customParams);
         NetworkManager.LeaveRoom();
         RoomCanvas.gameObject.SetActive(false);
@@ -431,7 +442,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     public void Ready()
     {
         customParams["ready"] = true;
-        customParams["HP"] = 200;
         NetworkManager.SetPlayerCustomParameters(customParams);
     }
     

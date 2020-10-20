@@ -1,27 +1,34 @@
-﻿using MonobitEngine;
+﻿using Monobit;
+using MonobitEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class player : MonobitEngine.MonoBehaviour
+public class Player : MonobitEngine.MonoBehaviour
 {
     // MonobitView コンポーネント
     MonobitEngine.MonobitView m_MonobitView = null;
 
+    // モンスターの技のタグ
     [SerializeField] string powertag = "";
 
+    // モンスター所持フラグ
     bool havemonster = false;
 
+    // 所持モンスターのゲームオブジェクトとスクリプト
     GameObject mymonsterobj;
     MonsterBase monscript;
 
+    // プレイヤー体力
     [SerializeField]
     int HP;
 
+    // 名前表示用テキスト
     [SerializeField]
     Text nametxt;
 
+    // 自分判別用マテリアル
     [SerializeField]
     Material material;
 
@@ -29,12 +36,19 @@ public class player : MonobitEngine.MonoBehaviour
     private float inputHorizontal;
     private float inputVertical;
 
-    Vector3 nowposition = Vector3.zero;
-    Vector3 pastposition = Vector3.zero;
-    Vector3 direction = Vector3.zero;
-    Vector3 pastdirection = Vector3.zero;
-    Vector3 difdirec = Vector3.zero;
+    Vector3 nowposition = Vector3.zero;         // 現在位置
+    Vector3 pastposition = Vector3.zero;        // 1フレーム前の位置
+    Vector3 direction = Vector3.zero;           // 動いた方向
+    Vector3 pastdirection = Vector3.zero;       // 1フレーム前の方向
+    Vector3 difdirec = Vector3.zero;            // 動きの変化量
 
+    // 状態異常の属性
+    public enum ABNORMAL_CONDITION_TYOE
+    {
+        AC_FIRE,    // 火の状態異常
+        AC_WATER,   // 水の状態異常
+        AC_PLANT    // 木の状態異常
+    }
 
     void Awake()
     {
@@ -110,13 +124,9 @@ public class player : MonobitEngine.MonoBehaviour
         {
             if (!havemonster)
             {
-                collision.transform.parent = this.gameObject.transform;
                 mymonsterobj = collision.gameObject;
-                mymonsterobj.transform.localPosition = new Vector3(0.0f, 0.0f, 1.0f);
-                mymonsterobj.transform.rotation = transform.rotation;
-                monscript = mymonsterobj.GetComponent<MonsterBase>();
-                monscript.SetCatchFlg(true);
-                havemonster = true;
+                m_MonobitView.ObservedComponents.Add(mymonsterobj.GetComponent<MonobitTransformView>());
+                m_MonobitView.RPC("MonsterGet", MonobitTargets.All, m_MonobitView.viewID, mymonsterobj.GetComponent<MonobitView>().viewID);
             }
         }
 
@@ -133,6 +143,32 @@ public class player : MonobitEngine.MonoBehaviour
         if (HP < 0)
         {
             LoosePlayer();
+        }
+    }
+
+    [MunRPC]
+    void MonsterGet(int _monobitviewID, int _monsterviewID)
+    {
+        GameObject[] playerobjs = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject playerobj in playerobjs)
+        {
+            if (playerobj.GetComponent<MonobitView>().viewID == _monobitviewID)
+            {
+                GameObject[] monsterobjs = GameObject.FindGameObjectsWithTag("Monster");
+                foreach (GameObject monsterobj in monsterobjs)
+                {
+                    if(monsterobj.GetComponent<MonobitView>().viewID == _monsterviewID)
+                    {
+                        mymonsterobj = monsterobj;
+                        mymonsterobj.transform.parent = playerobj.transform;
+                        mymonsterobj.transform.localPosition = new Vector3(0.0f, 0.0f, 1.0f);
+                        mymonsterobj.transform.rotation = transform.rotation;
+                        monscript = mymonsterobj.GetComponent<MonsterBase>();
+                        monscript.SetCatchFlg(true);
+                        havemonster = true;
+                    }                   
+                }
+            }
         }
     }
 
