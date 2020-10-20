@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MonobitEngine;
 
 public class AttackBase : MonobitEngine.MonoBehaviour
 {
@@ -33,6 +34,16 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     public void SetPlayerID(int _ID)
     {
         playerID = _ID;
+        SendPlayerID();     //設定したら送信する
+    }
+
+    //=========================================
+    //設定されたIDを受信する関数
+    //=========================================
+    [MunRPC]
+    private void RPCSetPlayerID(int _ID)
+    {
+        playerID = _ID;
     }
 
     //=========================================
@@ -49,5 +60,13 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     public ATK_TYPE GetType()
     {
         return atkType;
+    }
+
+    //================================================
+    //設定されたIDを送信
+    //================================================
+    private void SendPlayerID()
+    {
+        monobitView.RPC("RPCSetPlayerID", MonobitTargets.All, playerID);
     }
 }
