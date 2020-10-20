@@ -23,7 +23,7 @@ public class WoodMonster : MonsterBase
     public override void Attack()
     {
         //攻撃オブジェクトの生成位置を決める
-        Vector3 atkPos = new Vector3(transform.position.x, transform.position.y - 2, transform.position.z + 5);
+        Vector3 atkPos = new Vector3(transform.position.x, transform.position.y - 3, transform.position.z + 5);
 
         //攻撃オブジェクト生成
         GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, Quaternion.identity, 0, null, false, false, true);

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class FireAttack : AttackBase
 {
-    [SerializeField]
-    float timer;
-
     // Start is called before the first frame update
     void Start()
     {

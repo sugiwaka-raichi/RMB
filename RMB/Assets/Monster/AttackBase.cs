@@ -13,6 +13,9 @@ public class AttackBase : MonobitEngine.MonoBehaviour
         AT_NONE             //無属性
     }
 
+    [SerializeField]
+    protected float timer;
+
     protected ATK_TYPE atkType;       //攻撃種別
     protected int playerID;           //発射したプレイヤーのID
 
