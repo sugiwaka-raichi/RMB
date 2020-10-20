@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonobitEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class NetworkManager : MonobitEngine.MonoBehaviour
 {
@@ -14,6 +15,15 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
 
     /** サーバ接続失敗フラグ. */
     private static bool bConnectFailed = false;
+
+    /** ルーム作成失敗フラグ. */
+    private static bool bCreateRoomFailed = false;
+
+    /** ルーム入室失敗フラグ. */
+    private static bool bJoinRoomFailed = false;
+
+    /** ルームランダム入室失敗フラグ. */
+    private static bool bRandomJoinRoomFailed = false;
 
     /**
      * 途中切断コールバック.
@@ -42,6 +52,37 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         bDisplayWindow = true;
     }
 
+    /**
+    * ルーム参加失敗コールバック.
+    */
+    public void OnCreateRoomFailed(object[] codeAndMsg)
+    {
+        Debug.Log("OnCreateRoomFailed : errorCode = " + codeAndMsg[0] + ", message = " + codeAndMsg[1]);
+        bCreateRoomFailed = true;
+        bDisplayWindow = true;
+    }
+    
+    /**
+    * ルーム入室失敗コールバック.
+    */
+    public void OnJoinRoomFailed(object[] codeAndMsg)
+    {
+        Debug.Log("OnJoinRoomFailed : errorCode = " + codeAndMsg[0] + ", message = " + codeAndMsg[1]);
+        bJoinRoomFailed = true;
+        bDisplayWindow = true;
+    }
+
+    /**
+    * ルームランダム入室失敗コールバック.
+    */
+    public void OnMonobitRandomJoinRoomFailed(object[] codeAndMsg)
+    {
+        Debug.Log("OnMonobitRandomJoinFailed : errorCode = " + codeAndMsg[0] + ", message = " + codeAndMsg[1]);
+        bRandomJoinRoomFailed = true;
+        bDisplayWindow = true;
+    }
+
+    /** 手動切断. */
     public static void DisconnectflgOn()
     {
         bDisconnect = true;
@@ -84,24 +125,47 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
             return;
         }
 
-        // 接続失敗時の表示
-        if (bConnectFailed)
+        // ルーム作成失敗時の表示
+        if (bCreateRoomFailed)
         {
-            GUILayout.Label("接続に失敗しました。\n再接続しますか？", style);
+            GUILayout.Label("ルーム作成に失敗しました。", style);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("はい", GUILayout.Width(50)))
+            if (GUILayout.Button("OK", GUILayout.Width(50)))
             {
-                // もう一度接続処理を実行する
-                MonobitNetwork.ConnectServer("MonsterBattle_v1.0");
-                bConnectFailed = false;
+                bCreateRoomFailed = false;
                 bDisplayWindow = false;
             }
-            if (GUILayout.Button("いいえ", GUILayout.Width(50)))
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            return;
+        }
+
+        // ルーム入室失敗時の表示
+        if (bJoinRoomFailed)
+        {
+            GUILayout.Label("入室に失敗しました。", style);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("OK", GUILayout.Width(50)))
             {
-                // オフラインモードで起動する
-                MonobitNetwork.offline = true;
-                bConnectFailed = false;
+                bJoinRoomFailed = false;
+                bDisplayWindow = false;
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            return;
+        }
+
+        // ルームランダム入室失敗時の表示
+        if (bRandomJoinRoomFailed)
+        {
+            GUILayout.Label("ランダム入室に失敗しました。", style);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("OK", GUILayout.Width(50)))
+            {
+                bRandomJoinRoomFailed = false;
                 bDisplayWindow = false;
             }
             GUILayout.FlexibleSpace();
@@ -144,10 +208,50 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         MonobitNetwork.playerName = _playername;
     }
 
-    /** プレイヤーカスタムパラメータ設定. */
-    public static void SetPlayerCustomParameters(Hashtable customParams)
+    public static bool GetisConnect()
     {
-        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(customParams);
+        return MonobitNetwork.isConnect;
+    }
+
+    public static bool GetinRoom()
+    {
+        return MonobitNetwork.inRoom;
+    }
+
+    public static Room GetRoom()
+    {
+        return MonobitNetwork.room;
+    }
+
+    public static RoomData[] GetRoomData()
+    {
+        return MonobitNetwork.GetRoomData();
+    }
+
+    public static MonobitPlayer[] GetPlayerList()
+    {
+        return MonobitNetwork.playerList;
+    }
+    public static MonobitPlayer GetPlayer()
+    {
+        return MonobitNetwork.player;
+    }
+
+    public static string GetPlayerName()
+    {
+        return MonobitNetwork.playerName;
+    }
+
+    /** プレイヤーカスタムパラメータ設定. */
+    public static void SetPlayerCustomParameters(Hashtable _customParams)
+    {
+        MonobitEngine.MonobitNetwork.SetPlayerCustomParameters(_customParams);
+    }
+
+    /** ルームカスタムパラメータ設定. */
+    public static void SetRoomParameters(Hashtable _roomParams)
+    {
+        MonobitEngine.MonobitNetwork.room.SetCustomParameters(_roomParams);
     }
 
     /** サーバ接続呼出し用. */
@@ -188,6 +292,12 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     public static void JoinRandomRoom()
     {
         MonobitNetwork.JoinRandomRoom();
+    }
+
+    /** ランダム入室呼び出し用. */
+    public static void JoinRandomRoom(Hashtable _roomParams)
+    {
+        MonobitNetwork.JoinRandomRoom(_roomParams, 0);
     }
 
     /** ルーム退室呼び出し用. */
