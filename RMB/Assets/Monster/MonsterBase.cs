@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MonsterBase : MonobitEngine.MonoBehaviour
 {
+    [SerializeField]
+    protected GameObject attackObj;     //攻撃時に使うオブジェクトを格納
+    [SerializeField]
+    protected GameObject diffenceObj;     //防御時に使うオブジェクトを格納
+
     //===============================
     //モンスターの属性値
     //===============================
