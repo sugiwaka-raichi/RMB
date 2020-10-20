@@ -14,7 +14,7 @@ public class UniMonBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    protected void Update()
+    virtual protected void Update()
     {
         //持たれていなければ
         //if (!catchFlg)
