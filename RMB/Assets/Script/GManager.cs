@@ -143,7 +143,7 @@ public class GManager : MonobitEngine.MonoBehaviour
                             0, 
                             null, 
                             false, 
-                            false, 
+                            true, 
                             true);
         }
         monsterCount = 0;
@@ -256,7 +256,6 @@ public class GManager : MonobitEngine.MonoBehaviour
                     if (unimonTemp != unimonTempStrage)
                     {
                         unimonArray[unimonTemp] = MonobitNetwork.Instantiate(unimonPrefab[unimonTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false, false, true) as GameObject;
-
                         unimonCount++;     // モンスターの数加算
                         Debug.Log("UnimonCreated" + unimonCount);
                         break;

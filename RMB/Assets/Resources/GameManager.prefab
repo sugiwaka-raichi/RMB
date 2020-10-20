@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 277584237ad31144584195f79af03cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_viewIdField: 0
+  m_viewIdField: 2
   m_IsDontDestroyOnRoom: 0
   m_IsInstantiated: 0
   m_ObjectStreamCheckTime: 0
@@ -79,9 +79,18 @@ MonoBehaviour:
   - {fileID: 0}
   monsterMin: 0
   monsterMax: 3
+  unimonPrefab:
+  - {fileID: 430437594347007959, guid: 41904cd924838e44687bd2274af6a399, type: 3}
+  - {fileID: 1493008815906341280, guid: 9d968b59420584447a134ef69d7ff1aa, type: 3}
+  unimonArray:
+  - {fileID: 0}
+  - {fileID: 0}
+  unimonMin: 0
+  unimonMax: 2
   xMinPos: -10
   xMaxPos: 10
-  yMaxPos: 10
+  yMaxPos: 0.5
   zMinPos: -10
   zMaxPos: 10
-  timeGenerate: 1
+  monsterGenerateTime: 5
+  unimonGenerateTime: 10
