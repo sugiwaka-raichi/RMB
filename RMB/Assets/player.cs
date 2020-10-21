@@ -42,13 +42,19 @@ public class Player : MonobitEngine.MonoBehaviour
     Vector3 pastdirection = Vector3.zero;       // 1フレーム前の方向
     Vector3 difdirec = Vector3.zero;            // 動きの変化量
 
+    Vector3 monsterpos = new Vector3(0.0f, 0.0f, 1.0f);
+
     // 状態異常の属性
     public enum ABNORMAL_CONDITION_TYOE
     {
         AC_FIRE,    // 火の状態異常
         AC_WATER,   // 水の状態異常
-        AC_PLANT    // 木の状態異常
+        AC_WOOD,    // 木の状態異常
+        AC_NONE,    // 状態異常無し
     }
+
+    // 状態異常
+    ABNORMAL_CONDITION_TYOE atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
 
     void Awake()
     {
@@ -124,16 +130,31 @@ public class Player : MonobitEngine.MonoBehaviour
         {
             if (!havemonster)
             {
-                mymonsterobj = collision.gameObject;
-                m_MonobitView.ObservedComponents.Add(mymonsterobj.GetComponent<MonobitTransformView>());
-                m_MonobitView.RPC("MonsterGet", MonobitTargets.All, m_MonobitView.viewID, mymonsterobj.GetComponent<MonobitView>().viewID);
+                m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
             }
         }
 
-        if(collision.transform.tag == powertag)
+        if (collision.transform.tag == powertag)
         {
-            Destroy(this.gameObject);
-        }
+            AttackBase.ATK_TYPE recAType = collision.gameObject.GetComponent<AttackBase>().GetType();
+            switch (recAType)
+            {
+                case AttackBase.ATK_TYPE.AT_FIRE:
+                    atype = ABNORMAL_CONDITION_TYOE.AC_FIRE;
+                    break;
+                case AttackBase.ATK_TYPE.AT_WARTER:
+                    atype = ABNORMAL_CONDITION_TYOE.AC_WATER;
+                    break;
+                case AttackBase.ATK_TYPE.AT_WOOD:
+                    atype = ABNORMAL_CONDITION_TYOE.AC_WOOD;
+                    break;
+            }
+            Debug.Log(atype);
+            if (collision.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
+            {
+                MonobitNetwork.Destroy(this.gameObject);
+            } 
+        }       
     }
 
     // 被ダメージ処理
@@ -147,6 +168,11 @@ public class Player : MonobitEngine.MonoBehaviour
     }
 
     [MunRPC]
+    void MonsterGetFlgOn(int _monobitviewID, int _monsterviewID)
+    {
+        MonsterGet(_monobitviewID, _monsterviewID);
+    }
+
     void MonsterGet(int _monobitviewID, int _monsterviewID)
     {
         GameObject[] playerobjs = GameObject.FindGameObjectsWithTag("Player");
@@ -157,17 +183,22 @@ public class Player : MonobitEngine.MonoBehaviour
                 GameObject[] monsterobjs = GameObject.FindGameObjectsWithTag("Monster");
                 foreach (GameObject monsterobj in monsterobjs)
                 {
-                    if(monsterobj.GetComponent<MonobitView>().viewID == _monsterviewID)
+                    if (monsterobj.GetComponent<MonobitView>().viewID == _monsterviewID)
                     {
+                        Debug.Log(_monobitviewID);
                         mymonsterobj = monsterobj;
-                        mymonsterobj.transform.parent = playerobj.transform;
-                        mymonsterobj.transform.localPosition = new Vector3(0.0f, 0.0f, 1.0f);
-                        mymonsterobj.transform.rotation = transform.rotation;
+                        mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
+                        mymonsterobj.transform.SetParent(playerobj.transform);
+                        mymonsterobj.transform.localPosition = monsterpos;
+                        mymonsterobj.transform.rotation = playerobj.transform.rotation;
                         monscript = mymonsterobj.GetComponent<MonsterBase>();
                         monscript.SetCatchFlg(true);
+                        monscript.SetPlayerID(NetworkManager.GetPlayer().ID);
                         havemonster = true;
-                    }                   
+                        break;
+                    }
                 }
+                break;
             }
         }
     }
@@ -184,9 +215,8 @@ public class Player : MonobitEngine.MonoBehaviour
     {
         if(havemonster)
         {
-            monscript.Attack();
-
             havemonster = false;
+            monscript.Attack();
         }
     }
 }
