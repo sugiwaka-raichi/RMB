@@ -8,9 +8,6 @@ public class GunUnimon : MonsterBase
     [SerializeField]
     private GameObject transformObj;        // モンスター化した後のオブジェクトを格納
 
-    [SerializeField]
-    private GameObject attackObj;       // 攻撃時に使うオブジェクトを格納
-
     // モンスターの技のタグ
     [SerializeField] private string powertag = "";
 
@@ -20,17 +17,19 @@ public class GunUnimon : MonsterBase
 
     private bool changeSts = false;     // ユニモン状態(false)とモンスター状態(true)変数
 
-    // Start is called before the first frame update
+    /*============================= Start =============================*/
     void Start()
     {
         type = (int)MONSTER_TYPE.MT_NONE;       //無属性のモンスターであることを示す
     }
 
+    /*============================= Update =============================*/
     private void Update()
     {
         // 攻撃を受けると体力が減り、無くなるとモンスター化する
         if(changeSts == false && this.gameObject.tag == "UniqueMonster")
         {
+            Debug.Log("UniqueMonster");
             if (HP < 0)
             {
                 changeSts = true;
@@ -43,9 +42,8 @@ public class GunUnimon : MonsterBase
         }
     }
 
-    //===========================
-    //攻撃関数
-    //===========================
+    /*============================= Attack =============================*/
+    // 攻撃関数
     public override void Attack()
     {
         Debug.Log("fire:Gun");
@@ -63,18 +61,20 @@ public class GunUnimon : MonsterBase
         base.Attack();      //攻撃時共通の処理があれば
     }
 
-    // 被ダメージ関数
+    /*============================= Damage =============================*/
     private void Damage(int _damagevalue)
     {
         HP -= _damagevalue;
     }
 
-    // 当たった時の処理
+    /*============================= OnCollisionEnter =============================*/
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("collision:Gun");
         if (collision.transform.tag == powertag)
         {
             Damage(20);
+            Debug.Log("ダメージを受けた");
         }
     }
 }
