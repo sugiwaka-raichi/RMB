@@ -35,16 +35,16 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected void Update()
     {
         //持たれていなければ
-        //if (!catchFlg)
-        //{
-        //    SurvivalTimer();        //生存時間
-        //}
-
-        //プレイヤーのIDが設定されていなければ
-        if(playerID == -1)
+        if (!catchFlg)
         {
             SurvivalTimer();        //生存時間
         }
+
+        ////プレイヤーのIDが設定されていなければ
+        //if(playerID == -1)
+        //{
+        //    SurvivalTimer();        //生存時間
+        //}
     }
 
     //================================
