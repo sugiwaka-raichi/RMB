@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 1378685524127166268}
   - component: {fileID: -7544941824520219892}
   - component: {fileID: 1615659229836995762}
-  - component: {fileID: 7879332165072888116}
+  - component: {fileID: 266102050290803254}
+  - component: {fileID: 1387590730056129170}
   m_Layer: 0
-  m_Name: waterMonster
+  m_Name: WaterMonster
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +166,7 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
---- !u!114 &7879332165072888116
+--- !u!114 &266102050290803254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,9 +175,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 5685391145192327813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d7c7b8a329af84b9c316a8a8a5289b, type: 3}
+  m_Script: {fileID: 11500000, guid: 31d7026cc1edc0c4aa22f5fd2dde18ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackObj: {fileID: 473961569002862523, guid: ce0e5af271f3acb4d884aa23bda0759e,
+  timer: 2.9
+--- !u!114 &1387590730056129170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685391145192327813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b36fac04928444d8676bffeeb89a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackObj: {fileID: 7628197462350782298, guid: 279bd4d1b8eeea04c96c5a4e22809e10,
     type: 3}
   diffenceObj: {fileID: 0}
