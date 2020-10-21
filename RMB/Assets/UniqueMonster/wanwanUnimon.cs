@@ -30,7 +30,7 @@ public class WanwanUnimon : MonsterBase
     [SerializeField]
     private float zMinPos = -5.0f, zMaxPos = 5.0f;       // 移動可能範囲指定ｚ
 
-    // Start is called before the first frame update
+    /*============================= Start =============================*/
     void Start()
     {
         // 追尾対象を検索
@@ -43,6 +43,7 @@ public class WanwanUnimon : MonsterBase
         GameObject gameObject = MonobitNetwork.Instantiate(originObj.name, tmp, Quaternion.identity, 0, null, false, false, true);
     }
 
+    /*============================= Update =============================*/
     private void Update()
     {
         // 追尾処理
@@ -54,6 +55,7 @@ public class WanwanUnimon : MonsterBase
                                                          Mathf.Clamp(wanwanPos.z, tmp.z + zMinPos, tmp.z + zMaxPos));
     }
 
+    /*============================= CalculateDistance =============================*/
     // 二点間の距離を求める処理
     private void CalculateDistance()
     {
@@ -76,6 +78,7 @@ public class WanwanUnimon : MonsterBase
         }
     }
 
+    /*============================= Tracking =============================*/
     void Tracking()
     {
         // コルーチンが有効な間は追尾し続ける
@@ -85,6 +88,7 @@ public class WanwanUnimon : MonsterBase
         }
     }
 
+    /*============================= MoveCoroutine =============================*/
     // 追尾のコルーチン
     IEnumerator MoveCoroutine()
     {
@@ -100,6 +104,7 @@ public class WanwanUnimon : MonsterBase
         }
     }
 
+    /*============================= OnCollisionEnter =============================*/
     // 指定したオブジェクトとぶつかった時の処理
     private void OncollisionEnter(Collision _collision)
     {

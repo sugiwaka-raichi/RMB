@@ -159,7 +159,6 @@ public class GManager : MonobitEngine.MonoBehaviour
             return;
         }
 
-        // ただしぃのシーン完成次第置き換え
 //        ChangeScene();          // シーン遷移
         CreateMonster();
         CreateUniqueMonster();
@@ -286,6 +285,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     {
         unimonCount--;
     }
+
     /*============================= GetPlayerStatus =============================*/
     // プレイヤーの状態を取得、ほかの処理に使用できるようにする
 
@@ -301,10 +301,18 @@ public class GManager : MonobitEngine.MonoBehaviour
         //Vector3型のPositionを返す
         return new Vector3(x, y, z);
     }
-    
+
+    /*============================= GetPlayerID =============================*/
     // プレイヤーのID(人数)を渡す処理
     public int GetPlayerID()
     {
         return MonobitNetwork.player.ID;
+    }
+
+    /*============================= GetPlayerStatus =============================*/
+    // プレイヤーの人数を参照する関数
+    public static void GetPlayerNum()
+    {
+
     }
 }
