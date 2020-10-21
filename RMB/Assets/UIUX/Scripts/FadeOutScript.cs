@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class FadeOutScript : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class FadeOutScript : MonoBehaviour
     [SerializeField]
     private Image image;            //フェードに使うimage
 
-    private static bool fadeflg = false;    //フェードアウト中かどうかのフラグ
+    private static bool fadeflg = true;    //フェードアウト中かどうかのフラグ
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,9 @@ public class FadeOutScript : MonoBehaviour
         
     }
 
+    //==================================
+    //フェードアウト
+    //==================================
     IEnumerator FadeOut()
     {
         //Colorのアルファを0.1ずつあげていく
@@ -43,6 +47,7 @@ public class FadeOutScript : MonoBehaviour
             }
             //待機
             fadeflg = true;
+
             yield return new WaitForSeconds(fadeOutTime);
         }
     }
