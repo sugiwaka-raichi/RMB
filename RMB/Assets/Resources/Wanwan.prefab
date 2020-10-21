@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 9056280039887958928}
   - component: {fileID: 7726159552145060001}
   - component: {fileID: 4244931792617014643}
-  - component: {fileID: 8935449704508403863}
+  - component: {fileID: 5414936530402851828}
   m_Layer: 0
-  m_Name: wanwanUnimon
+  m_Name: Wanwan
   m_TagString: UniqueMonster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0e241ee108e8d1c448ce949c2b550af5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
---- !u!114 &8935449704508403863
+--- !u!114 &5414936530402851828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,10 +157,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5005167901933807543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd6b5111cabac2a4cac6c5589440c768, type: 3}
+  m_Script: {fileID: 11500000, guid: 235ebae3ccf493e4fb79efdbfc69a656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackObj: {fileID: 0}
-  targetObj: {fileID: 4715853014445100966, guid: cd938d9dceb9ee84f861468777d0aa8e,
+  originObj: {fileID: 528385848246817448, guid: 9d0fceedc880726408f2929971ace3d4,
     type: 3}
+  tmp: {x: 0, y: 0, z: 0}
   speedParameter: 10
+  xMinPos: -5
+  xMaxPos: 5
+  zMinPos: -5
+  zMaxPos: 5
