@@ -301,4 +301,10 @@ public class GManager : MonobitEngine.MonoBehaviour
         //Vector3型のPositionを返す
         return new Vector3(x, y, z);
     }
+    
+    // プレイヤーのID(人数)を渡す処理
+    public int GetPlayerID()
+    {
+        return MonobitNetwork.player.ID;
+    }
 }
