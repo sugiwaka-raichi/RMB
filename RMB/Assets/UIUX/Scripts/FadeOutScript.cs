@@ -10,13 +10,15 @@ public class FadeOutScript : MonoBehaviour
     [SerializeField]
     private Image image;            //フェードに使うimage
 
+    private static bool fadeflg = false;    //フェードアウト中かどうかのフラグ
+
     // Start is called before the first frame update
     void Start()
     {
         image.gameObject.SetActive(true);       //暗幕をON
         fadeOutTime = fadeOutTime / 10f;        //フェードアウト時間計算
         StartCoroutine(FadeOut());              //コルーチン呼び出し
-
+        fadeflg = true;
     }
 
     // Update is called once per frame
@@ -36,10 +38,20 @@ public class FadeOutScript : MonoBehaviour
             //フェードアウト終了時
             if (i >= 1.0f)
             {
+                fadeflg = false;
                 yield return null;
             }
             //待機
+            fadeflg = true;
             yield return new WaitForSeconds(fadeOutTime);
         }
+    }
+
+    //==========================================
+    //フェード状態のフラグ
+    //==========================================
+    public static bool GetFadeFlag()
+    {
+        return fadeflg;
     }
 }
