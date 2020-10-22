@@ -13,9 +13,7 @@ public class KeyManager : MonoBehaviour
         KMM_ERROR
     }
 
-    private static Dictionary<string, KeyCode> keyConfig = new Dictionary<string, KeyCode>();        //key一覧
-    private readonly string configFilePath;                     //コンフィグファイルのファイルパス
-    
+    private static Dictionary<string, KeyCode> keyConfig = new Dictionary<string, KeyCode>();        //key一覧    
 
     // Start is called before the first frame update
     void Start()
@@ -143,17 +141,64 @@ public class KeyManager : MonoBehaviour
     //=====================================================
     //設定したkeyを保存する処理
     //=====================================================
-    private void SaveKey()
+    public static void SaveKey()
     {
-        
+        string data = CreateData();                             //記録データに変換
+        PlayerPrefs.SetString("KeyConfig", data);               //作成されたデータを記録
+        Debug.Log(data);
     }
 
     //=====================================================
     //設定したkeyを読込む処理
     //=====================================================
-    private void LoadKey()
+    public static void LoadKey()
     {
-
+        string data = PlayerPrefs.GetString("KeyConfig");       //記録されたデータを読込む
+        DataReflection(data);       //読込んだデータを反映
     }
 
+    //=====================================================
+    //保存するデータ作成
+    //=====================================================
+    private static string CreateData()
+    {
+        string data = null;            //記録用
+        string[] keyData = new string[keyConfig.Keys.Count];        //キーの要素数を設定
+        keyConfig.Keys.CopyTo(keyData, 0);                          //辞書のキー値をコピー
+
+        KeyCode[] valueData = new KeyCode[keyConfig.Values.Count];    //値の要素数を設定
+        keyConfig.Values.CopyTo(valueData, 0);                        //値をコピー
+
+        //値を格納
+        for(int i = 0; i < keyConfig.Count; i++)
+        {
+            data += keyData[i];     //キーを保存
+            data += ',';            //区切る
+            data += valueData[i];   //値を保存
+            data += '\n';           //改行区切り
+        }
+
+        return data;
+    }
+
+    //====================================================
+    //読込んだデータを辞書に反映
+    //====================================================
+    private static void DataReflection(string _data)
+    {
+        
+        //List<string> key = new List<string>();      //キーリスト
+        //List<string> value = new List<string>();    //値リスト
+
+        string[] recode = _data.Split('\n');           //一つのまとまりに分ける
+
+        for(int i = 0;i < recode.Length - 1; i++)
+        {
+            KeyCode key;
+            string[] dic = recode[i].Split(',');     //キーと値を分ける
+            System.Enum.TryParse<KeyCode>(dic[1], out key);     //文字列をKeyCodeに変換
+            AddSet(dic[0], key);                 //キー値を設定してキーを戻す
+            Debug.Log("LOAD KEY:" + dic[0] + "|" + key);
+        }
+    }
 }
