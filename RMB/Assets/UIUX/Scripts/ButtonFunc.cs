@@ -21,6 +21,10 @@ public class ButtonFunc : MonoBehaviour
     // ロビー
     public void GoLobby()
     {
+        if (NetworkManager.GetinRoom())
+        {
+            NetworkManager.LeaveRoom();
+        }
         ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
     }
     // ステージ（ゲーム本編）

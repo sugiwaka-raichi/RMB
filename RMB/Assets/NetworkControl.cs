@@ -14,7 +14,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     private string roomName = "";
 
     /** ルーム設定. */
-    RoomSettings roomSettings = null;
+    public static RoomSettings roomSettings = null;
 
     /** ルームカスタムパラメータ. */
     Hashtable roomParams = new Hashtable();
@@ -23,7 +23,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     private GameObject playerObject = null;
 
     /** プレイヤーカスタムパラメータ. */
-    Hashtable customParams = new Hashtable();
+    public static Hashtable customParams = new Hashtable();
 
     /** 準備完了カウント. */
     int readyCount = 0;
@@ -68,6 +68,12 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!NetworkManager.GetisConnect())
+        {
+            customParams["ready"] = false;
+            NetworkManager.SetPlayerCustomParameters(customParams);
+            NetworkManager.ConnectServer("MonsterBattle_v1.0");
+        }
     }
 
     // Update is called once per frame
@@ -104,11 +110,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             {
                 LobyShow();
             }
-        }
-        // MUNサーバに接続していない場合
-        else
-        {
-            BeforeconnectServerShow();
         }
     }
 
@@ -154,8 +155,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
                     {
                         string playerInfo =
-                            string.Format("{0} {1} {2}",
-                                player.ID, player.name, player.customParameters["ready"]);
+                            string.Format("{0} {1}",
+                                player.ID, player.customParameters["ready"]);
                         GUILayout.Label(playerInfo);
 
                         if ((bool)player.customParameters["ready"])
@@ -230,31 +231,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 }
             }
         }
-        // MUNサーバに接続していない場合
-        else
-        {
-            GUILayout.BeginHorizontal();
-
-            GUILayout.Label("PlayerName :");
-            NetworkManager.SetPlayerName(GUILayout.TextField((NetworkManager.GetPlayerName() == null) ? "" : NetworkManager.GetPlayerName(),
-                                               GUILayout.Width(200)));
-            GUILayout.EndHorizontal();
-            customParams["ready"] = false;
-            NetworkManager.SetPlayerCustomParameters(customParams);
-
-            if (GUILayout.Button("Connect Server", GUILayout.Width(200)))
-            {
-                NetworkManager.ConnectServer("MonsterBattle_v1.0");
-            }
-        }
-    }
-
-    /** サーバ接続前UI表示. */
-    public void BeforeconnectServerShow()
-    {
-        NetworkManager.SetPlayerName((PlayerNameinputField.text == "") ? "" : PlayerNameinputField.text);
-        customParams["ready"] = false;
-        NetworkManager.SetPlayerCustomParameters(customParams);
     }
 
     /** ロビー内UI表示. */

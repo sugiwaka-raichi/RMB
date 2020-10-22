@@ -303,6 +303,8 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     /** ルーム退室呼び出し用. */
     public static void LeaveRoom()
     {
+        NetworkControl.customParams["ready"] = false;
+        NetworkManager.SetPlayerCustomParameters(NetworkControl.customParams);
         MonobitNetwork.LeaveRoom();
     }
 }
