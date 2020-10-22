@@ -72,6 +72,9 @@ public class GManager : MonobitEngine.MonoBehaviour
     private float           unimonGenerateTime = 10;       // 生成のディレイタイム指定
     private float           unimonElapsedTime;    // 経過時間カウント用
 
+    MonobitPlayer[] playerList = null;
+    MonobitPlayer player;
+
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
     private void Awake()
@@ -286,9 +289,6 @@ public class GManager : MonobitEngine.MonoBehaviour
         unimonCount--;
     }
 
-    /*============================= GetPlayerStatus =============================*/
-    // プレイヤーの状態を取得、ほかの処理に使用できるようにする
-
     /*============================= GetRandomPosition =============================*/
     //ランダムな位置を生成する関数
     private Vector3 GetRandomPosition()
@@ -302,17 +302,17 @@ public class GManager : MonobitEngine.MonoBehaviour
         return new Vector3(x, y, z);
     }
 
-    /*============================= GetPlayerID =============================*/
-    // プレイヤーのID(人数)を渡す処理
-    public int GetPlayerID()
+    /*============================= GetPlayer =============================*/
+    // 一人のプレイヤーを参照する関数
+    public static MonobitPlayer GetPlayerInfo()
     {
-        return MonobitNetwork.player.ID;
+        return NetworkManager.GetPlayer();
     }
 
     /*============================= GetPlayerStatus =============================*/
-    // プレイヤーの人数を参照する関数
-    public static void GetPlayerNum()
+    // ルーム内のプレイヤーの人数を参照する関数
+    public static MonobitPlayer[] GetPlayerNum()
     {
-
+        return NetworkManager.GetPlayerList();
     }
 }
