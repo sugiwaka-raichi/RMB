@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonobitEngine;
 
-public class GunUnimon : MonsterBase
+public class gunUnimon : MonsterBase
 {
     [SerializeField]
     private GameObject transformObj;        // モンスター化した後のオブジェクトを格納
