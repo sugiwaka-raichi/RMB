@@ -73,9 +73,9 @@ public class SoundConfig : MonoBehaviour
         //各グループの値記録
         for (int i = 0; i < (int)VOL_TYPE.VT_NUM; i++)
         {
-            float tmp = 0;
-            mixer.GetFloat(volType.ToString(),out tmp);
-            PlayerPrefs.SetFloat(volType.ToString(), tmp);       //記録
+            mixer.GetFloat(volType.ToString(),out vol[i]);
+            PlayerPrefs.SetFloat(volType.ToString(), vol[i]);       //記録
+            volType++;
         }
     }
 
