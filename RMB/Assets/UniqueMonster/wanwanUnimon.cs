@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonobitEngine;
 
-public class WanwanUnimon : MonsterBase
+public class wanwanUnimon : MonsterBase
 {
     [SerializeField]
     GameObject originObj;     // 原点オブジェクトを格納
