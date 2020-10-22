@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 7283414483727748616}
   - component: {fileID: 4905280562818332555}
   - component: {fileID: 4905781562238662546}
+  - component: {fileID: 8490477413471473135}
   - component: {fileID: 2224627713587993889}
   - component: {fileID: 1378685524127166268}
   - component: {fileID: 1284244065320421685}
   - component: {fileID: -7544941824520219892}
   - component: {fileID: 1615659229836995762}
   - component: {fileID: 442017327817900549}
-  - component: {fileID: 4358452800929888392}
   - component: {fileID: 4200332244440065823}
   m_Layer: 0
   m_Name: waterMonster
@@ -87,6 +87,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &8490477413471473135
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685391145192327813}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &2224627713587993889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -205,19 +218,6 @@ MonoBehaviour:
   attackObj: {fileID: 7628197462350782298, guid: 279bd4d1b8eeea04c96c5a4e22809e10,
     type: 3}
   diffenceObj: {fileID: 0}
---- !u!114 &4358452800929888392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5685391145192327813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b83bd092ef82f4241bb1f3a549c90892, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 2.9
 --- !u!114 &4200332244440065823
 MonoBehaviour:
   m_ObjectHideFlags: 0
