@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonobitEngine;
 
-public class wanwanUnimon : MonsterBase
+public class WanwanUnimon : MonsterBase
 {
     [SerializeField]
     GameObject originObj;     // 原点オブジェクトを格納
@@ -50,8 +50,8 @@ public class wanwanUnimon : MonsterBase
         Tracking();
 
         // 範囲内が有効であれば常にその位置が入る
-        this.gameObject.transform.position = new Vector3(Mathf.Clamp(wanwanPos.x,tmp.x + xMinPos, tmp.x + xMaxPos), 
-                                                         tmp.y, 
+        this.gameObject.transform.position = new Vector3(Mathf.Clamp(wanwanPos.x, tmp.x + xMinPos, tmp.x + xMaxPos),
+                                                         tmp.y,
                                                          Mathf.Clamp(wanwanPos.z, tmp.z + zMinPos, tmp.z + zMaxPos));
     }
 
@@ -72,9 +72,9 @@ public class wanwanUnimon : MonsterBase
         }
 
         // ここの条件分岐に関しては相談してから考える
-        for(int i = 0; i < MonobitNetwork.player.ID; i++)
+        for (int i = 0; i < MonobitNetwork.player.ID; i++)
         {
-//            if(absArray[i])
+            //            if(absArray[i])
         }
     }
 
