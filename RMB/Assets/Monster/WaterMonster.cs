@@ -8,7 +8,7 @@ public class WaterMonster : MonsterBase
     // Start is called before the first frame update
     void Start()
     {
-        type = (int)MONSTER_TYPE.MT_WARTER;       //火属性のモンスターであることを示す
+        type = (int)MONSTER_TYPE.MT_WARTER;       // 水属性のモンスターであることを示す
     }
 
     //===========================
