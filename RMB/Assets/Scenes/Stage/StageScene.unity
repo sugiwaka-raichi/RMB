@@ -1021,48 +1021,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 125919988, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: ObservedComponents.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919988, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: m_viewIdField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: monsterGenerateTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: unimonGenerateTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: unimonPrefab.Array.data[1]
-      value: 
-      objectReference: {fileID: 1493008815906341280, guid: 9d968b59420584447a134ef69d7ff1aa,
-        type: 3}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: unimonPrefab.Array.data[0]
-      value: 
-      objectReference: {fileID: 5005167901933807543, guid: 443fd4d79c13ea44db92a7064b3ad5a4,
-        type: 3}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: xMinPos
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: xMaxPos
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: zMinPos
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 125919989, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
-      propertyPath: zMaxPos
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 4652359981279142213, guid: d684f07f03262a743956ec4b8aa91fcc,
         type: 3}
       propertyPath: m_Name
@@ -1123,8 +1081,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 352971489, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d684f07f03262a743956ec4b8aa91fcc, type: 3}
 --- !u!1 &1335042797
 GameObject:
