@@ -5,6 +5,8 @@ using UnityEngine.Audio;
 
 public class MixerSetting : MonoBehaviour
 {
+    //ミキサーをインスペクターからうけとる
+    [SerializeField] AudioMixer mixer;
     //グループの情報をインスペクターからうけとる
     [SerializeField] AudioMixerGroup groupMusic;
     [SerializeField] AudioMixerGroup groupSE;
@@ -14,6 +16,7 @@ public class MixerSetting : MonoBehaviour
     {
         //サウンドマネージャーへグループの設定処理を行う
         SoundManager.SetGroup(groupMusic, groupSE);
+        SoundConfig.SetMixer(mixer);
     }
 
     // Update is called once per frame

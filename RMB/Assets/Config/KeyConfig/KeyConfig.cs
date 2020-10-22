@@ -22,33 +22,7 @@ public class KeyConfig : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Keyの変更
-        if (inputFlg)
-        {
-            //キーを取得
-            KeyCode keyCode = KeyManager.KeyInput();
-            if (keyCode == 0)
-            {
-                //入力されていなければ何もせず返す
-                return;
-            }
-            else if(keyCode == release)
-            {
-                //入力待ちを解除するキーだった場合
-                inputFlg = false;       //入力待ちをやめる
-                return;
-            }
-            else
-            {
-                //入力されていれば以下
-                Debug.Log("入力されたキー:" + keyCode);
-                KeyManager.SetKey(keyName, keyCode);    //入力されたキーを設定する
-
-                keyText.text = keyCode.ToString();      //入力されたキーを表示する
-                inputFlg = false;                       //入力待ちを解除する
-                
-            }
-        }
+        KeyChange();
     }
 
     //=======================================================
@@ -68,6 +42,40 @@ public class KeyConfig : MonoBehaviour
         {
             //されていないので登録する
             KeyManager.AddKey(keyName);
+        }
+    }
+
+    //=======================================================
+    //キー変更の処理
+    //=======================================================
+    private void KeyChange()
+    {
+        //Keyの変更
+        if (inputFlg)
+        {
+            //キーを取得
+            KeyCode keyCode = KeyManager.KeyInput();
+            if (keyCode == 0)
+            {
+                //入力されていなければ何もせず返す
+                return;
+            }
+            else if (keyCode == release)
+            {
+                //入力待ちを解除するキーだった場合
+                inputFlg = false;       //入力待ちをやめる
+                return;
+            }
+            else
+            {
+                //入力されていれば以下
+                Debug.Log("入力されたキー:" + keyCode);
+                KeyManager.SetKey(keyName, keyCode);    //入力されたキーを設定する
+
+                keyText.text = keyCode.ToString();      //入力されたキーを表示する
+                inputFlg = false;                       //入力待ちを解除する
+
+            }
         }
     }
 }
