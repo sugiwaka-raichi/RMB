@@ -104,7 +104,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //======================================
     protected void DelReport()
     {
-        //ToDo:GameManagerに報告するための処理を書く
+        GManager.CountdownMonster();
     }
 
     //======================================

@@ -72,9 +72,6 @@ public class GManager : MonobitEngine.MonoBehaviour
     private float           unimonGenerateTime = 10;       // 生成のディレイタイム指定
     private float           unimonElapsedTime;    // 経過時間カウント用
 
-    MonobitPlayer[] playerList = null;
-    MonobitPlayer player;
-
     /*============================= Awake =============================*/
     // Awake：インスタンス化直後に呼ばれる(Startより先に呼ばれる)
     private void Awake()
@@ -162,34 +159,8 @@ public class GManager : MonobitEngine.MonoBehaviour
             return;
         }
 
-//        ChangeScene();          // シーン遷移
         CreateMonster();
         CreateUniqueMonster();
-    }
-
-    /*============================= SceneChange =============================*/
-    private void ChangeScene()
-    {
-        // 最初に今のゲームシーンを取得(Getでもらうと楽)
-        var sceneType = (ManageSceneLoader.SceneType)System.Enum.ToObject(typeof(ManageSceneLoader.SceneType), ManageSceneLoader.GetActiveScene());
-
-        // タイトルからロビー
-        if (sceneType == ManageSceneLoader.SceneType.TitleScene && Input.GetKey(KeyCode.Space))
-        {
-            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
-        }
-
-        // ロビーからステージ
-        else if (sceneType == ManageSceneLoader.SceneType.LobbyScene && Input.GetKey(KeyCode.Space))
-        {
-            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
-        }
-
-        // ステージからロビー
-        else if (sceneType == ManageSceneLoader.SceneType.StageScene && Input.GetKey(KeyCode.Space))
-        {
-            ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
-        }
     }
 
     /*============================= CreateMonster =============================*/
@@ -198,31 +169,19 @@ public class GManager : MonobitEngine.MonoBehaviour
     {
        if (monsterElapsedTime >= monsterGenerateTime)          // timeGenerateに指定した秒数に達すれば生成
        {
-           // 三体同時生成
-           // monsterArray配列の長さを調べて格納
-           //for (int i = 0; i < monsterArray.Length; i++)
-           //{
-           //    // モンスターを上限まで生成
-           //    if (monsterCount < MONSTER_MAX)
-           //    {
-           //        monsterArray[i] = MonobitNetwork.Instantiate(monsterPrefab[i].name, GetRandomPosition(), Quaternion.identity, 0) as GameObject;
-           //        monsterCount++;     // モンスターの数加算
-           //    }
-           //    else
-           //    {
-           //        break;
-           //    }
-           //}
-
             // 一種類のみランダム発生(連続して同じものが発生しない)
             // モンスターを上限まで生成しているかチェック
             if (monsterCount < MONSTER_MAX)
             {
                 while (true)
                 {
+                    // モンスターの生成する範囲
                     monsterTemp = Random.Range(monsterMin, monsterMax);
+
+                    // 連続して出ないようにするif文
                     if (monsterTemp != monsterTempStrage)
                     {
+                        // 生成処理
                         monsterArray[monsterTemp] = MonobitNetwork.Instantiate(monsterPrefab[monsterTemp].name, GetRandomPosition(), Quaternion.identity, 0, null, false,false, true) as GameObject;
 
                         monsterCount++;     // モンスターの数加算
@@ -277,14 +236,15 @@ public class GManager : MonobitEngine.MonoBehaviour
 
     /*============================= DestroyedMonster =============================*/
     // モンスターカウントを減らす処理
-    static void CountdownMonster()
+    public static void CountdownMonster()
     {
         monsterCount--;
+        Debug.Log(monsterCount);
     }
 
     /*============================= DestroyedUniqueMonster =============================*/
     // ユニモンカウントを減らす処理
-    static void CountdownUnimon()
+    public static void CountdownUnimon()
     {
         unimonCount--;
     }
