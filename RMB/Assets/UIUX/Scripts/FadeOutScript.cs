@@ -11,15 +11,14 @@ public class FadeOutScript : MonoBehaviour
     [SerializeField]
     private Image image;            //フェードに使うimage
 
-    private static bool fadeflg = true;    //フェードアウト中かどうかのフラグ
+    static ManageSceneLoader.SceneType nextScene;       //次のシーン
 
     // Start is called before the first frame update
     void Start()
     {
-        image.gameObject.SetActive(true);       //暗幕をON
+        //image.gameObject.SetActive(true);       //暗幕をON
         fadeOutTime = fadeOutTime / 10f;        //フェードアウト時間計算
         StartCoroutine(FadeOut());              //コルーチン呼び出し
-        fadeflg = true;
     }
 
     // Update is called once per frame
@@ -42,21 +41,21 @@ public class FadeOutScript : MonoBehaviour
             //フェードアウト終了時
             if (i >= 1.0f)
             {
-                fadeflg = false;
+                //シーン切り替え
+                ManageSceneLoader.SceneChange(nextScene);
                 yield return null;
             }
-            //待機
-            fadeflg = true;
 
             yield return new WaitForSeconds(fadeOutTime);
         }
     }
 
-    //==========================================
-    //フェード状態のフラグ
-    //==========================================
-    public static bool GetFadeFlag()
+    //==================================
+    //次のシーンを受け取る
+    //==================================
+    public static void SetNextScene(ManageSceneLoader.SceneType _nextScene)
     {
-        return fadeflg;
+        nextScene = _nextScene;
     }
+
 }
