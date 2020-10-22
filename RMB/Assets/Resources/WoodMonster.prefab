@@ -12,15 +12,15 @@ GameObject:
   - component: {fileID: 1011481491016928172}
   - component: {fileID: 5667620715970569134}
   - component: {fileID: 851701994177712014}
+  - component: {fileID: -6730627741171498629}
   - component: {fileID: 8421440843873367474}
+  - component: {fileID: -1449286750271339745}
   - component: {fileID: 6566920752570798908}
   - component: {fileID: -101025480149053072}
-  - component: {fileID: 1360316242530479487}
-  - component: {fileID: 3875479762740248447}
-  - component: {fileID: 6240564965863034732}
-  - component: {fileID: -4224252867882822826}
+  - component: {fileID: 5283551463198309131}
+  - component: {fileID: 6857206475473452664}
   m_Layer: 0
-  m_Name: plantMonster
+  m_Name: WoodMonster
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e6443e96bcb7c0441a259c9ad384cc48, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,10 +95,23 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021871280260882005}
   m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &-6730627741171498629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021871280260882005}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8421440843873367474
 Rigidbody:
@@ -116,6 +129,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!195 &-1449286750271339745
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021871280260882005}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &6566920752570798908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +203,7 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
---- !u!114 &1360316242530479487
+--- !u!114 &5283551463198309131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,48 +212,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1021871280260882005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d7c7b8a329af84b9c316a8a8a5289b, type: 3}
+  m_Script: {fileID: 11500000, guid: 866a7e14989d0f74f88e9a74ac711944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackObj: {fileID: 473961569002862523, guid: ce0e5af271f3acb4d884aa23bda0759e,
+  attackObj: {fileID: 8932191970145715597, guid: 14e20c52f2c746b43841a9801b37e521,
     type: 3}
   diffenceObj: {fileID: 0}
---- !u!195 &3875479762740248447
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021871280260882005}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!65 &6240564965863034732
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021871280260882005}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10, y: 1, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4224252867882822826
+--- !u!114 &6857206475473452664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7628197462350782298
+--- !u!1 &8932191970145715597
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7628197462350782279}
-  - component: {fileID: 7628197462350782296}
-  - component: {fileID: 2372379877829198745}
-  - component: {fileID: 7628197462350782299}
-  - component: {fileID: 4632513335600056868}
+  - component: {fileID: 8932191970145715586}
+  - component: {fileID: 8932191970145715599}
+  - component: {fileID: 8932191970145715598}
+  - component: {fileID: 5403337623529531761}
   m_Layer: 0
-  m_Name: WaterBeam
-  m_TagString: AtkObj
+  m_Name: WoodIvy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7628197462350782279
+--- !u!4 &8932191970145715586
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628197462350782298}
+  m_GameObject: {fileID: 8932191970145715597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.140597, y: -1.2974281, z: -2.1181202}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,51 +33,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7628197462350782296
+--- !u!65 &8932191970145715599
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628197462350782298}
+  m_GameObject: {fileID: 8932191970145715597}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.11, y: 0.13, z: 11.38}
-  m_Center: {x: 0, y: -0.5, z: -5.86}
---- !u!114 &2372379877829198745
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8932191970145715598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628197462350782298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277584237ad31144584195f79af03cd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_viewIdField: 0
-  m_IsDontDestroyOnRoom: 0
-  m_IsInstantiated: 0
-  m_ObjectStreamCheckTime: 0
-  m_ObjectStreamSendBytes: 
-  m_IsEncrypt: 1
-  InternalObservedComponents: []
-  ObservedComponents: []
-  ownerId: 0
-  group: 0
-  prefixBackup: -1
-  ownershipTransfer: 0
-  compressedStream: 0
---- !u!114 &7628197462350782299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628197462350782298}
+  m_GameObject: {fileID: 8932191970145715597}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
@@ -86,19 +60,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimingOfUpdate: 0
   EmitterScale: 0
-  effectAsset: {fileID: 11400000, guid: b243a213a1406014cbe4f1e4bf0467c6, type: 2}
+  effectAsset: {fileID: 0}
   playOnStart: 1
   isLooping: 0
---- !u!114 &4632513335600056868
+--- !u!114 &5403337623529531761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7628197462350782298}
+  m_GameObject: {fileID: 8932191970145715597}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b83bd092ef82f4241bb1f3a549c90892, type: 3}
+  m_Script: {fileID: 11500000, guid: a5eb90b3922ae9741b4f35db51f11525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 3
