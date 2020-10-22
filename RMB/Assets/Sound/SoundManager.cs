@@ -231,7 +231,8 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         if (type == 0)
         {
             audioSource.outputAudioMixerGroup = groupMusic;      //グループ設定
-            audioSource.clip = LoadMusic(_name);                   //SE読み込み
+            audioSource.loop = true;                             //ループ
+            audioSource.clip = LoadMusic(_name);                 //Music読み込み
         }
         else
         {
