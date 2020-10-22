@@ -123,4 +123,13 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     {
         playerID = _ID;
     }
+
+    //========================================
+    //キャッチフラグを渡す関数
+    //========================================
+    public bool GetCatchFlg()
+    {
+        return catchFlg;
+    }
+
 }
