@@ -16,16 +16,19 @@ public class WoodMonster : MonsterBase
     //=============================================
     public override void Attack()
     {
+        
         //攻撃オブジェクトの生成位置を決める
-        Vector3 atkPos = new Vector3(transform.position.x, transform.position.y - 3, transform.position.z + 5);
+        Vector3 atkPos = new Vector3(transform.position.x, transform.position.y - 3, transform.position.z);
+        atkPos.x += transform.forward.x;
+        atkPos.z += transform.forward.z;
 
         //攻撃オブジェクト生成
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, Quaternion.identity, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.rotation, 0, null, false, false, true);
 
         AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
+        Debug.Log("木属性のモンスターの攻撃");
 
         attack.SetPlayerID(playerID);       //プレイヤーIDを設定
-
         base.Attack();
     }
 

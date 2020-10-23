@@ -10,7 +10,7 @@ public class WoodAttack : AttackBase
         //有効時間
         Destroy(this.gameObject, timer);
         //攻撃属性
-        atkType = ATK_TYPE.AT_FIRE;
+        atkType = ATK_TYPE.AT_WOOD;
         //木が生えるコルーチン呼出
         StartCoroutine(Grow());
     }
