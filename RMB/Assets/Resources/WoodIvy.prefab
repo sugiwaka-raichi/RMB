@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5412011944274457431}
   m_Layer: 0
   m_Name: WoodIvy
-  m_TagString: Untagged
+  m_TagString: AtkObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -130,6 +130,6 @@ MonoBehaviour:
   ObservedComponents: []
   ownerId: 0
   group: 0
-  prefixBackup: -1
+  prefixBackup: 0
   ownershipTransfer: 0
   compressedStream: 0
