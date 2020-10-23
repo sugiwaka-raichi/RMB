@@ -11,12 +11,6 @@ public class WoodMonster : MonsterBase
         type = (int)MONSTER_TYPE.MT_PLANT;       //木属性のモンスター
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     //=============================================
     //攻撃関数
     //=============================================

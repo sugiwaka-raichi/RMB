@@ -55,6 +55,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         Debug.Log("attack");
         delTimer = 3;           //三秒後に削除
         catchFlg = false;       //もたれてるフラグをへし折る
+        transform.parent = null;        //親子関係解除
     }
 
     //================================

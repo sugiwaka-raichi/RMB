@@ -23,9 +23,9 @@
                 <Min>-0.1</Min>
               </X>
               <Z>
-                <Center>0.15</Center>
-                <Max>0.15</Max>
-                <Min>0.15</Min>
+                <Center>-0.15</Center>
+                <Max>-0.15</Max>
+                <Min>-0.15</Min>
               </Z>
             </Velocity>
           </PVA>

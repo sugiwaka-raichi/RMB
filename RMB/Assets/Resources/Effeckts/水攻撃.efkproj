@@ -30,9 +30,9 @@
           <PVA>
             <Rotation>
               <X>
-                <Center>90</Center>
-                <Max>90</Max>
-                <Min>90</Min>
+                <Center>-90</Center>
+                <Max>-90</Max>
+                <Min>-90</Min>
               </X>
             </Rotation>
           </PVA>
@@ -151,9 +151,9 @@
                 <Min>-0.1</Min>
               </Y>
               <Z>
-                <Center>0.5</Center>
-                <Max>0.5</Max>
-                <Min>0.5</Min>
+                <Center>-0.5</Center>
+                <Max>-0.5</Max>
+                <Min>-0.5</Min>
               </Z>
             </Velocity>
           </PVA>
