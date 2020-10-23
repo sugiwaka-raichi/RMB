@@ -39,12 +39,6 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         {
             SurvivalTimer();        //生存時間
         }
-
-        ////プレイヤーのIDが設定されていなければ
-        //if(playerID == -1)
-        //{
-        //    SurvivalTimer();        //生存時間
-        //}
     }
 
     //================================
@@ -57,6 +51,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         DelReport();            //削除報告
         Destroy(this.gameObject, delTimer);     //削除
         transform.parent = null;        //親子関係解除
+        SendParentElimination();            //親子解消を全体に送る
     }
 
     //================================
@@ -150,5 +145,22 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     private void SendCatchFlg()
     {
         monobitView.RPC("RPCSetCatchFlg", MonobitEngine.MonobitTargets.All, catchFlg);
+    }
+
+    //==============================================
+    //親子関係をネットワーク越しに解消受信
+    //==============================================
+    [MunRPC]
+    private void RPCParentElimination()
+    {
+        this.transform.parent = null;
+    }
+
+    //==============================================
+    //親子関係をネットワーク越しに解消送信
+    //==============================================
+    private void SendParentElimination()
+    {
+        monobitView.RPC("RPCParentElimination", MonobitEngine.MonobitTargets.All);
     }
 }
