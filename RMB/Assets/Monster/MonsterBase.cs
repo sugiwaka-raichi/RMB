@@ -53,8 +53,9 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Attack()
     {
         Debug.Log("attack");
-        delTimer = 3;           //三秒後に削除
-        catchFlg = false;       //もたれてるフラグをへし折る
+        delTimer = 3;           //三秒後に削除設定
+        DelReport();            //削除報告
+        Destroy(this.gameObject, delTimer);     //削除
         transform.parent = null;        //親子関係解除
     }
 
