@@ -113,7 +113,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //======================================
     public void SetCatchFlg(bool _flg)
     {
-        catchFlg = _flg;        
+        catchFlg = _flg;
+        SendCatchFlg();
     }
 
     //=======================================
@@ -132,4 +133,20 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         return catchFlg;
     }
 
+    //==============================================
+    //キャッチフラグの変更があったとき受信関数
+    //==============================================
+    [MunRPC]
+    private void RPCSetCatchFlg(bool _catchFlg)
+    {
+        catchFlg = _catchFlg;
+    }
+
+    //==============================================
+    //キャッチフラグの変更があったとき送信関数
+    //==============================================
+    private void SendCatchFlg()
+    {
+        monobitView.RPC("RPCSetCatchFlg", MonobitEngine.MonobitTargets.All, catchFlg);
+    }
 }
