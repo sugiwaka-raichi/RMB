@@ -37,7 +37,7 @@ public class MonsterAI : MonoBehaviour
         //プレイヤーであれば
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Monsterflg:" + monster.GetCatchFlg());
+            //Debug.Log("Monsterflg:" + monster.GetCatchFlg());
 
             if (aiflg)
             {

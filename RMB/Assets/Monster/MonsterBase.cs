@@ -134,8 +134,9 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //キャッチフラグの変更があったとき受信関数
     //==============================================
     [MunRPC]
-    private void RPCSetCatchFlg(bool _catchFlg)
+    public void RPCSetCatchFlg(bool _catchFlg)
     {
+        Debug.Log("キャッチフラグ");
         catchFlg = _catchFlg;
     }
 
@@ -151,8 +152,10 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //親子関係をネットワーク越しに解消受信
     //==============================================
     [MunRPC]
-    private void RPCParentElimination()
+    public void RPCParentElimination()
     {
+
+        Debug.Log("RPC parent null");
         this.transform.parent = null;
     }
 
@@ -161,6 +164,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //==============================================
     private void SendParentElimination()
     {
+        Debug.Log("send parent null");
         monobitView.RPC("RPCParentElimination", MonobitEngine.MonobitTargets.All);
     }
 }
