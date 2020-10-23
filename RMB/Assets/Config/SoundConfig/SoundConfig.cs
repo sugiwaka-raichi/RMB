@@ -15,8 +15,12 @@ public class SoundConfig : MonoBehaviour
         VT_NUM              //種類の数
     }
 
+    static int default_db = 0;             //デフォルトの音量
+
     [SerializeField]
-    int default_db;             //デフォルトの音量
+    Slider slider;              //紐づけるスライダー
+    [SerializeField]
+    VOL_TYPE type;              //設定するボリュームの種類
 
     static AudioMixer mixer;           //ミキサー
 
@@ -25,7 +29,7 @@ public class SoundConfig : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        slider.value = vol[(int)type];
     }
 
     // Update is called once per frame
@@ -37,18 +41,17 @@ public class SoundConfig : MonoBehaviour
     //==================================================
     //設定関数(スライダーで扱う)
     //==================================================
-    public void SetVol(Slider _slider)
+    public void SetVol()
     {
-        Debug.Log("音量変更:" + _slider.name);
-        string _volType = _slider.name;
+        Debug.Log("音量変更:");
         
-        mixer.SetFloat(_volType.ToString(), _slider.value);        //ミキサーに設定
+        mixer.SetFloat(type.ToString(), slider.value);        //ミキサーに設定
     }
 
     //===================================================
-    //デフォルト設定に戻す(ボタンで扱う)
+    //デフォルト設定に戻す
     //===================================================
-    public void SetDefault()
+    public static void SetDefault()
     {
         VOL_TYPE volType = 0;
 
@@ -66,7 +69,7 @@ public class SoundConfig : MonoBehaviour
     //===================================================
     //記録処理(コンフィグ画面を閉じる際に呼び出す)
     //===================================================
-    public void SoundConfSave()
+    public static void SoundConfSave()
     {
         VOL_TYPE volType = 0;
 
@@ -76,6 +79,7 @@ public class SoundConfig : MonoBehaviour
             mixer.GetFloat(volType.ToString(),out vol[i]);
             PlayerPrefs.SetFloat(volType.ToString(), vol[i]);       //記録
             volType++;
+            Debug.Log(vol[i]);
         }
     }
 
@@ -89,8 +93,10 @@ public class SoundConfig : MonoBehaviour
         //各グループの値読み込み
         for (int i = 0; i < (int)VOL_TYPE.VT_NUM; i++)
         {
-            PlayerPrefs.GetFloat(volType.ToString(), vol[i]);           //読み込み
+            vol[i] = PlayerPrefs.GetFloat(volType.ToString());           //読み込み
+            Debug.Log("Load" + vol[i]);
             mixer.SetFloat(volType.ToString(), vol[i]);                 //反映
+            volType++;
         }
     }
     
@@ -99,6 +105,15 @@ public class SoundConfig : MonoBehaviour
     //=====================================================
     public static void SetMixer(AudioMixer _mixer)
     {
+        Debug.Log("Setmixer");
         mixer = _mixer;
+    }
+
+    //====================================================
+    //デフォルト設定の音量を取得
+    //====================================================
+    public static int GetDefaultdb()
+    {
+        return default_db;
     }
 }

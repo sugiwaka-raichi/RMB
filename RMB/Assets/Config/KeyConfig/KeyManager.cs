@@ -201,4 +201,12 @@ public class KeyManager : MonoBehaviour
             Debug.Log("LOAD KEY:" + dic[0] + "|" + key);
         }
     }
+
+    //=====================================================
+    //キー値からKeyCodeを取得する関数
+    //=====================================================
+    public static KeyCode GetKeyCode(string _keyName)
+    {
+        return keyConfig[_keyName];
+    }
 }
