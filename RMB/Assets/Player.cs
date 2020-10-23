@@ -129,10 +129,15 @@ public class Player : MonobitEngine.MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!m_MonobitView.isMine)
+        {
+            return;
+        }
+
         Debug.Log("collisionenter");
         if (collision.transform.tag == "Monster")
         {
-            if (!havemonster)
+            if (!havemonster && !collision.gameObject.GetComponent<MonsterBase>().GetCatchFlg())
             {
                 m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
             }
@@ -157,7 +162,8 @@ public class Player : MonobitEngine.MonoBehaviour
             if (collision.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
             {
                 SoundManager.PlaySE("プレイヤー/当たり判定");
-                MonobitNetwork.Destroy(this.gameObject);
+                Damage(200);
+                Debug.Log("Hit");
             }
         }
     }
@@ -166,8 +172,11 @@ public class Player : MonobitEngine.MonoBehaviour
     void Damage(int _damagevalue)
     {
         HP -= _damagevalue;
-        if (HP < 0)
+        NetworkControl.customParams["HP"] = HP;
+        NetworkManager.SetPlayerCustomParameters(NetworkControl.customParams);
+        if (HP <= 0)
         {
+            MonobitNetwork.Destroy(this.gameObject);
             LoosePlayer();
         }
     }
@@ -213,6 +222,7 @@ public class Player : MonobitEngine.MonoBehaviour
     // 
     void LoosePlayer()
     {
+
     }
 
 
