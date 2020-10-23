@@ -10,13 +10,15 @@ public class KeyConfig : MonoBehaviour
 
     [SerializeField]
     private Text keyText;       //設定されているキーを表示
-    bool inputFlg = false;      //入力待ちかどうかを判断する
+    [SerializeField]
     string keyName;             //登録するkeyの名前
 
+    bool inputFlg = false;      //入力待ちかどうかを判断する
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        keyText.text = KeyManager.GetKeyCode(keyName).ToString();     //キー名を取得して設定する
     }
 
     // Update is called once per frame
@@ -28,11 +30,10 @@ public class KeyConfig : MonoBehaviour
     //=======================================================
     //入力待ちの開始
     //=======================================================
-    public void StartKeyInput(string _keyName)
+    public void StartKeyInput()
     {
         inputFlg = true;
 
-        keyName = _keyName;     //扱うkeyを渡す
         //keynameが登録されていなければ登録する
         if (KeyManager.CheckKeyType(keyName))
         {
