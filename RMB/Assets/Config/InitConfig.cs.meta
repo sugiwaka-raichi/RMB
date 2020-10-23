@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f056a4f993e59d74cb0dcf62b9347d4a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mixer: {fileID: 24100000, guid: 56e37096cdb46064fa8e505c31ec739e, type: 2}
+  - groupMusic: {fileID: -6026443776823001608, guid: 56e37096cdb46064fa8e505c31ec739e,
+      type: 2}
+  - groupSE: {fileID: -8986691699956373220, guid: 56e37096cdb46064fa8e505c31ec739e,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
