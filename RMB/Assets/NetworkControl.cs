@@ -11,7 +11,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     private string playerName = "";
 
     /** ルーム名. */
-    private string roomName = "";
+    public static  string roomName = "";
 
     /** ルーム設定. */
     public static RoomSettings roomSettings = null;
@@ -32,11 +32,12 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     bool playingGame = false;
 
     /** ルーム数カウント変数. */
-    int roomCount = 0;
+    public static int roomCount = 0;
 
     /** プレイヤー数カウント変数. */
     int playerCount = 0;
 
+    public static bool lobyon = true; 
     /** UI使うかフラグ. */
     [SerializeField] bool useUIflg = false;
 
@@ -74,6 +75,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             NetworkManager.SetPlayerCustomParameters(customParams);
             NetworkManager.ConnectServer("MonsterBattle_v1.0");
         }
+        lobyon = true;
     }
 
     // Update is called once per frame
@@ -144,8 +146,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 {
                     playingGame = false;
                     NetworkManager.LeaveRoom();
-                    customParams["ready"] = false;
-                    NetworkManager.SetPlayerCustomParameters(customParams);
                 }
 
                 if (!playingGame)
@@ -167,7 +167,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                             {
                                 StartGame();
                                 customParams["ready"] = false;
-                                customParams["HP"] = 200;
+                                customParams["HP"] = 100;
                                 NetworkManager.SetPlayerCustomParameters(customParams);
                                 NetworkManager.GetRoom().open = false;
                                 NetworkManager.GetRoom().visible = false;
@@ -189,46 +189,52 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             }
 
             // ルームに入室していない場合
-            if (!NetworkManager.GetinRoom())
+            if (!NetworkManager.GetinRoom() && lobyon)
             {
-                GUILayout.BeginHorizontal();
-
-                // ルーム名の入力
-                GUILayout.Label("RoomName : ");
-                roomName = GUILayout.TextField(roomName, GUILayout.Width(200));
-
+                lobyon = false;
                 RoomSettings roomSettings = new RoomSettings();
-                roomSettings.maxPlayers = 10;
+                roomSettings.maxPlayers = 2;
                 roomSettings.isVisible = true;
                 roomSettings.isOpen = true;
-                // ボタン入力でルーム作成
-                if (GUILayout.Button("Create Room", GUILayout.Width(150)))
-                {
-                    NetworkManager.CreateRoom(roomName, roomSettings, null);
-                }
 
-                GUILayout.EndHorizontal();
+                roomCount++;
+                roomName = "room";
+                NetworkManager.JoinOrCreateRoom(roomName + roomCount.ToString(), roomSettings, null);
 
-                // 現在存在するルームからランダムに入室する
-                if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
-                {
-                    NetworkManager.JoinRandomRoom();
-                }
+                //GUILayout.BeginHorizontal();
 
-                // ルーム一覧から選択式で入室する
-                foreach (RoomData room in NetworkManager.GetRoomData())
-                {
-                    string strRoomInfo =
-                        string.Format("{0}({1}/{2})",
-                                      room.name,
-                                      room.playerCount,
-                                      (room.maxPlayers == 0 ? "-" : room.maxPlayers.ToString()));
+                //// ルーム名の入力
+                //GUILayout.Label("RoomName : ");
+                //roomName = GUILayout.TextField(roomName, GUILayout.Width(200));
 
-                    if (GUILayout.Button("Enter Room : " + strRoomInfo))
-                    {
-                        NetworkManager.JoinRoom(room.name);
-                    }
-                }
+                //// ボタン入力でルーム作成
+                //if (GUILayout.Button("Create Room", GUILayout.Width(150)))
+                //{
+                //    NetworkManager.CreateRoom(roomName, roomSettings, null);
+                //}
+
+                //GUILayout.EndHorizontal();
+
+                //// 現在存在するルームからランダムに入室する
+                //if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
+                //{
+                //    NetworkManager.JoinRandomRoom();
+                //}
+
+                //// ルーム一覧から選択式で入室する
+                //foreach (RoomData room in NetworkManager.GetRoomData())
+                //{
+                //    string strRoomInfo =
+                //        string.Format("{0}({1}/{2})",
+                //                      room.name,
+                //                      room.playerCount,
+                //                      (room.maxPlayers == 0 ? "-" : room.maxPlayers.ToString()));
+
+                //    if (GUILayout.Button("Enter Room : " + strRoomInfo))
+                //    {
+                //        NetworkManager.JoinRoom(room.name);
+                //    }
+                //}
             }
         }
     }
@@ -303,7 +309,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 {
                     StartGame();
                     customParams["ready"] = false;
-                    customParams["HP"] = 200;
+                    customParams["HP"] = 100;
                     NetworkManager.SetPlayerCustomParameters(customParams);
                     roomParams["GamePlaying"] = true;
                     NetworkManager.SetRoomParameters(roomParams);
