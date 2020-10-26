@@ -42,26 +42,26 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     [SerializeField] bool useUIflg = false;
 
     /** UI用. */
-    [SerializeField] Canvas BeforeConnectCanvas;
-    [SerializeField] Canvas LobyCanvas;
+    //[SerializeField] Canvas BeforeConnectCanvas;
+    //[SerializeField] Canvas LobyCanvas;
     [SerializeField] Canvas RoomCanvas;
-    [SerializeField] Canvas InGameCanvas;
-    [SerializeField] Canvas ConnectedCanvas;
-    [SerializeField] Canvas InRoomCanvas;
+    //[SerializeField] Canvas InGameCanvas;
+    //[SerializeField] Canvas ConnectedCanvas;
+    //[SerializeField] Canvas InRoomCanvas;
 
-    [SerializeField] Text PlayerNameLavel;
-    [SerializeField] InputField PlayerNameinputField;
-    [SerializeField] Button ConnecoServerButton;
+    //[SerializeField] Text PlayerNameLavel;
+    //[SerializeField] InputField PlayerNameinputField;
+    //[SerializeField] Button ConnecoServerButton;
 
-    [SerializeField] Text RoomnameLabe;
-    [SerializeField] InputField RoomnameInputField;
-    [SerializeField] Button CreateRandomRoomButton;
-    [SerializeField] Button JoinRandomRoomButton;
-    [SerializeField] Button[] JoinRoomButton = new Button[10];
+    //[SerializeField] Text RoomnameLabe;
+    //[SerializeField] InputField RoomnameInputField;
+    //[SerializeField] Button CreateRandomRoomButton;
+    //[SerializeField] Button JoinRandomRoomButton;
+    //[SerializeField] Button[] JoinRoomButton = new Button[10];
 
     [SerializeField] Text RoomNameInfoLabel;
-    [SerializeField] Text[] PlayerInfoLabel = new Text[10];
-    [SerializeField] Button StartGameButton;
+    [SerializeField] Text[] PlayerInfoLabel = new Text[8];
+    [SerializeField] Button ReadyGameButton;
 
     [SerializeField] Button DisconnectButton;
     [SerializeField] Button LeaveRoomButton;
@@ -75,6 +75,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             NetworkManager.SetPlayerCustomParameters(customParams);
             NetworkManager.ConnectServer("MonsterBattle_v1.0");
         }
+        roomCount = 0;
         lobyon = true;
     }
 
@@ -105,11 +106,13 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             // ルームに入室している場合
             if (NetworkManager.GetinRoom())
             {
+                RoomCanvas.gameObject.SetActive(true);
                 RoomShow();
             }
             // ルームに入室していない場合
-            else
+            else if (lobyon)
             {
+                RoomCanvas.gameObject.SetActive(false);
                 LobyShow();
             }
         }
@@ -193,48 +196,13 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             {
                 lobyon = false;
                 RoomSettings roomSettings = new RoomSettings();
-                roomSettings.maxPlayers = 2;
+                roomSettings.maxPlayers = 8;
                 roomSettings.isVisible = true;
                 roomSettings.isOpen = true;
 
                 roomCount++;
                 roomName = "room";
                 NetworkManager.JoinOrCreateRoom(roomName + roomCount.ToString(), roomSettings, null);
-
-                //GUILayout.BeginHorizontal();
-
-                //// ルーム名の入力
-                //GUILayout.Label("RoomName : ");
-                //roomName = GUILayout.TextField(roomName, GUILayout.Width(200));
-
-                //// ボタン入力でルーム作成
-                //if (GUILayout.Button("Create Room", GUILayout.Width(150)))
-                //{
-                //    NetworkManager.CreateRoom(roomName, roomSettings, null);
-                //}
-
-                //GUILayout.EndHorizontal();
-
-                //// 現在存在するルームからランダムに入室する
-                //if (GUILayout.Button("Join Random Room", GUILayout.Width(200)))
-                //{
-                //    NetworkManager.JoinRandomRoom();
-                //}
-
-                //// ルーム一覧から選択式で入室する
-                //foreach (RoomData room in NetworkManager.GetRoomData())
-                //{
-                //    string strRoomInfo =
-                //        string.Format("{0}({1}/{2})",
-                //                      room.name,
-                //                      room.playerCount,
-                //                      (room.maxPlayers == 0 ? "-" : room.maxPlayers.ToString()));
-
-                //    if (GUILayout.Button("Enter Room : " + strRoomInfo))
-                //    {
-                //        NetworkManager.JoinRoom(room.name);
-                //    }
-                //}
             }
         }
     }
@@ -242,39 +210,15 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ロビー内UI表示. */
     public void LobyShow()
     {
-        // ルーム名の入力
-        roomName = RoomnameInputField.text;
-
+        lobyon = false;
         RoomSettings roomSettings = new RoomSettings();
-        roomSettings.maxPlayers = 10;
+        roomSettings.maxPlayers = 8;
         roomSettings.isVisible = true;
         roomSettings.isOpen = true;
-        roomSettings.roomParameters["GamePlaying"] = false;
 
-        for (int i = 0; i < roomCount; i++)
-        {
-            JoinRoomButton[i].gameObject.SetActive(false);
-        }
-        roomCount = 0;
-        // ルーム一覧から選択式で入室する
-        foreach (RoomData room in NetworkManager.GetRoomData())
-        {
-            // プレイ中のルームは表示しない
-            if ((bool)room.customParameters["GamePlaying"])
-            {
-                return;
-            }
-
-            string strRoomInfo =
-                string.Format("{0}({1}/{2})",
-                              room.name,
-                              room.playerCount,
-                              (room.maxPlayers == 0 ? "-" : room.maxPlayers.ToString()));
-            
-            JoinRoomButton[roomCount].gameObject.SetActive(true);
-            JoinRoomButton[roomCount].GetComponentInChildren<Text>().text = "Enter Room" + strRoomInfo;
-            roomCount++;
-        }
+        roomCount++;
+        roomName = "room";
+        NetworkManager.JoinOrCreateRoom(roomName + roomCount.ToString(), roomSettings, null);
     }
 
     /** ルーム内UI表示. */
@@ -285,7 +229,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             roomName = NetworkManager.GetRoom().name;
         }
 
-        RoomNameInfoLabel.text = roomName;
+        RoomNameInfoLabel.text = NetworkManager.GetRoom().name;
         readyCount = 0;
         for(int i = 0; i < playerCount; i++)
         {
@@ -296,8 +240,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
         {
             string playerInfo =
-                string.Format("{0} {1} {2}",
-                    player.ID, player.name, player.customParameters["ready"]);
+                string.Format("    {0}                  {1}",
+                    player.ID, player.customParameters["ready"]);
             PlayerInfoLabel[playerCount].gameObject.SetActive(true);
             PlayerInfoLabel[playerCount].text = playerInfo;
             Debug.Log(player.customParameters["ready"]);
@@ -311,8 +255,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     customParams["ready"] = false;
                     customParams["HP"] = 100;
                     NetworkManager.SetPlayerCustomParameters(customParams);
-                    roomParams["GamePlaying"] = true;
-                    NetworkManager.SetRoomParameters(roomParams);
+                    NetworkManager.GetRoom().open = false;
+                    NetworkManager.GetRoom().visible = false;
                 }
             }
 
@@ -322,7 +266,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
         if (NetworkManager.GetPlayerList().Length >= 1)
         {
-            StartGameButton.gameObject.SetActive(true);
+            ReadyGameButton.gameObject.SetActive(true);
         }
     }
 
@@ -331,17 +275,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     {
         return GUILayout.Button(_buttonname, GUILayout.Width(_buttonwidth));
     }
-
-    /** サーバ接続. */
-    public void Connectserver()
-    {
-        NetworkManager.ConnectServer("MonsterBattle_v1.0");
-
-        BeforeConnectCanvas.gameObject.SetActive(false);
-        LobyCanvas.gameObject.SetActive(true);
-        ConnectedCanvas.gameObject.SetActive(true);
-    }
-
 
     /** サーバ切断. */
     public void DisconnectServer()
@@ -353,71 +286,13 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         NetworkManager.DisconnectServer();
 
         // シーンをリロードする
-        ManageSceneLoader.SceneType sceneName = ManageSceneLoader.GetSceneType();
-        ManageSceneLoader.SceneChange(sceneName);
-        Debug.Log(sceneName);
-
-        LobyCanvas.gameObject.SetActive(false);
-        RoomCanvas.gameObject.SetActive(false);
-        InGameCanvas.gameObject.SetActive(false);
-        ConnectedCanvas.gameObject.SetActive(false);
-        BeforeConnectCanvas.gameObject.SetActive(true);
-    }
-
-    /** ルーム作成汎用. */
-    public void CreateRoom()
-    {
-        if(roomName != "")
-        {
-            if(roomSettings != null)
-            {
-                NetworkManager.CreateRoom(roomName, roomSettings, null);
-            }
-            else
-            {
-                NetworkManager.CreateRoom(roomName);
-            }
-
-            LobyCanvas.gameObject.SetActive(false);
-            RoomCanvas.gameObject.SetActive(true);
-            InRoomCanvas.gameObject.SetActive(true);
-        }
-    }
-
-    /** 入室ボタン用. */
-    public void JoinRoom(int roomnum)
-    {
-        roomName = NetworkManager.GetRoomData()[roomnum].name;
-        NetworkManager.JoinRoom(roomName);
-        LobyCanvas.gameObject.SetActive(false);
-        RoomCanvas.gameObject.SetActive(true);
-        InRoomCanvas.gameObject.SetActive(true);
-    }
-
-    /** ランダム入室ボタン用. */
-    public void JoinRandomRoomB()
-    {
-        NetworkManager.JoinRandomRoom();
-        
-        if (roomCount > 0)
-        {
-            LobyCanvas.gameObject.SetActive(false);
-            RoomCanvas.gameObject.SetActive(true);
-            InRoomCanvas.gameObject.SetActive(true);
-        }
-
+        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
     }
 
     /** ルーム退室ボタン用. */
     public void LeaveRoomB()
     {
-        customParams["ready"] = false;
-        NetworkManager.SetPlayerCustomParameters(customParams);
         NetworkManager.LeaveRoom();
-        RoomCanvas.gameObject.SetActive(false);
-        InGameCanvas.gameObject.SetActive(false);
-        InRoomCanvas.gameObject.SetActive(false);
-        LobyCanvas.gameObject.SetActive(true);
     }
 
     /** 準備完了. */

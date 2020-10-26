@@ -112,8 +112,9 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
             if (GUILayout.Button("OK", GUILayout.Width(50)))
             {
                 ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
+                bDisconnect = false;
+                bDisplayWindow = false;
             }
-
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             return;
