@@ -40,11 +40,12 @@ public class FireMonster : MonsterBase
     public override void Deffence()
     {
         Debug.Log("fireDiffence");
-        base.Deffence();
 
         //ToDo:詳細な防御処理は以下に記述
-        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, transform.parent.transform.position, Quaternion.identity, 0);
+        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, transform.parent.transform.position, Quaternion.identity, 0, null, false, false, true);
+        Destroy(gameObject, 2);
 
+        base.Deffence();
     }
 
 
