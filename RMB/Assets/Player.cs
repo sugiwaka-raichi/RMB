@@ -224,6 +224,13 @@ public class Player : MonobitEngine.MonoBehaviour
             }
         }
 
+        if (collision.transform.tag == "UniqueMonster")
+        {
+            m_MonobitView.RPC("Damage", MonobitTargets.All, 10);
+            transform.position = transform.position - transform.forward*2.0f;
+            //transform.position = transform.position - (collision.transform.position - transform.position)*1.0f;
+        }
+
         if (collision.transform.tag == powertag)
         {
             if (collision.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
