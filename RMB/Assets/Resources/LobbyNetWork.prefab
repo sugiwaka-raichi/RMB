@@ -43,31 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5ebcd1c252c9964689a113a52134620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useUIflg: 0
-  BeforeConnectCanvas: {fileID: 0}
-  LobyCanvas: {fileID: 0}
+  useUIflg: 1
   RoomCanvas: {fileID: 0}
-  InGameCanvas: {fileID: 0}
-  ConnectedCanvas: {fileID: 0}
-  InRoomCanvas: {fileID: 0}
-  PlayerNameLavel: {fileID: 0}
-  PlayerNameinputField: {fileID: 0}
-  ConnecoServerButton: {fileID: 0}
-  RoomnameLabe: {fileID: 0}
-  RoomnameInputField: {fileID: 0}
-  CreateRandomRoomButton: {fileID: 0}
-  JoinRandomRoomButton: {fileID: 0}
-  JoinRoomButton:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   RoomNameInfoLabel: {fileID: 0}
   PlayerInfoLabel:
   - {fileID: 0}
@@ -78,8 +55,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  StartGameButton: {fileID: 0}
+  ReadyGameButton: {fileID: 0}
   DisconnectButton: {fileID: 0}
   LeaveRoomButton: {fileID: 0}
