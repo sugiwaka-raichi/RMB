@@ -14,14 +14,12 @@
           <PVA>
             <Location>
               <X>
-                <Center>0.5</Center>
                 <Max>0.5</Max>
-                <Min>0.5</Min>
+                <Min>-0.5</Min>
               </X>
               <Z>
-                <Center>0.5</Center>
                 <Max>0.5</Max>
-                <Min>0.5</Min>
+                <Min>-0.5</Min>
               </Z>
             </Location>
             <Velocity>
@@ -30,9 +28,9 @@
                 <Min>-0.01</Min>
               </X>
               <Y>
-                <Center>0.05</Center>
-                <Max>0.05</Max>
-                <Min>0.05</Min>
+                <Center>0.1</Center>
+                <Max>0.11</Max>
+                <Min>0.09</Min>
               </Y>
               <Z>
                 <Max>0.01</Max>
@@ -41,9 +39,9 @@
             </Velocity>
             <Acceleration>
               <Y>
-                <Center>-0.0005</Center>
-                <Max>-0.0005</Max>
-                <Min>-0.0005</Min>
+                <Center>-0.001</Center>
+                <Max>-0.001</Max>
+                <Min>-0.001</Min>
               </Y>
             </Acceleration>
           </PVA>
