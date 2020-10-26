@@ -5,13 +5,13 @@ using UnityEngine;
 public class ScreenSetting : MonoBehaviour
 {
     [SerializeField]
-    int screenWidth = 1024;
+    int screenWidth = 1024;         //横幅
     [SerializeField]
-    int screenHeight = 768;
+    int screenHeight = 768;         //縦幅
     [SerializeField]
-    bool fullScreen = false;
+    bool fullScreen = false;        //フルスクリーンフラグ
     [SerializeField]
-    int refreshRate = 60;
+    int refreshRate = 60;           //refreshレート
 
 
     // Start is called before the first frame update
