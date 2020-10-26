@@ -60,7 +60,7 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     //==========================================
     //攻撃種別を取得
     //==========================================
-    public ATK_TYPE GetType()
+    public ATK_TYPE GetATKType()
     {
         return atkType;
     }
