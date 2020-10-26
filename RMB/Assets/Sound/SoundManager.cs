@@ -6,6 +6,11 @@ using MonobitEngine;
 
 public class SoundManager : MonobitEngine.MonoBehaviour
 {
+    enum AUDIO_TYPE {
+        AT_MUSIC,
+        AT_SE
+    }
+
     static Dictionary<string,AudioSource> musicDic = new Dictionary<string,AudioSource>();      //再生中のMusicのリスト
     static Dictionary<string,AudioSource> seDic = new Dictionary<string,AudioSource>();      //再生中のSEのリスト
     static GameObject soundObject;                  //どこにオーディオソースをつけるかを保持する
@@ -47,8 +52,8 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         }
 
         //オーディオソース作成
-        AudioSource audioSource = CreateAudioSource(_musicName, 0);
-        if (audioSource.clip == null)
+        AudioSource audioSource = CreateAudioSource(_musicName, (int)AUDIO_TYPE.AT_MUSIC);
+        if (audioSource == null)
         {
             //再生失敗
             return false;
@@ -110,8 +115,8 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         }
 
         //オーディオソース作成
-        AudioSource audioSource = CreateAudioSource(_seName, 1);
-        if (audioSource.clip == null)
+        AudioSource audioSource = CreateAudioSource(_seName, (int)AUDIO_TYPE.AT_SE);
+        if (audioSource == null)
         {
             //再生失敗
             return false;
@@ -221,14 +226,14 @@ public class SoundManager : MonobitEngine.MonoBehaviour
     }
 
     //===========================================================
-    //オーディオソースを作成 0|music 1|se
+    //オーディオソースを作成
     //===========================================================
     private static AudioSource CreateAudioSource(string _name,int type)
     {
         CheckGameObject();      //設定先のゲームオブジェクトが存在するかどうか
         AudioSource audioSource = soundObject.AddComponent<AudioSource>();      //新規でオーディオソースを作成
 
-        if (type == 0)
+        if (type == (int)AUDIO_TYPE.AT_MUSIC)
         {
             audioSource.outputAudioMixerGroup = groupMusic;      //グループ設定
             audioSource.loop = true;                             //ループ
@@ -240,6 +245,12 @@ public class SoundManager : MonobitEngine.MonoBehaviour
             audioSource.clip = LoadSE(_name);                   //SE読み込み
         }
 
+        //clipに設定がされていなければ
+        if(audioSource.clip == null)
+        {
+            Destroy(audioSource);   //オーディオソース削除
+            return null;            //nullを返す(ロード失敗している)
+        }
         return audioSource;
     }
 }
