@@ -12,11 +12,16 @@ using UnityEditor;
 
 public class ButtonFunc : MonoBehaviour
 {
+    [SerializeField]
+    GameObject fadeOut;
+
     /*シーン遷移*/
     // タイトル
     public void GoTitle()
     {
-        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.TitleScene);
+        fadeOut.SetActive(true);
+        FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.TitleScene);
+        //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.TitleScene);
     }
     // ロビー
     public void GoLobby()
@@ -25,21 +30,20 @@ public class ButtonFunc : MonoBehaviour
         {
             NetworkManager.LeaveRoom();
         }
-        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
+        
+        fadeOut.SetActive(true);
+        FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.LobbyScene);
+        //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
     }
     // ステージ（ゲーム本編）
     public void GoStage()
     {
-        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
-    }
-    // リザルト
-    public void GoResult()
-    {
-        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.ResultScene);
+
+        fadeOut.SetActive(true);
+        FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.StageScene);
+        //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
     }
     
-
-
     // ゲーム終了（基本的にタイトルに存在するQUITボタンに配置）
     public void OnGameQuit()
     {
