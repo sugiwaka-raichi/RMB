@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class WoodAttack : AttackBase
 {
+    private void Awake()
+    {
+        //攻撃属性
+        atkType = ATK_TYPE.AT_WOOD;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //有効時間
         Destroy(this.gameObject, timer);
-        //攻撃属性
-        atkType = ATK_TYPE.AT_WOOD;
         //木が生えるコルーチン呼出
         StartCoroutine(Grow());
     }

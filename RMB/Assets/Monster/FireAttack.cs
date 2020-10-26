@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class FireAttack : AttackBase
 {
+    private void Awake()
+    {
+        //攻撃属性
+        atkType = ATK_TYPE.AT_FIRE;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //有効時間
         Destroy(this.gameObject, timer);
-        //攻撃属性
-        atkType = ATK_TYPE.AT_FIRE;
     }
 
     // Update is called once per frame

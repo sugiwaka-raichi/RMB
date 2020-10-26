@@ -24,12 +24,23 @@ public class Player : MonobitEngine.MonoBehaviour
     [SerializeField]
     int HP;
 
-    // 名前表示用テキスト
+    // プレイヤー体力ゲージ
     [SerializeField]
-    Text nametxt;
+    Image HPbar;
+
+    //// 名前表示用テキスト
+    //[SerializeField]
+    //Text nametxt;
+
+    [SerializeField]
+    private float normalspeed = 0.1f;
+    [SerializeField]
+    private float slowspeed = 0.05f;
+    bool cantstop = false;
+    private float speed = 0.1f;
 
     // 自分判別用マテリアル
-    [SerializeField]
+[SerializeField]
     Material material;
 
     //水状態異常用プレハブ
@@ -99,6 +110,7 @@ public class Player : MonobitEngine.MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         // オブジェクト所有権を所持しなければ実行しない
         if (!m_MonobitView.isMine)
         {
@@ -107,10 +119,9 @@ public class Player : MonobitEngine.MonoBehaviour
 
         Renderer renderer = GetComponent<Renderer>();
         renderer.material = material;
-        transform.position = new Vector3(transform.position.x + inputHorizontal * 0.1f, transform.position.y, transform.position.z + inputVertical * 0.1f);
+        transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
         nowposition = transform.position;
         pastposition = nowposition;
-        m_MonobitView.RPC("Damage", MonobitTargets.All, 0);
     }
 
     // Update is called once per frame
@@ -120,6 +131,22 @@ public class Player : MonobitEngine.MonoBehaviour
         if (!m_MonobitView.isMine)
         {
             return;
+        }
+
+        switch (atype)
+        {
+            case ABNORMAL_CONDITION_TYOE.AC_FIRE:
+                cantstop = true;
+                break;
+            case ABNORMAL_CONDITION_TYOE.AC_WATER:
+                speed = slowspeed;
+                break;
+            case ABNORMAL_CONDITION_TYOE.AC_WOOD:
+                return;
+            case ABNORMAL_CONDITION_TYOE.AC_NONE:
+                cantstop = false;
+                speed = normalspeed;
+                break;
         }
 
         //キー入力を取得
@@ -143,13 +170,24 @@ public class Player : MonobitEngine.MonoBehaviour
         //    inputVertical = -1.0f;
         //}
 
-        transform.position = new Vector3(transform.position.x + inputHorizontal * 0.1f, transform.position.y, transform.position.z + inputVertical * 0.1f);
+        
+
+        if (inputVertical == 0.0f && inputHorizontal == 0.0f){
+            if (cantstop)
+            {
+                transform.position += transform.forward * speed;
+            }
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
+        }
         nowposition = transform.position;
         direction = nowposition - pastposition;
         difdirec = direction - pastdirection;
         if (direction.magnitude > 0.01f)
         {
-            Debug.Log("足音再生 : " + SoundManager.PlaySE("プレイヤー/足音"));
+            //Debug.Log("足音再生 : " + SoundManager.PlaySE("プレイヤー/足音"));
             if (difdirec.magnitude > 0.01f)
             {
                 transform.rotation = Quaternion.LookRotation(direction);
@@ -192,22 +230,26 @@ public class Player : MonobitEngine.MonoBehaviour
             {
                 if (atype == ABNORMAL_CONDITION_TYOE.AC_NONE)
                 {
-                    AttackBase.ATK_TYPE recAType = collision.gameObject.GetComponent<AttackBase>().GetType();
+                    AttackBase.ATK_TYPE recAType = collision.gameObject.GetComponent<AttackBase>().GetATKType();
+                    Debug.Log(collision.gameObject.GetComponent<AttackBase>().GetATKType());
                     switch (recAType)
                     {
                         case AttackBase.ATK_TYPE.AT_FIRE:
+                            Debug.Log("Fire");
                             atype = ABNORMAL_CONDITION_TYOE.AC_FIRE;
                             FireStateObj = MonobitNetwork.Instantiate(FireStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, FireStateObj.GetComponent<MonobitView>().viewID);
                             break;
                         case AttackBase.ATK_TYPE.AT_WARTER:
+                            Debug.Log("Water");
                             atype = ABNORMAL_CONDITION_TYOE.AC_WATER;
-                            WaterStateObj = MonobitNetwork.Instantiate(FireStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
+                            WaterStateObj = MonobitNetwork.Instantiate(WaterStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WaterStateObj.GetComponent<MonobitView>().viewID);
                             break;
                         case AttackBase.ATK_TYPE.AT_WOOD:
+                            Debug.Log("Wood");
                             atype = ABNORMAL_CONDITION_TYOE.AC_WOOD;
-                            WoodStateObj = MonobitNetwork.Instantiate(FireStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
+                            WoodStateObj = MonobitNetwork.Instantiate(WoodStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WoodStateObj.GetComponent<MonobitView>().viewID);
                             break;
                     }
@@ -227,6 +269,7 @@ public class Player : MonobitEngine.MonoBehaviour
         HP -= _damagevalue;
         NetworkControl.customParams["HP"] = HP;
         NetworkManager.SetPlayerCustomParameters(NetworkControl.customParams);
+        HPbar.GetComponent<GaugeCtrl>().DamageCtrl(_damagevalue);
         if (HP <= 0)
         {
             MonobitNetwork.Destroy(this.gameObject);
@@ -244,7 +287,6 @@ public class Player : MonobitEngine.MonoBehaviour
             }
             LoosePlayer();
         }
-        nametxt.text = HP.ToString();
     }
 
     [MunRPC]
@@ -318,8 +360,40 @@ public class Player : MonobitEngine.MonoBehaviour
     {
         if (havemonster)
         {
+            bool defflg = false; 
+
+            switch (atype)
+            {
+                case ABNORMAL_CONDITION_TYOE.AC_FIRE:
+                    if(monscript.GetMonsterType() == (int)MonsterBase.MONSTER_TYPE.MT_WARTER)
+                    {
+                        defflg = true;
+                    }
+                    break;
+                case ABNORMAL_CONDITION_TYOE.AC_WATER:
+                    if (monscript.GetMonsterType() == (int)MonsterBase.MONSTER_TYPE.MT_PLANT)
+                    {
+                        defflg = true;
+                    }
+                    break;
+                case ABNORMAL_CONDITION_TYOE.AC_WOOD:
+                    if (monscript.GetMonsterType() == (int)MonsterBase.MONSTER_TYPE.MT_FIRE)
+                    {
+                        defflg = true;
+                    }
+                    break;
+            }
+
             havemonster = false;
-            monscript.Attack();
+
+            if (defflg)
+            {
+                monscript.Deffence();
+            }
+            else
+            {
+                monscript.Attack();
+            }
         }
     }
 }
