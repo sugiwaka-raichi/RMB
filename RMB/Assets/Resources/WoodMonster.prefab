@@ -217,7 +217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackObj: {fileID: 8932191970145715597, guid: 14e20c52f2c746b43841a9801b37e521,
     type: 3}
-  diffenceObj: {fileID: 0}
+  diffenceObj: {fileID: 2938103046634194992, guid: a6f23cf4621849c449dc4b249a74b543,
+    type: 3}
 --- !u!114 &6857206475473452664
 MonoBehaviour:
   m_ObjectHideFlags: 0
