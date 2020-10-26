@@ -40,9 +40,13 @@ public class FireMonster : MonsterBase
     public override void Deffence()
     {
         Debug.Log("fireDiffence");
+        //位置設定
+        Vector3 pos = transform.parent.transform.position;
+        pos.y += 4.5f;          //生成位置微調整
 
-        //ToDo:詳細な防御処理は以下に記述
-        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, transform.parent.transform.position, Quaternion.identity, 0, null, false, false, true);
+        //生成
+        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, pos, Quaternion.identity, 0, null, false, false, true);
+        //削除
         Destroy(gameObject, 2);
 
         base.Deffence();
