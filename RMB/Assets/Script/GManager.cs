@@ -13,8 +13,8 @@ public class GManager : MonobitEngine.MonoBehaviour
 
     private GameObject                  playerObject;       // プレイヤー格納用
 
-    static private MonobitPlayer[]      playerCount;        // プレイヤー情報格納用
-    static private int                  playerNum;          // プレイヤー人数格納用
+    private MonobitPlayer[]             playerCount;        // プレイヤー情報格納用
+    private static int                  playerNum;          // プレイヤー人数格納用
 
     // モンスターのPrefab情報を格納
     [SerializeField]
@@ -124,31 +124,25 @@ public class GManager : MonobitEngine.MonoBehaviour
                     playerpos = new Vector3(-32.0f, 1.0f, 22.0f);
                     break;
                 case 2:
-                    playerpos = new Vector3(10.0f, 1.0f, -10.0f);
+                    playerpos = new Vector3(0.0f, 1.0f, 23.5f);
                     break;
                 case 3:
-                    playerpos = new Vector3(10.0f, 1.0f, 10.0f);
+                    playerpos = new Vector3(32.0f, 1.0f, 22.0f);
                     break;
                 case 4:
-                    playerpos = new Vector3(-10.0f, 1.0f, -10.0f);
+                    playerpos = new Vector3(-32.0f, 1.0f, 0.0f);
                     break;
                 case 5:
-                    playerpos = new Vector3(-5.0f, 1.0f, 5.0f);
+                    playerpos = new Vector3(32.0f, 1.0f, 0.0f);
                     break;
                 case 6:
-                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
+                    playerpos = new Vector3(-32.0f, 1.0f, -22.0f);
                     break;
                 case 7:
-                    playerpos = new Vector3(5.0f, 1.0f, 5.0f);
+                    playerpos = new Vector3(0.0f, 1.0f, -23.5f);
                     break;
                 case 8:
-                    playerpos = new Vector3(5.0f, 1.0f, -5.0f);
-                    break;
-                case 9:
-                    playerpos = new Vector3(-2.0f, 1.0f, 0.0f);
-                    break;
-                case 10:
-                    playerpos = new Vector3(2.0f, 1.0f, 0.0f);
+                    playerpos = new Vector3(32.0f, 1.0f, -22.0f);
                     break;
             }
 
@@ -239,34 +233,29 @@ public class GManager : MonobitEngine.MonoBehaviour
     // ユニークモンスター生成
     private void CreateUniqueMonster()
     {
-        Debug.Log("CreateUniqueMonster");
         for(int i = 0; i < UNIMON_MAX; i++)
         {
+            // 生成位置割り振り
             switch (i)
             {
                 case 0:
                     unimonPos[i] = new Vector3(-15.0f, 0.5f, 8.5f);
-                    Debug.Log(unimonPos[i]);
                     break;
 
                 case 1:
                     unimonPos[i] = new Vector3(13.0f, 0.5f, 10.5f);
-                    Debug.Log(unimonPos[i]);
                     break;
 
                 case 2:
                     unimonPos[i] = new Vector3(-13.0f, 0.5f, -10.5f);
-                    Debug.Log(unimonPos[i]);
                     break;
 
                 case 3:
                     unimonPos[i] = new Vector3(15.0f, 0.5f, -8.5f);
-                    Debug.Log(unimonPos[i]);
                     break;
 
                 case 4:
                     unimonPos[i] = new Vector3(0.0f, 0.0f, 0.0f);
-                    Debug.Log(unimonPos[i]);
                     break;
 
                 default:
@@ -275,41 +264,6 @@ public class GManager : MonobitEngine.MonoBehaviour
             // 生成処理
             unimonArray[i] = MonobitNetwork.Instantiate(unimonPrefab.name, unimonPos[i], Quaternion.identity, 0, null, false, false, true) as GameObject;
         }
-    }
-
-    /*============================= CountdownPlayer =============================*/
-    // プレイヤーカウントを減らす処理
-    public static void CountdownPlayer()
-    {
-        playerNum--;
-    }
-
-    /*============================= CountdownMonster =============================*/
-    // モンスターカウントを減らす処理
-    public static void CountdownMonster()
-    {
-        monsterCount--;
-        Debug.Log("CountdownMonster" + monsterCount);
-    }
-
-    /*============================= CountdownUniqueMonster =============================*/
-    // ユニモンカウントを減らす処理
-    public static void CountdownUnimon()
-    {
-        unimonCount--;
-    }
-
-    /*============================= SetRandomPosition =============================*/
-    //ランダムな位置を生成する関数
-    private Vector3 SetRandomPosition()
-    {
-        //それぞれの座標をランダムに生成する
-        float x = Random.Range(xMinPos, xMaxPos);
-        float y = yMaxPos;
-        float z = Random.Range(zMinPos, zMaxPos);
-
-        // Vector3型のPositionを返す
-        return new Vector3(x, y, z);
     }
 
     /*============================= SetSpawnerPosition =============================*/
@@ -419,6 +373,21 @@ public class GManager : MonobitEngine.MonoBehaviour
         return new Vector3(x, y, z);
     }
 
+    /*============================= CountdownMonster =============================*/
+    // モンスターカウントを減らす処理
+    public static void CountdownMonster()
+    {
+        monsterCount--;
+        Debug.Log("CountdownMonster" + monsterCount);
+    }
+
+    /*============================= CountdownUniqueMonster =============================*/
+    // ユニモンカウントを減らす処理
+    public static void CountdownUnimon()
+    {
+        unimonCount--;
+    }
+
     /*============================= GetPlayerInfo =============================*/
     // 一人のプレイヤーを参照する関数
     public static MonobitPlayer GetPlayerInfo()
@@ -433,18 +402,33 @@ public class GManager : MonobitEngine.MonoBehaviour
         return NetworkManager.GetPlayerList();
     }
 
+    /*============================= CountdownPlayer =============================*/
+    // プレイヤーカウントを減らし、各クライアントに送信する処理
+    public void CountdownPlayer()
+    {
+        playerNum--;
+        SendPlayerDeath();
+    }
+
     /*============================= SendPlayerDeath =============================*/
     // プレイヤーのデスによる人数変動の送信処理
-    [MunRPC]
-    private void SendPlayerDeath(int _playerNum)
+    public void SendPlayerDeath()
     {
-        ReceivePlayerDeath(_playerNum);
+        monobitView.RPC("ReceivePlayerDeath", MonobitTargets.All, playerNum);
     }
 
     /*============================= ReceivePlayerDeath =============================*/
     //  プレイヤーのデスによる人数変動の受信処理
-    private void ReceivePlayerDeath(int _playerNum)
+    [MunRPC]
+    public void ReceivePlayerDeath(int _playerNum)
     {
         playerNum -= _playerNum;
-    } 
+    }
+
+    /*============================= ReferPlayerNum =============================*/
+    // Aliveスクリプトと連携
+    public static int ReferPlayerNum()
+    {
+        return playerNum;
+    }
 }
