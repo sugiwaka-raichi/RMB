@@ -35,7 +35,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected void Update()
     {
         //持たれていなければ
-        if (!catchFlg)
+        if (!catchFlg || transform.parent == null)
         {
             SurvivalTimer();        //生存時間
         }
@@ -47,9 +47,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Attack()
     {
         Debug.Log("attack");
-        delTimer = 2;           //三秒後に削除設定
-        DelReport();            //削除報告
-        Destroy(this.gameObject, delTimer);     //削除
+        delTimer = 2;           //削除までの時間
+        //DelReport();            //削除報告
         transform.parent = null;        //親子関係解除
         SendParentElimination();            //親子解消を全体に送る
     }
@@ -93,7 +92,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     {
         Debug.Log("destroy");
         DelReport();
-        Destroy(this.gameObject);
+        Destroy(this.gameObject);     //削除
     }
 
     //======================================
