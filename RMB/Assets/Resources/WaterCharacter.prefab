@@ -367,6 +367,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 9500000}
   nowAnim: 1
+  monsterAI: {fileID: 5393059744485347344}
+  monster: {fileID: -973450598253327301}
 --- !u!114 &-973450598253327301
 MonoBehaviour:
   m_ObjectHideFlags: 0

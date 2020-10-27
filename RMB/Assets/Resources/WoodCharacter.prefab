@@ -350,8 +350,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91cd371c973e43b4c922a3e6ff6b6ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 9500000, guid: 06aec8c7ff2a2174f8c755f09af72d57, type: 3}
+  animator: {fileID: 9500000}
   nowAnim: 1
+  monsterAI: {fileID: 8569013792771310857}
+  monster: {fileID: -1589704689748772746}
 --- !u!195 &8569013792771310857
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -455,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a212333f0fad40b429ea9c65549ab6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Animator: {fileID: 9500000, guid: 06aec8c7ff2a2174f8c755f09af72d57, type: 3}
+  m_Animator: {fileID: 9500000}
   m_Controller: {fileID: 9100000, guid: c3498580770172a4bb4cfe88aa59ea4c, type: 2}
   m_SyncAnimLayers:
   - m_Index: 0
