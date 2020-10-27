@@ -20,7 +20,10 @@ public class WanwanUnimon : AttackBase
     private bool reTrackingFlag = false;            // 再追跡フラグ
     [SerializeField]
     private float reTrackingTimer = 0.0f;           // 再追跡タイマカウント
-    private float reTrackingReset = 5.0f;           // 再追跡リセットタイマカウント
+    [SerializeField]
+    private float reTrackingOnTimer;           // 再追跡オンタイマ
+    [SerializeField]
+    private float reTrackingOffTimer;           // 再追跡オフタイマ
 
     [Header("Can Move Wanwan Set XZ Position Min and Max")]
     [SerializeField]
@@ -36,7 +39,7 @@ public class WanwanUnimon : AttackBase
     void Start()
     {
         // 追尾対象を検索
-        targetObj = GameObject.Find("Player(Clone)");
+        targetObj = GameObject.FindGameObjectWithTag("Player");
 
         // 攻撃属性を指定
         atkType = ATK_TYPE.AT_NONE;
@@ -66,8 +69,6 @@ public class WanwanUnimon : AttackBase
     /*============================= OnCollisionStay =============================*/
     private void OnTriggerStay(Collider other)
     {
-        reTrackingFlag = true;
-
         if (reTrackingFlag == true)
         {
             float speed = speedParameter * Time.deltaTime;
@@ -78,11 +79,36 @@ public class WanwanUnimon : AttackBase
                 wanwanPos = Vector3.MoveTowards(this.gameObject.transform.position, other.transform.position, speed);
             }
         }
-        reTrackingTimer += Time.deltaTime;
-        if(reTrackingTimer >= reTrackingReset)
+        else if(reTrackingFlag == false)
         {
-            reTrackingFlag = false;
+            float speed = speedParameter * Time.deltaTime;
+            wanwanPos = Vector3.MoveTowards(this.gameObject.transform.position, tmpPos, speed);
+        }
+
+        if (other.gameObject.tag == "Player")
+        {
+            if (reTrackingTimer > reTrackingOnTimer && reTrackingFlag == false)
+            {
+                reTrackingFlag = true;
+                reTrackingTimer = 0.0f;
+            }
+
+            if (reTrackingTimer > reTrackingOffTimer && reTrackingFlag == true)
+            {
+                reTrackingFlag = false;
+                reTrackingTimer = 0.0f;
+            }
+            reTrackingTimer += Time.deltaTime;
+        }
+    }
+
+    /*============================= OnTriggerExit =============================*/
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
             reTrackingTimer = 0.0f;
+            reTrackingFlag = false;
         }
     }
 
