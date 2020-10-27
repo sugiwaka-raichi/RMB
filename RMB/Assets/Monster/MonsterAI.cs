@@ -11,21 +11,27 @@ public class MonsterAI : MonobitEngine.MonoBehaviour
         isStop,            //停止アニメーション
     }
 
+    //-------------------------
+    //アニメーションで使う変数
+    //-------------------------
     [SerializeField]
     private Animator animator;              //アニメーター
     [SerializeField]
     private ANIM_TYPE nowAnim;              //現在のアニメーション
     private bool playerOn = false;          //プレイヤーが範囲にいればtrue
 
+    //-------------------------------
+    //AIで使う変数
+    //-------------------------------
+    [SerializeField]
     private NavMeshAgent monsterAI;
+    [SerializeField]
     private MonsterBase monster;
     private bool aiflg = true;     //AIを動かすかどうか
 
     // Start is called before the first frame update
     void Start()
     {
-        monsterAI = GetComponent<NavMeshAgent>();     //AIコンポーネント取得
-        monster = GetComponent<MonsterBase>();        //モンスターの情報
         nowAnim = ANIM_TYPE.isStop;         //停止状態から開始
     }
 
