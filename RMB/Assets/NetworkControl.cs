@@ -38,26 +38,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     int playerCount = 0;
 
     public static bool lobyon = true; 
-    /** UI使うかフラグ. */
-    [SerializeField] bool useUIflg = false;
 
     /** UI用. */
-    //[SerializeField] Canvas BeforeConnectCanvas;
-    //[SerializeField] Canvas LobyCanvas;
     [SerializeField] Canvas RoomCanvas;
-    //[SerializeField] Canvas InGameCanvas;
-    //[SerializeField] Canvas ConnectedCanvas;
-    //[SerializeField] Canvas InRoomCanvas;
-
-    //[SerializeField] Text PlayerNameLavel;
-    //[SerializeField] InputField PlayerNameinputField;
-    //[SerializeField] Button ConnecoServerButton;
-
-    //[SerializeField] Text RoomnameLabe;
-    //[SerializeField] InputField RoomnameInputField;
-    //[SerializeField] Button CreateRandomRoomButton;
-    //[SerializeField] Button JoinRandomRoomButton;
-    //[SerializeField] Button[] JoinRoomButton = new Button[10];
 
     [SerializeField] Text RoomNameInfoLabel;
     [SerializeField] Text PlayerInfoItem;
@@ -84,19 +67,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (useUIflg)
-        {
-            NetworkShow();
-        }
-    }
-
-    // OnGUI is called for rendering and handring GUI events
-    void OnGUI()
-    {
-        if (!useUIflg)
-        {
-            NetworkShowOnGUI();
-        }
+        NetworkShow();
     }
 
     /** ネットワークUI表示. */
@@ -123,93 +94,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     PlayerInfoLabel[i].gameObject.SetActive(false);
                 }
                 LobyShow();
-            }
-        }
-    }
-
-    void NetworkShowOnGUI()
-    {
-        // デフォルトのボタンと被らないように、段下げを行う。
-        GUILayout.Space(24);
-
-        // MUNサーバに接続している場合
-        if (NetworkManager.GetisConnect())
-        {
-            // ボタン入力でサーバから切断＆シーンリセット
-            if (GUILayout.Button("Disconnect", GUILayout.Width(150)))
-            {
-                // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
-                NetworkManager.DisconnectflgOn();
-
-                // サーバから切断する
-                DisconnectServer();
-
-                // シーンをリロードする
-                ManageSceneLoader.SceneType sceneName = ManageSceneLoader.GetSceneType();
-                ManageSceneLoader.SceneChange(sceneName);
-                Debug.Log(sceneName);
-            }
-
-            // ルームに入室している場合
-            if (NetworkManager.GetinRoom())
-            {
-                // ボタン入力でルームから退室
-                if (GUILayout.Button("Leave Room", GUILayout.Width(150)))
-                {
-                    playingGame = false;
-                    NetworkManager.LeaveRoom();
-                }
-
-                if (!playingGame)
-                {
-                    GUILayout.Label(NetworkManager.GetRoom().name);
-                    readyCount = 0;
-                    foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
-                    {
-                        string playerInfo =
-                            string.Format("{0} {1}",
-                                player.ID, player.customParameters["ready"]);
-                        GUILayout.Label(playerInfo);
-
-                        if ((bool)player.customParameters["ready"])
-                        {
-                            readyCount++;
-
-                            if (readyCount == NetworkManager.GetPlayerList().Length)
-                            {
-                                StartGame();
-                                customParams["ready"] = false;
-                                customParams["HP"] = 100;
-                                NetworkManager.SetPlayerCustomParameters(customParams);
-                                NetworkManager.GetRoom().open = false;
-                                NetworkManager.GetRoom().visible = false;
-                            }
-                        }
-                    }
-
-                    if (NetworkManager.GetPlayerList().Length >= 1)
-                    {
-                        if (GUILayout.Button("StartGame"))
-                        {
-                            customParams["ready"] = true;
-                            NetworkManager.SetPlayerCustomParameters(customParams);
-                        }
-                    }
-                }
-            }
-
-            // ルームに入室していない場合
-            if (!NetworkManager.GetinRoom() && lobyon)
-            {
-                lobyon = false;
-                RoomSettings roomSettings = new RoomSettings();
-                roomSettings.maxPlayers = 8;
-                roomSettings.isVisible = true;
-                roomSettings.isOpen = true;
-
-                roomCount++;
-                roomName = "room";
-                NetworkManager.JoinOrCreateRoom(roomName + roomCount.ToString(), roomSettings, null);
             }
         }
     }

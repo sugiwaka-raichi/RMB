@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3045417600828532926
+--- !u!1 &1469718403731597682
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 708122922236860201}
-  - component: {fileID: 8410167452117316109}
+  - component: {fileID: 1469718403731597683}
+  - component: {fileID: 5761942620157068628}
   m_Layer: 0
   m_Name: LobbyNetWork
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &708122922236860201
+--- !u!4 &1469718403731597683
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3045417600828532926}
+  m_GameObject: {fileID: 1469718403731597682}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 434.05273, y: 500.9985, z: 148.8855}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,13 +31,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8410167452117316109
+--- !u!114 &5761942620157068628
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3045417600828532926}
+  m_GameObject: {fileID: 1469718403731597682}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5ebcd1c252c9964689a113a52134620, type: 3}
@@ -46,6 +46,7 @@ MonoBehaviour:
   useUIflg: 1
   RoomCanvas: {fileID: 0}
   RoomNameInfoLabel: {fileID: 0}
+  PlayerInfoItem: {fileID: 0}
   PlayerInfoLabel:
   - {fileID: 0}
   - {fileID: 0}
@@ -58,3 +59,4 @@ MonoBehaviour:
   ReadyGameButton: {fileID: 0}
   DisconnectButton: {fileID: 0}
   LeaveRoomButton: {fileID: 0}
+  MoveRoomButton: {fileID: 0}
