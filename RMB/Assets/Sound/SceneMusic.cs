@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SceneMusic : MonoBehaviour
 {
-    bool startMusic = false;
 
     // Start is called before the first frame update
     void Start()
@@ -14,8 +13,10 @@ public class SceneMusic : MonoBehaviour
 
     private void Update()
     {
-        if (!startMusic && ManageSceneLoader.GetActiveScene() != ManageSceneLoader.SceneType.NetScene.ToString())
+        //現在のアクティブシーンがNetScene出ないときに処理を行う
+        if (ManageSceneLoader.GetActiveScene() != ManageSceneLoader.SceneType.NetScene.ToString())
         {
+            //現在のシーンタイプを取得
             switch (ManageSceneLoader.GetSceneType())
             {
                 case ManageSceneLoader.SceneType.TitleScene:
@@ -28,7 +29,7 @@ public class SceneMusic : MonoBehaviour
                     SoundManager.PlayMusic(SoundData.MUSIC_LIST.Stage.ToString());
                     break;
             }
-            startMusic = true;
+            Destroy(this);          //二度目は再ロードされるまでないので削除
         }
     }
 
