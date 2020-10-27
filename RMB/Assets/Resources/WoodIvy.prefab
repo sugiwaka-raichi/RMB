@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8932191970145715586}
   - component: {fileID: 2403027296743978436}
   - component: {fileID: 2403027296742906252}
-  - component: {fileID: 5655968324429804621}
   - component: {fileID: 497557211236843594}
   - component: {fileID: 5412011944274457431}
+  - component: {fileID: 5655968324429804621}
   m_Layer: 0
   m_Name: WoodIvy
   m_TagString: AtkObj
@@ -82,19 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5655968324429804621
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8932191970145715597}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0446808, y: 5.3144393, z: 1.0575278}
-  m_Center: {x: -0.101986885, y: 2.6472833, z: -0.0041457415}
 --- !u!114 &497557211236843594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,3 +120,16 @@ MonoBehaviour:
   prefixBackup: 0
   ownershipTransfer: 0
   compressedStream: 0
+--- !u!65 &5655968324429804621
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8932191970145715597}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0446808, y: 5.3144393, z: 1.0575278}
+  m_Center: {x: -0.101986885, y: 2.6472833, z: -0.0041457415}
