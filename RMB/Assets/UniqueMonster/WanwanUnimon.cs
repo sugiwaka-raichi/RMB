@@ -50,7 +50,13 @@ public class WanwanUnimon : AttackBase
 
     /*============================= Update =============================*/
     private void Update()
-    { 
+    {
+        // ホストじゃなければ返す
+        if (!MonobitNetwork.isHost)
+        {
+            return;
+        }
+
         // 範囲内が有効であれば常にその位置が入る
         this.gameObject.transform.position = new Vector3(Mathf.Clamp(wanwanPos.x, tmpPos.x + xMinPos, tmpPos.x + xMaxPos),
                                                          tmpPos.y,
