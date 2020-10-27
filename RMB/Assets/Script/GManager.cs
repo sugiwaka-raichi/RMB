@@ -108,6 +108,10 @@ public class GManager : MonobitEngine.MonoBehaviour
     /*============================= Start =============================*/
     protected void Start()
     {
+        // インスタンスがある場合の
+        if(GManager.GMInstance != null)
+        {
+        }
         // スタートの各処理前にアクティブシーンをステージシーンに切り替え
         if(ManageSceneLoader.GetActiveScene() == "NetScene")
         {
@@ -175,8 +179,6 @@ public class GManager : MonobitEngine.MonoBehaviour
         spawnerPos = new Vector3[spawnerNum];
 
         unimonPos = new Vector3[UNIMON_MAX];
-
-        CreateUniqueMonster();
     }
 
     /*============================= Update =============================*/
@@ -189,6 +191,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         CreateMonster();
+        CreateUniqueMonster();
     }
 
     /*============================= CreateMonster =============================*/
@@ -233,36 +236,39 @@ public class GManager : MonobitEngine.MonoBehaviour
     // ユニークモンスター生成
     private void CreateUniqueMonster()
     {
-        for(int i = 0; i < UNIMON_MAX; i++)
+        for (int i = 0; i < UNIMON_MAX; i++)
         {
-            // 生成位置割り振り
-            switch (i)
+            if (unimonArray[i] == null)
             {
-                case 0:
-                    unimonPos[i] = new Vector3(-15.0f, 0.5f, 8.5f);
-                    break;
+                // 生成位置割り振り
+                switch (i)
+                {
+                    case 0:
+                        unimonPos[i] = new Vector3(-15.0f, 0.5f, 8.5f);
+                        break;
 
-                case 1:
-                    unimonPos[i] = new Vector3(13.0f, 0.5f, 10.5f);
-                    break;
+                    case 1:
+                        unimonPos[i] = new Vector3(13.0f, 0.5f, 10.5f);
+                        break;
 
-                case 2:
-                    unimonPos[i] = new Vector3(-13.0f, 0.5f, -10.5f);
-                    break;
+                    case 2:
+                        unimonPos[i] = new Vector3(-13.0f, 0.5f, -10.5f);
+                        break;
 
-                case 3:
-                    unimonPos[i] = new Vector3(15.0f, 0.5f, -8.5f);
-                    break;
+                    case 3:
+                        unimonPos[i] = new Vector3(15.0f, 0.5f, -8.5f);
+                        break;
 
-                case 4:
-                    unimonPos[i] = new Vector3(0.0f, 0.0f, 0.0f);
-                    break;
+                    case 4:
+                        unimonPos[i] = new Vector3(0.0f, 0.0f, 0.0f);
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+                // 生成処理
+                unimonArray[i] = MonobitNetwork.Instantiate(unimonPrefab.name, unimonPos[i], Quaternion.identity, 0, null, false, false, true) as GameObject;
             }
-            // 生成処理
-            unimonArray[i] = MonobitNetwork.Instantiate(unimonPrefab.name, unimonPos[i], Quaternion.identity, 0, null, false, false, true) as GameObject;
         }
     }
 
@@ -402,14 +408,6 @@ public class GManager : MonobitEngine.MonoBehaviour
         return NetworkManager.GetPlayerList();
     }
 
-    /*============================= CountdownPlayer =============================*/
-    // プレイヤーカウントを減らし、各クライアントに送信する処理
-    public void CountdownPlayer()
-    {
-        playerNum--;
-        SendPlayerDeath();
-    }
-
     /*============================= SendPlayerDeath =============================*/
     // プレイヤーのデスによる人数変動の送信処理
     public void SendPlayerDeath()
@@ -427,7 +425,7 @@ public class GManager : MonobitEngine.MonoBehaviour
 
     /*============================= ReferPlayerNum =============================*/
     // Aliveスクリプトと連携
-    public static int ReferPlayerNum()
+    public int ReferPlayerNum()
     {
         return playerNum;
     }
