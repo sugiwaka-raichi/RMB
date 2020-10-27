@@ -60,6 +60,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     //[SerializeField] Button[] JoinRoomButton = new Button[10];
 
     [SerializeField] Text RoomNameInfoLabel;
+    [SerializeField] Text PlayerInfoItem;
     [SerializeField] Text[] PlayerInfoLabel = new Text[8];
     [SerializeField] Button ReadyGameButton;
 
@@ -106,13 +107,20 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             // ルームに入室している場合
             if (NetworkManager.GetinRoom())
             {
-                RoomCanvas.gameObject.SetActive(true);
+                RoomNameInfoLabel.gameObject.SetActive(true);
+                PlayerInfoItem.gameObject.SetActive(true);
                 RoomShow();
             }
             // ルームに入室していない場合
             else if (lobyon)
             {
-                RoomCanvas.gameObject.SetActive(false);
+                RoomNameInfoLabel.gameObject.SetActive(false);
+                PlayerInfoItem.gameObject.SetActive(false);
+                ReadyGameButton.gameObject.SetActive(false);
+                for (int i = 0; i < playerCount; i++)
+                {
+                    PlayerInfoLabel[i].gameObject.SetActive(false);
+                }
                 LobyShow();
             }
         }
