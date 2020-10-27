@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: -4887038205583721844}
   - component: {fileID: -887862454698372264}
   - component: {fileID: 2651762276744185402}
+  - component: {fileID: -1326843768193303474}
   m_Layer: 0
   m_Name: WaterCharacter
   m_TagString: Monster
@@ -385,6 +386,7 @@ MonoBehaviour:
     type: 3}
   diffenceObj: {fileID: 8385201261407257834, guid: 8df4e158d8fa7ce438287d9a2fa526ba,
     type: 3}
+  sound: {fileID: -1326843768193303474}
 --- !u!195 &5393059744485347344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -527,6 +529,18 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
+--- !u!114 &-1326843768193303474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5a2c653ae48b9478961dcf5e82e0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &100020
 GameObject:
   m_ObjectHideFlags: 0

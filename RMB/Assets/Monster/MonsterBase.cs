@@ -8,6 +8,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected GameObject attackObj;     //攻撃時に使うオブジェクトを格納
     [SerializeField]
     protected GameObject diffenceObj;     //防御時に使うオブジェクトを格納
+    [SerializeField]
+    protected SoundNetwork sound;       //ネットワークで扱うサウンド
 
     //===============================
     //モンスターの属性値
@@ -26,9 +28,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected int playerID = -1;            //保持してるプレイヤーのID(未保持:-1)
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -52,6 +53,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         Destroy(this.gameObject, delTimer);     //削除
         transform.parent = null;        //親子関係解除
         SendParentElimination();            //親子解消を全体に送る
+        
     }
 
     //================================
