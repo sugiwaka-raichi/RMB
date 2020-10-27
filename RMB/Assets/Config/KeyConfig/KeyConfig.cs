@@ -34,6 +34,8 @@ public class KeyConfig : MonoBehaviour
     {
         inputFlg = true;
 
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemSelect.ToString());
+
         //keynameが登録されていなければ登録する
         if (KeyManager.CheckKeyType(keyName))
         {
@@ -69,6 +71,8 @@ public class KeyConfig : MonoBehaviour
             }
             else
             {
+                SoundManager.PlaySE(SoundData.SE_LIST.KeyConfig.ToString());
+
                 //入力されていれば以下
                 Debug.Log("入力されたキー:" + keyCode);
                 KeyManager.SetKey(keyName, keyCode);    //入力されたキーを設定する

@@ -44,7 +44,8 @@ public class SoundConfig : MonoBehaviour
     public void SetVol()
     {
         Debug.Log("音量変更:");
-        
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemCancel.ToString());
+
         mixer.SetFloat(type.ToString(), slider.value);        //ミキサーに設定
     }
 
