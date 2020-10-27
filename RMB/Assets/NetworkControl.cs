@@ -66,6 +66,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
 
     [SerializeField] Button DisconnectButton;
     [SerializeField] Button LeaveRoomButton;
+    [SerializeField] Button MoveRoomButton;
 
     // Start is called before the first frame update
     void Start()
@@ -184,8 +185,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                                 NetworkManager.GetRoom().visible = false;
                             }
                         }
-
-                        Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
                     }
 
                     if (NetworkManager.GetPlayerList().Length >= 1)
@@ -244,7 +243,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             PlayerInfoLabel[i].gameObject.SetActive(false);
         }
         playerCount = 0;
-        Debug.Log(NetworkManager.GetPlayer().customParameters["ready"]);
         foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
         {
             string playerInfo =
@@ -252,10 +250,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     player.ID, player.customParameters["ready"]);
             PlayerInfoLabel[playerCount].gameObject.SetActive(true);
             PlayerInfoLabel[playerCount].text = playerInfo;
-            Debug.Log(player.customParameters["ready"]);
             if ((bool)player.customParameters["ready"])
             {
-                Debug.Log(readyCount + " " + NetworkManager.GetPlayerList().Length);
                 readyCount++;
                 if (readyCount == NetworkManager.GetPlayerList().Length)
                 {
@@ -267,8 +263,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                     NetworkManager.GetRoom().visible = false;
                 }
             }
-
-            Debug.Log("PlayerName : " + player.name + ", Ready : " + player.customParameters["ready"]);
             playerCount++;
         }
 
@@ -308,6 +302,11 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     {
         customParams["ready"] = true;
         NetworkManager.SetPlayerCustomParameters(customParams);
+    }
+
+    public void MoveRoom()
+    {
+        NetworkManager.MoveRoom();
     }
     
     /** ゲーム開始. */

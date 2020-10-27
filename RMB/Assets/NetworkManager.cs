@@ -25,6 +25,9 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     /** ルームランダム入室失敗フラグ. */
     private static bool bRandomJoinRoomFailed = false;
 
+    /** プレイヤー死亡報告フラグ. */
+    private static bool bPlayerDaeath = false;
+
     /**
      * 途中切断コールバック.
      */
@@ -91,6 +94,12 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         bDisconnect = true;
     }
 
+    /** プレイヤー死亡報告フラグオン. */
+    public static void PlayerDeathflgOn()
+    {
+        bPlayerDaeath = true;
+    }
+
     /**
      * ウィンドウ表示用メソッド.
      */
@@ -111,6 +120,15 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("OK", GUILayout.Width(50)))
             {
+                if (ManageSceneLoader.GetSceneType() == ManageSceneLoader.SceneType.StageScene)
+                {
+                    if (!bPlayerDaeath)
+                    {
+                        GManager.GMInstance.SendPlayerDeath();
+                    }
+                    bPlayerDaeath = false;
+                }
+                bPlayerDaeath = false;
                 ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
                 bDisconnect = false;
                 bDisplayWindow = false;
@@ -255,10 +273,26 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     /** ルーム退室呼び出し用. */
     public static void LeaveRoom()
     {
+        if(ManageSceneLoader.GetSceneType() == ManageSceneLoader.SceneType.StageScene)
+        {
+            if (!bPlayerDaeath)
+            {
+                GManager.GMInstance.SendPlayerDeath();
+            }
+            bPlayerDaeath = false;
+        }
         NetworkControl.customParams["ready"] = false;
-        NetworkManager.SetPlayerCustomParameters(NetworkControl.customParams);
+        SetPlayerCustomParameters(NetworkControl.customParams);
         NetworkControl.lobyon = true;
         NetworkControl.roomCount = 0;
+        MonobitNetwork.LeaveRoom();
+    }
+
+    public static void MoveRoom()
+    {
+        NetworkControl.customParams["ready"] = false;
+        SetPlayerCustomParameters(NetworkControl.customParams);
+        NetworkControl.lobyon = true;
         MonobitNetwork.LeaveRoom();
     }
 }
