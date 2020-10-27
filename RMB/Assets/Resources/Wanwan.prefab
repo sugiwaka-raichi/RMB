@@ -179,8 +179,10 @@ MonoBehaviour:
   originObj: {fileID: 528385848246817448, guid: 9d0fceedc880726408f2929971ace3d4,
     type: 3}
   tmpPos: {x: 0, y: 0, z: 0}
-  speedParameter: 7
+  speedParameter: 6
   reTrackingTimer: 0
+  reTrackingOnTimer: 1
+  reTrackingOffTimer: 3
   xMinPos: -5
   xMaxPos: 5
   zMinPos: -5

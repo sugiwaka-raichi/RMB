@@ -32,7 +32,7 @@ public class AliveNow : MonobitEngine.MonoBehaviour
     // 残存数の反映処理
     public void NowAlive()    
     {
-        alivePlayer = GManager.ReferPlayerNum();
+        alivePlayer = GManager.GMInstance.ReferPlayerNum();     // GameManagerから現在のプレイヤー人数を参照してもらってくる
         // オブジェクトからTextコンポーネントを取得
         this.GetComponent<Text>().text = "プレイヤー残存数：" + alivePlayer; // GameManagerから値を引き取って反映する。
     }
