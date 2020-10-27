@@ -53,7 +53,7 @@ Animator:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 3aa1e04b7202d5547b4e84fea5ceaa71, type: 3}
-  m_Controller: {fileID: 9100000, guid: c3498580770172a4bb4cfe88aa59ea4c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 98ebe5c23e6e43e43a830c5dc03e96c4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -211,12 +211,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 9500000}
-  m_Controller: {fileID: 9100000, guid: c3498580770172a4bb4cfe88aa59ea4c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 98ebe5c23e6e43e43a830c5dc03e96c4, type: 2}
   m_SyncAnimLayers:
   - m_Index: 0
     m_Name: Base Layer
     m_EnableSync: 1
-  m_SyncAnimParams: []
+  m_SyncAnimParams:
+  - m_Type: 4
+    m_Name: isStop
+    m_EnableSync: 1
+  - m_Type: 4
+    m_Name: isWalk
+    m_EnableSync: 1
+  - m_Type: 3
+    m_Name: New Int
+    m_EnableSync: 1
 --- !u!114 &7128419965088346293
 MonoBehaviour:
   m_ObjectHideFlags: 0
