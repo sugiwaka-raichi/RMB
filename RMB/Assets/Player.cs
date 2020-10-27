@@ -28,6 +28,10 @@ public class Player : MonobitEngine.MonoBehaviour
     [SerializeField]
     Image HPbar;
 
+    // プレイヤーアニメーター
+    [SerializeField]
+    Animator playerAnim;
+
     //// 名前表示用テキスト
     //[SerializeField]
     //Text nametxt;
@@ -40,7 +44,7 @@ public class Player : MonobitEngine.MonoBehaviour
     private float speed = 0.1f;
 
     // 自分判別用マテリアル
-[SerializeField]
+    [SerializeField]
     Material material;
 
     //水状態異常用プレハブ
@@ -88,6 +92,9 @@ public class Player : MonobitEngine.MonoBehaviour
     // 状態異常
     ABNORMAL_CONDITION_TYOE atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
 
+    // 状態異常持続時間
+    float actime = 5.0f;
+
     void Awake()
     {
         // すべての親オブジェクトに対して MonobitView コンポーネントを検索する
@@ -117,7 +124,7 @@ public class Player : MonobitEngine.MonoBehaviour
             return;
         }
 
-        Renderer renderer = GetComponent<Renderer>();
+        Renderer renderer = GetComponentInChildren<Renderer>();
         renderer.material = material;
         transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
         nowposition = transform.position;
@@ -149,10 +156,22 @@ public class Player : MonobitEngine.MonoBehaviour
                 break;
         }
 
+        if(atype != ABNORMAL_CONDITION_TYOE.AC_NONE)
+        {
+            actime -= Time.deltaTime;
+            if(actime <= 0.0f)
+            {
+                atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
+                actime = 5.0f;
+            }
+        }
+
         //キー入力を取得
         inputHorizontal = Input.GetAxisRaw("Horizontal");
         inputVertical = Input.GetAxisRaw("Vertical");
 
+        //inputHorizontal = 0.0f;
+        //inputVertical = 0.0f;
         //if (KeyManager.GetKey("Right"))
         //{
         //    inputHorizontal = 1.0f;
@@ -161,7 +180,7 @@ public class Player : MonobitEngine.MonoBehaviour
         //{
         //    inputHorizontal = -1.0f;
         //}
-        //if (KeyManager.GetKey("UP"))
+        //if (KeyManager.GetKey("Up"))
         //{
         //    inputVertical = 1.0f;
         //}
@@ -177,10 +196,20 @@ public class Player : MonobitEngine.MonoBehaviour
             {
                 transform.position += transform.forward * speed;
             }
+            playerAnim.SetBool("toRun", false);
+            playerAnim.SetBool("toEpicRun", false);
         }
         else
         {
             transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
+            if (havemonster)
+            {
+                playerAnim.SetBool("toEpicRun", true);
+            }
+            else
+            {
+                playerAnim.SetBool("toRun", true);
+            }
         }
         nowposition = transform.position;
         direction = nowposition - pastposition;
@@ -199,13 +228,56 @@ public class Player : MonobitEngine.MonoBehaviour
         {
             Atack();
         }
-        //if (KeyManager.GetKeyDown("SHot"))
+        //if (KeyManager.GetKeyDown("Shot"))
         //{
         //    Atack();
         //}
 
         pastposition = nowposition;
         pastdirection = direction;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == powertag)
+        {
+            if (other.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
+            {
+                if (atype == ABNORMAL_CONDITION_TYOE.AC_NONE)
+                {
+                    AttackBase.ATK_TYPE recAType = other.gameObject.GetComponent<AttackBase>().GetATKType();
+                    Debug.Log(other.gameObject.GetComponent<AttackBase>().GetATKType());
+                    switch (recAType)
+                    {
+                        case AttackBase.ATK_TYPE.AT_FIRE:
+                            Debug.Log("Fire");
+                            atype = ABNORMAL_CONDITION_TYOE.AC_FIRE;
+                            FireStateObj = MonobitNetwork.Instantiate(FireStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
+                            m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, FireStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
+                            break;
+                        case AttackBase.ATK_TYPE.AT_WARTER:
+                            Debug.Log("Water");
+                            atype = ABNORMAL_CONDITION_TYOE.AC_WATER;
+                            WaterStateObj = MonobitNetwork.Instantiate(WaterStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
+                            m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WaterStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
+                            break;
+                        case AttackBase.ATK_TYPE.AT_WOOD:
+                            Debug.Log("Wood");
+                            atype = ABNORMAL_CONDITION_TYOE.AC_WOOD;
+                            WoodStateObj = MonobitNetwork.Instantiate(WoodStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
+                            m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WoodStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
+                            break;
+                        case AttackBase.ATK_TYPE.AT_NONE:
+                            return;
+                    }
+                    Debug.Log(atype);
+                }
+                SoundManager.PlaySE("プレイヤー/当たり判定");
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -246,25 +318,30 @@ public class Player : MonobitEngine.MonoBehaviour
                             atype = ABNORMAL_CONDITION_TYOE.AC_FIRE;
                             FireStateObj = MonobitNetwork.Instantiate(FireStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, FireStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
                             break;
                         case AttackBase.ATK_TYPE.AT_WARTER:
                             Debug.Log("Water");
                             atype = ABNORMAL_CONDITION_TYOE.AC_WATER;
                             WaterStateObj = MonobitNetwork.Instantiate(WaterStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WaterStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
                             break;
                         case AttackBase.ATK_TYPE.AT_WOOD:
                             Debug.Log("Wood");
                             atype = ABNORMAL_CONDITION_TYOE.AC_WOOD;
                             WoodStateObj = MonobitNetwork.Instantiate(WoodStatePref.name, transform.position, Quaternion.identity, 0, null, false, true, false);
                             m_MonobitView.RPC("StateOn", MonobitTargets.All, m_MonobitView.viewID, WoodStateObj.GetComponent<MonobitView>().viewID);
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
+                            break;
+                        case AttackBase.ATK_TYPE.AT_NONE:
+                            m_MonobitView.RPC("Damage", MonobitTargets.All, 10);
+                            transform.position = transform.position - transform.forward * 2.0f;
                             break;
                     }
                     Debug.Log(atype);
                 }
                 SoundManager.PlaySE("プレイヤー/当たり判定");
-                m_MonobitView.RPC("Damage", MonobitTargets.All, 20);
-                Debug.Log("Hit");
             }
         }
     }
@@ -358,7 +435,8 @@ public class Player : MonobitEngine.MonoBehaviour
     // 
     void LoosePlayer()
     {
-
+        GManager.GMInstance.SendPlayerDeath();
+        NetworkManager.PlayerDeathflgOn();
     }
 
 
