@@ -299,7 +299,7 @@ public class Player : MonobitEngine.MonoBehaviour
         if (collision.transform.tag == "UniqueMonster")
         {
             m_MonobitView.RPC("Damage", MonobitTargets.All, 10);
-            transform.position = transform.position - transform.forward*2.0f;
+            transform.position = transform.position - transform.forward * 2.0f;
             //transform.position = transform.position - (collision.transform.position - transform.position)*1.0f;
         }
 
@@ -393,7 +393,7 @@ public class Player : MonobitEngine.MonoBehaviour
                     {
                         Debug.Log(_monobitviewID);
                         mymonsterobj = monsterobj;
-                        mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
+                        //mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
                         mymonsterobj.transform.SetParent(playerobj.transform);
                         mymonsterobj.transform.localPosition = monsterpos;
                         mymonsterobj.transform.rotation = playerobj.transform.rotation;
@@ -404,7 +404,7 @@ public class Player : MonobitEngine.MonoBehaviour
                         SoundManager.PlaySE("プレイヤー/装備時");
                         break;
                     }
-                }
+            }
                 break;
             }
         }
