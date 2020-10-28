@@ -52,6 +52,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     [SerializeField] Button LeaveRoomButton;
     [SerializeField] Button MoveRoomButton;
 
+    [SerializeField]
+    GameObject fadeOut;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -197,7 +200,9 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ゲーム開始. */
     public void StartGame()
     {
-        ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
+        //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);
+        fadeOut.SetActive(true);
+        FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.StageScene);
         Debug.Log("change getter");
         playingGame = true;
     }
