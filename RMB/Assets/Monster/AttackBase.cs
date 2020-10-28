@@ -44,7 +44,7 @@ public class AttackBase : MonobitEngine.MonoBehaviour
     //設定されたIDを受信する関数
     //=========================================
     [MunRPC]
-    private void RPCSetPlayerID(int _ID)
+    public void RPCSetPlayerID(int _ID)
     {
         playerID = _ID;
     }

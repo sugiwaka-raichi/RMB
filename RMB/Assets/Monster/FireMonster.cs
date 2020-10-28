@@ -24,7 +24,7 @@ public class FireMonster : MonsterBase
 
         //攻撃オブジェクト生成
         
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.rotation, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, playerObj.transform.rotation, 0, null, false, false, true);
 
         AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
 

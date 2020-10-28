@@ -239,8 +239,14 @@ public class Player : MonobitEngine.MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!m_MonobitView.isMine)
+        {
+            return;
+        }
+
         if (other.transform.tag == powertag)
         {
+            Debug.Log("技出したやつ" + other.gameObject.GetComponent<AttackBase>().GetShotPlayer() + "自分" + NetworkManager.GetPlayer().ID);
             if (other.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
             {
                 if (atype == ABNORMAL_CONDITION_TYOE.AC_NONE)
@@ -292,7 +298,7 @@ public class Player : MonobitEngine.MonoBehaviour
         {
             if (!havemonster && !collision.gameObject.GetComponent<MonsterBase>().GetCatchFlg())
             {
-                m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
+                m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, NetworkManager.GetPlayer().ID, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
             }
         }
 
@@ -374,12 +380,12 @@ public class Player : MonobitEngine.MonoBehaviour
     }
 
     [MunRPC]
-    void MonsterGetFlgOn(int _monobitviewID, int _monsterviewID)
+    void MonsterGetFlgOn(int _playerID, int _monobitviewID, int _monsterviewID)
     {
-        MonsterGet(_monobitviewID, _monsterviewID);
+        MonsterGet(_playerID, _monobitviewID, _monsterviewID);
     }
 
-    void MonsterGet(int _monobitviewID, int _monsterviewID)
+    void MonsterGet(int _playerID, int _monobitviewID, int _monsterviewID)
     {
         GameObject[] playerobjs = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject playerobj in playerobjs)
@@ -399,7 +405,7 @@ public class Player : MonobitEngine.MonoBehaviour
                         //mymonsterobj.transform.rotation = playerobj.transform.rotation;
                         monscript = mymonsterobj.GetComponent<MonsterBase>();
                         monscript.SetCatchFlg(true);
-                        monscript.SetPlayerID(NetworkManager.GetPlayer().ID);
+                        monscript.SetPlayerID(_playerID);
                         monscript.SetPlayerObject(playerobj);
                         havemonster = true;
                         SoundManager.PlaySE("プレイヤー/装備時");

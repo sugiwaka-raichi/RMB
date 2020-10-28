@@ -43,9 +43,9 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
             SurvivalTimer();        //生存時間
         }
 
-        if(playerObj != null)
+        if(playerObj != null && playerID == NetworkManager.GetPlayer().ID)
         {
-            transform.position = playerObj.transform.position + playerObj.transform.forward * 1.2f;
+            transform.position = playerObj.transform.position + playerObj.transform.forward * 1.5f;
             transform.rotation = playerObj.transform.rotation;
         }
     }
