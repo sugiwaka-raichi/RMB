@@ -24,7 +24,7 @@ public class FireMonster : MonsterBase
 
         //攻撃オブジェクト生成
         
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.parent.transform.rotation, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.rotation, 0, null, false, false, true);
 
         AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
 
@@ -41,7 +41,7 @@ public class FireMonster : MonsterBase
     {
         Debug.Log("fireDiffence");
         //位置設定
-        Vector3 pos = transform.parent.transform.position;
+        Vector3 pos = playerObj.transform.position;
         pos.y += 4.5f;          //生成位置微調整
 
         //生成

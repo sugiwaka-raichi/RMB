@@ -23,7 +23,7 @@ public class WoodMonster : MonsterBase
         atkPos.z += transform.forward.z;
 
         //攻撃オブジェクト生成
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.rotation, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, playerObj.transform.rotation, 0, null, false, false, true);
 
         AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
         Debug.Log("木属性のモンスターの攻撃");
@@ -38,7 +38,7 @@ public class WoodMonster : MonsterBase
     public override void Deffence()
     {
         //防御時生成
-        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, transform.parent.transform.position, Quaternion.identity, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, playerObj.transform.position, Quaternion.identity, 0, null, false, false, true);
         Destroy(gameObject, 2);
 
         base.Deffence();

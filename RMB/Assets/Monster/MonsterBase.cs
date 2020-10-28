@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 public class MonsterBase : MonobitEngine.MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected GameObject attackObj;     //攻撃時に使うオブジェクトを格納
     [SerializeField]
     protected GameObject diffenceObj;     //防御時に使うオブジェクトを格納
+
+    protected GameObject playerObj;     // プレイヤーに持たれたときのプレイヤーオブジェクトを格納
 
     //===============================
     //モンスターの属性値
@@ -35,9 +38,15 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     protected void Update()
     {
         //持たれていなければ
-        if (!catchFlg || transform.parent == null)
+        if (!catchFlg || playerObj == null)
         {
             SurvivalTimer();        //生存時間
+        }
+
+        if(playerObj != null)
+        {
+            transform.position = playerObj.transform.position + playerObj.transform.forward * 1.2f;
+            transform.rotation = playerObj.transform.rotation;
         }
     }
 
@@ -49,7 +58,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         Debug.Log("attack");
         delTimer = 2;           //削除までの時間
         //DelReport();            //削除報告
-        transform.parent = null;        //親子関係解除
+        //transform.parent = null;        //親子関係解除
         SendParentElimination();            //親子解消を全体に送る
     }
 
@@ -156,6 +165,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
 
         Debug.Log("RPC parent null");
         this.transform.parent = null;
+        playerObj = null;
     }
 
     //==============================================
@@ -165,5 +175,10 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     {
         Debug.Log("send parent null");
         monobitView.RPC("RPCParentElimination", MonobitEngine.MonobitTargets.All);
+    }
+
+    public void SetPlayerObject(GameObject _playerObj)
+    {
+        playerObj = _playerObj;
     }
 }

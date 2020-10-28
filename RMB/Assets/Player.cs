@@ -393,13 +393,14 @@ public class Player : MonobitEngine.MonoBehaviour
                     {
                         Debug.Log(_monobitviewID);
                         mymonsterobj = monsterobj;
-                        mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
-                        mymonsterobj.transform.SetParent(playerobj.transform);
-                        mymonsterobj.transform.localPosition = monsterpos;
-                        mymonsterobj.transform.rotation = playerobj.transform.rotation;
+                        //mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
+                        //mymonsterobj.transform.SetParent(playerobj.transform);
+                        //mymonsterobj.transform.localPosition = monsterpos;
+                        //mymonsterobj.transform.rotation = playerobj.transform.rotation;
                         monscript = mymonsterobj.GetComponent<MonsterBase>();
                         monscript.SetCatchFlg(true);
                         monscript.SetPlayerID(NetworkManager.GetPlayer().ID);
+                        monscript.SetPlayerObject(playerobj);
                         havemonster = true;
                         SoundManager.PlaySE("プレイヤー/装備時");
                         break;

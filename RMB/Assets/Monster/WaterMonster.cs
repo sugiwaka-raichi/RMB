@@ -24,7 +24,7 @@ public class WaterMonster : MonsterBase
         //ToDo:詳細な攻撃処理は以下に記述
 
         //攻撃オブジェクト生成
-        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.parent.transform.rotation, 0, null, false, false, true);
+        GameObject gameObject = MonobitNetwork.Instantiate(attackObj.name, atkPos, transform.rotation, 0, null, false, false, true);
 
         AttackBase attack = gameObject.GetComponent<AttackBase>();      //攻撃オブジェクトから攻撃のコンポーネントを取得
 
@@ -42,7 +42,7 @@ public class WaterMonster : MonsterBase
         Debug.Log("waterDiffence");
 
         //位置設定
-        Vector3 pos = transform.parent.transform.position;
+        Vector3 pos = playerObj.transform.position;
         pos.y += 4.5f;          //生成位置微調整
         GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, pos, Quaternion.identity, 0, null, false, false, true);
         Destroy(gameObject, 2);
