@@ -53,7 +53,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         //DelReport();            //削除報告
         soundNet.SendPlaySE(SoundData.SE_LIST.Shot.ToString());      //攻撃時音を鳴らす
         transform.parent = null;        //親子関係解除
-        SendParentElimination();            //親子解消を全体に送る
+        SendParentElimination();        //親子解消を全体に送る
     }
 
     //================================
@@ -62,7 +62,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Deffence()
     {
         Debug.Log("Diffence");
-        Destroy(this.gameObject);       //防御したら消える
+        MonobitEngine.MonobitNetwork.Destroy(this.gameObject);       //防御したら消える
     }
 
     //================================
