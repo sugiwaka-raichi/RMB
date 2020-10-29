@@ -41,6 +41,14 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         if (bDisconnect == false)
         {
             ErrorCanvas.gameObject.SetActive(true);
+            if (ManageSceneLoader.GetSceneType() == ManageSceneLoader.SceneType.StageScene)
+            {
+                if (!NetworkManager.GetPlayerDeathflg())
+                {
+                    GManager.GMInstance.SendPlayerDeath();
+                }
+            }
+            NetworkManager.PlayerDeathflgOff();
         }
         else
         {

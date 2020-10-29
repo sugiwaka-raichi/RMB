@@ -144,7 +144,6 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
                 if (readyCount == NetworkManager.GetPlayerList().Length)
                 {
                     StartGame();
-                    customParams["ready"] = false;
                     customParams["HP"] = 100;
                     NetworkManager.SetPlayerCustomParameters(customParams);
                     NetworkManager.GetRoom().open = false;
