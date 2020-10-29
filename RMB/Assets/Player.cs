@@ -140,6 +140,29 @@ public class Player : MonobitEngine.MonoBehaviour
             return;
         }
 
+
+        if (atype != ABNORMAL_CONDITION_TYOE.AC_NONE)
+        {
+            actime -= Time.deltaTime;
+            if (actime <= 0.0f)
+            {
+                atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
+                actime = 5.0f;
+                if (FireStateObj != null)
+                {
+                    MonobitNetwork.Destroy(FireStateObj);
+                }
+                if (WaterStateObj != null)
+                {
+                    MonobitNetwork.Destroy(WaterStateObj);
+                }
+                if (WoodStateObj != null)
+                {
+                    MonobitNetwork.Destroy(WoodStateObj);
+                }
+            }
+        }
+
         switch (atype)
         {
             case ABNORMAL_CONDITION_TYOE.AC_FIRE:
@@ -154,16 +177,6 @@ public class Player : MonobitEngine.MonoBehaviour
                 cantstop = false;
                 speed = normalspeed;
                 break;
-        }
-
-        if(atype != ABNORMAL_CONDITION_TYOE.AC_NONE)
-        {
-            actime -= Time.deltaTime;
-            if(actime <= 0.0f)
-            {
-                atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
-                actime = 5.0f;
-            }
         }
 
         //キー入力を取得
@@ -239,6 +252,11 @@ public class Player : MonobitEngine.MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!m_MonobitView.isMine)
+        {
+            return;
+        }
+
         if (other.transform.tag == powertag)
         {
             if (other.gameObject.GetComponent<AttackBase>().GetShotPlayer() != NetworkManager.GetPlayer().ID)
@@ -292,14 +310,14 @@ public class Player : MonobitEngine.MonoBehaviour
         {
             if (!havemonster && !collision.gameObject.GetComponent<MonsterBase>().GetCatchFlg())
             {
-                m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
+                m_MonobitView.RPC("MonsterGetFlgOn", MonobitTargets.All, NetworkManager.GetPlayer().ID, m_MonobitView.viewID, collision.gameObject.GetComponent<MonobitView>().viewID);
             }
         }
 
         if (collision.transform.tag == "UniqueMonster")
         {
             m_MonobitView.RPC("Damage", MonobitTargets.All, 10);
-            transform.position = transform.position - transform.forward*2.0f;
+            transform.position = transform.position - transform.forward * 2.0f;
             //transform.position = transform.position - (collision.transform.position - transform.position)*1.0f;
         }
 
@@ -374,12 +392,12 @@ public class Player : MonobitEngine.MonoBehaviour
     }
 
     [MunRPC]
-    void MonsterGetFlgOn(int _monobitviewID, int _monsterviewID)
+    void MonsterGetFlgOn(int _playerID,  int _monobitviewID, int _monsterviewID)
     {
-        MonsterGet(_monobitviewID, _monsterviewID);
+        MonsterGet(_playerID, _monobitviewID, _monsterviewID);
     }
 
-    void MonsterGet(int _monobitviewID, int _monsterviewID)
+    void MonsterGet(int _playerID, int _monobitviewID, int _monsterviewID)
     {
         GameObject[] playerobjs = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject playerobj in playerobjs)
@@ -393,18 +411,18 @@ public class Player : MonobitEngine.MonoBehaviour
                     {
                         Debug.Log(_monobitviewID);
                         mymonsterobj = monsterobj;
-                        mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
+                        //mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
                         mymonsterobj.transform.SetParent(playerobj.transform);
                         mymonsterobj.transform.localPosition = monsterpos;
                         mymonsterobj.transform.rotation = playerobj.transform.rotation;
                         monscript = mymonsterobj.GetComponent<MonsterBase>();
                         monscript.SetCatchFlg(true);
-                        monscript.SetPlayerID(NetworkManager.GetPlayer().ID);
+                        monscript.SetPlayerID(_playerID);
                         havemonster = true;
                         SoundManager.PlaySE("プレイヤー/装備時");
                         break;
                     }
-                }
+            }
                 break;
             }
         }
