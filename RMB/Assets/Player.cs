@@ -229,9 +229,9 @@ public class Player : MonobitEngine.MonoBehaviour
         difdirec = direction - pastdirection;
         if (direction.magnitude > 0.01f)
         {
-            //Debug.Log("足音再生 : " + SoundManager.PlaySE("プレイヤー/足音"));
             if (difdirec.magnitude > 0.01f)
             {
+                SoundManager.PlaySE(SoundData.SE_LIST.FootSteps.ToString());
                 transform.rotation = Quaternion.LookRotation(direction);
                 Debug.Log("ChangeRot");
             }
@@ -293,7 +293,7 @@ public class Player : MonobitEngine.MonoBehaviour
                     }
                     Debug.Log(atype);
                 }
-                SoundManager.PlaySE("プレイヤー/当たり判定");
+                SoundManager.PlaySE(SoundData.SE_LIST.Hit.ToString());
             }
         }
     }
@@ -359,7 +359,7 @@ public class Player : MonobitEngine.MonoBehaviour
                     }
                     Debug.Log(atype);
                 }
-                SoundManager.PlaySE("プレイヤー/当たり判定");
+                SoundManager.PlaySE(SoundData.SE_LIST.Hit.ToString());
             }
         }
     }
@@ -419,7 +419,7 @@ public class Player : MonobitEngine.MonoBehaviour
                         monscript.SetCatchFlg(true);
                         monscript.SetPlayerID(_playerID);
                         havemonster = true;
-                        SoundManager.PlaySE("プレイヤー/装備時");
+                        SoundManager.PlaySE(SoundData.SE_LIST.Equipped.ToString());
                         break;
                     }
             }
@@ -453,8 +453,10 @@ public class Player : MonobitEngine.MonoBehaviour
     // 
     void LoosePlayer()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.Down.ToString());
         GManager.GMInstance.SendPlayerDeath();
         NetworkManager.PlayerDeathflgOn();
+        ResultShow.ResultActive(1, NetworkManager.GetPlayerList().Length);
     }
 
 
