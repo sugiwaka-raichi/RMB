@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: -7091758817954869359}
   - component: {fileID: -8440605576206471351}
   - component: {fileID: 4137225197250399012}
+  - component: {fileID: 1975347265080089233}
   m_Layer: 0
   m_Name: WoodCharacter
   m_TagString: Monster
@@ -338,6 +339,7 @@ MonoBehaviour:
     type: 3}
   diffenceObj: {fileID: 2938103046634194992, guid: a6f23cf4621849c449dc4b249a74b543,
     type: 3}
+  soundNet: {fileID: 1975347265080089233}
 --- !u!114 &9084040123965330930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +498,18 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
+--- !u!114 &1975347265080089233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5a2c653ae48b9478961dcf5e82e0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &100018
 GameObject:
   m_ObjectHideFlags: 0

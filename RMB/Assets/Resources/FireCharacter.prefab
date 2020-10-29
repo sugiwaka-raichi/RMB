@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 6556124911531528018}
   - component: {fileID: -9092283500823963135}
   - component: {fileID: 7128419965088346293}
+  - component: {fileID: -8068404674836572344}
   m_Layer: 0
   m_Name: FireCharacter
   m_TagString: Monster
@@ -91,6 +92,7 @@ MonoBehaviour:
     type: 3}
   diffenceObj: {fileID: 1215844032191935278, guid: 47ab67325acb09748bc2a9fbfebae740,
     type: 3}
+  soundNet: {fileID: -8068404674836572344}
 --- !u!114 &253696093778739658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,9 +225,6 @@ MonoBehaviour:
   - m_Type: 4
     m_Name: isWalk
     m_EnableSync: 1
-  - m_Type: 3
-    m_Name: New Int
-    m_EnableSync: 1
 --- !u!114 &7128419965088346293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +251,18 @@ MonoBehaviour:
     m_LerpRate: 1
   m_SnapEnabled: 1
   m_SnapThreshold: 3
+--- !u!114 &-8068404674836572344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5a2c653ae48b9478961dcf5e82e0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
