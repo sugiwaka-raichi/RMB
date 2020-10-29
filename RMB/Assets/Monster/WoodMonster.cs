@@ -39,7 +39,6 @@ public class WoodMonster : MonsterBase
     {
         //防御時生成
         GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, transform.parent.transform.position, Quaternion.identity, 0, null, false, false, true);
-        Destroy(gameObject, 2);
 
         base.Deffence();
     }

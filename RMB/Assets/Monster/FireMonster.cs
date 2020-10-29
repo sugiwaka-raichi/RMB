@@ -46,8 +46,6 @@ public class FireMonster : MonsterBase
 
         //生成
         GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, pos, Quaternion.identity, 0, null, false, false, true);
-        //削除
-        Destroy(gameObject, 2);
 
         base.Deffence();
     }
