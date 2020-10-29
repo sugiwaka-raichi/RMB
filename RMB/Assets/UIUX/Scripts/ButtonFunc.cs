@@ -19,6 +19,7 @@ public class ButtonFunc : MonoBehaviour
     // タイトル
     public void GoTitle()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         fadeOut.SetActive(true);
         FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.TitleScene);
         //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.TitleScene);
@@ -30,7 +31,7 @@ public class ButtonFunc : MonoBehaviour
         {
             NetworkManager.LeaveRoom();
         }
-        
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         fadeOut.SetActive(true);
         FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.LobbyScene);
         //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
@@ -39,6 +40,7 @@ public class ButtonFunc : MonoBehaviour
     public void GoStage()
     {
 
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         fadeOut.SetActive(true);
         FadeOutScript.SetNextScene(ManageSceneLoader.SceneType.StageScene);
         //ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.StageScene);

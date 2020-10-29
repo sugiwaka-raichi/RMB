@@ -100,6 +100,7 @@ public class SoundManager : MonobitEngine.MonoBehaviour
         if (seDic.ContainsKey(_seName))
         {
             //存在すれば中身があるか確認
+
             if (ValueNullCheck(seDic[_seName]))
             {
                 seDic[_seName].Play();   //音楽再生
@@ -221,6 +222,7 @@ public class SoundManager : MonobitEngine.MonoBehaviour
 
         //生成処理
         AudioSource audioSource = CreateAudioSource(_se, 1);
+        SetGameObj(null);
         return audioSource;        //新規作成したものを渡す
 
     }
