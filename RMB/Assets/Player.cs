@@ -37,11 +37,11 @@ public class Player : MonobitEngine.MonoBehaviour
     //Text nametxt;
 
     [SerializeField]
-    private float normalspeed = 0.1f;
+    private float normalspeed = 1.0f;
     [SerializeField]
-    private float slowspeed = 0.05f;
+    private float slowspeed = 0.5f;
     bool cantstop = false;
-    private float speed = 0.1f;
+    private float speed = 1.0f;
 
     // 自分判別用マテリアル
     [SerializeField]
@@ -187,19 +187,19 @@ public class Player : MonobitEngine.MonoBehaviour
         inputVertical = 0.0f;
         if (KeyManager.GetKey("Right"))
         {
-            inputHorizontal = 1.0f;
+            inputHorizontal = Time.deltaTime * 80.0f;
         }
         if (KeyManager.GetKey("Left"))
         {
-            inputHorizontal = -1.0f;
+            inputHorizontal = -Time.deltaTime * 80.0f;
         }
         if (KeyManager.GetKey("Up"))
         {
-            inputVertical = 1.0f;
+            inputVertical = Time.deltaTime * 80.0f;
         }
         if (KeyManager.GetKey("Down"))
         {
-            inputVertical = -1.0f;
+            inputVertical = -Time.deltaTime * 80.0f;
         }
 
         if (inputVertical == 0.0f && inputHorizontal == 0.0f){
