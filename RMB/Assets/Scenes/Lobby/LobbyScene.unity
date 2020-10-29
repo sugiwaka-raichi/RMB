@@ -262,6 +262,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FadeOut
       objectReference: {fileID: 0}
+    - target: {fileID: 7917472952038889317, guid: c110865e6743cf14f837aba5be43e1f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c110865e6743cf14f837aba5be43e1f2, type: 3}
 --- !u!1 &393928730 stripped
@@ -993,6 +998,12 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6598887607951701540}
+    - target: {fileID: 6721541804022178538, guid: 137662b8ff2669f4d81637e3a1b03c93,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 827898268cfac884f8ed2d72d4f3fc0e,
+        type: 3}
     - target: {fileID: 6721541804083436805, guid: 137662b8ff2669f4d81637e3a1b03c93,
         type: 3}
       propertyPath: m_IsActive
