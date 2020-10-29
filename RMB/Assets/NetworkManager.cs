@@ -31,13 +31,16 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
     /**
      * 途中切断コールバック.
      */
+
+    [SerializeField]
+    GameObject ErrorCanvas;
+
     public void OnDisconnectedFromServer()
     {
         Debug.Log("OnDisconnectedFromServer");
         if (bDisconnect == false)
         {
-            bDisconnect = true;
-            bDisplayWindow = true;
+            ErrorCanvas.gameObject.SetActive(true);
         }
         else
         {
@@ -94,10 +97,22 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         bDisconnect = true;
     }
 
+    /** プレイヤー死亡報告フラグゲット. */
+    public static bool GetPlayerDeathflg()
+    {
+        return bPlayerDaeath;
+    }
+
     /** プレイヤー死亡報告フラグオン. */
     public static void PlayerDeathflgOn()
     {
         bPlayerDaeath = true;
+    }
+
+    /** プレイヤー死亡報告フラグオフ. */
+    public static void PlayerDeathflgOff()
+    {
+        bPlayerDaeath = false;
     }
 
     /**
@@ -115,26 +130,10 @@ public class NetworkManager : MonobitEngine.MonoBehaviour
         // 途中切断時の表示
         if (bDisconnect)
         {
-            GUILayout.Label("途中切断しました。", style);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("OK", GUILayout.Width(50)))
-            {
-                if (ManageSceneLoader.GetSceneType() == ManageSceneLoader.SceneType.StageScene)
-                {
-                    if (!bPlayerDaeath)
-                    {
-                        GManager.GMInstance.SendPlayerDeath();
-                    }
-                    bPlayerDaeath = false;
-                }
-                bPlayerDaeath = false;
+
                 ManageSceneLoader.SceneChange(ManageSceneLoader.SceneType.LobbyScene);
                 bDisconnect = false;
                 bDisplayWindow = false;
-            }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
             return;
         }
     }
