@@ -134,7 +134,7 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
         foreach (MonobitPlayer player in NetworkManager.GetPlayerList())
         {
             string playerInfo =
-                string.Format("    {0}                  {1}",
+                string.Format("    {0}                {1}",
                     player.ID, player.customParameters["ready"]);
             PlayerInfoLabel[playerCount].gameObject.SetActive(true);
             PlayerInfoLabel[playerCount].text = playerInfo;
