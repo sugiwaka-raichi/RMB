@@ -179,6 +179,8 @@ public class GManager : MonobitEngine.MonoBehaviour
         spawnerPos = new Vector3[spawnerNum];
 
         unimonPos = new Vector3[UNIMON_MAX];
+
+        RemineShow.SetRemine(playerNum, playerCount.Length);
     }
 
     /*============================= Update =============================*/
