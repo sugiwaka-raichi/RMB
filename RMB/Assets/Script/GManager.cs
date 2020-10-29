@@ -158,7 +158,7 @@ public class GManager : MonobitEngine.MonoBehaviour
                             null, 
                             false, 
                             true, 
-                            true);
+                            false);
         }
         monsterCount = 0;
         unimonCount = 0;
@@ -412,7 +412,8 @@ public class GManager : MonobitEngine.MonoBehaviour
     // プレイヤーのデスによる人数変動の送信処理
     public void SendPlayerDeath()
     {
-        monobitView.RPC("ReceivePlayerDeath", MonobitTargets.All, playerNum);
+        ResultShow.ResultActive(playerNum, playerCount.Length);
+        monobitView.RPC("ReceivePlayerDeath", MonobitTargets.All, 1);
     }
 
     /*============================= ReceivePlayerDeath =============================*/
