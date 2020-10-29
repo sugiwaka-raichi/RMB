@@ -51,7 +51,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
         Debug.Log("attack");
         delTimer = 2;           //削除までの時間
         //DelReport();            //削除報告
-        soundNet.RPCPlaySE(SoundData.SE_LIST.Shot.ToString());      //攻撃時音を鳴らす
+        soundNet.SendPlaySE(SoundData.SE_LIST.Shot.ToString());      //攻撃時音を鳴らす
         transform.parent = null;        //親子関係解除
         SendParentElimination();            //親子解消を全体に送る
     }
@@ -103,7 +103,10 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     //======================================
     protected void DelReport()
     {
-        GManager.CountdownMonster();
+        if (MonobitEngine.MonobitNetwork.isHost)
+        {
+            GManager.CountdownMonster();
+        }
     }
 
     //======================================
