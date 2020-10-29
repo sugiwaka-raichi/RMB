@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2133285496159455947}
   m_Layer: 0
   m_Name: WoodState
-  m_TagString: AtkObj
+  m_TagString: State
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
