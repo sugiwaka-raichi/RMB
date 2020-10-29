@@ -124,7 +124,6 @@ public class Player : MonobitEngine.MonoBehaviour
             return;
         }
 
-        RemineShow.SetRemine(NetworkManager.GetPlayerList().Length, NetworkManager.GetPlayerList().Length);
         Renderer renderer = GetComponentInChildren<Renderer>();
         renderer.material = material;
         transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
@@ -141,6 +140,10 @@ public class Player : MonobitEngine.MonoBehaviour
             return;
         }
 
+        if (KeyManager.GetKeyDown("Shot"))
+        {
+            Atack();
+        }
 
         if (atype != ABNORMAL_CONDITION_TYOE.AC_NONE)
         {
@@ -180,30 +183,24 @@ public class Player : MonobitEngine.MonoBehaviour
                 break;
         }
 
-        //キー入力を取得
-        inputHorizontal = Input.GetAxisRaw("Horizontal");
-        inputVertical = Input.GetAxisRaw("Vertical");
-
-        //inputHorizontal = 0.0f;
-        //inputVertical = 0.0f;
-        //if (KeyManager.GetKey("Right"))
-        //{
-        //    inputHorizontal = 1.0f;
-        //}
-        //if (KeyManager.GetKey("Left"))
-        //{
-        //    inputHorizontal = -1.0f;
-        //}
-        //if (KeyManager.GetKey("Up"))
-        //{
-        //    inputVertical = 1.0f;
-        //}
-        //if (KeyManager.GetKey("Down"))
-        //{
-        //    inputVertical = -1.0f;
-        //}
-
-        
+        inputHorizontal = 0.0f;
+        inputVertical = 0.0f;
+        if (KeyManager.GetKey("Right"))
+        {
+            inputHorizontal = 1.0f;
+        }
+        if (KeyManager.GetKey("Left"))
+        {
+            inputHorizontal = -1.0f;
+        }
+        if (KeyManager.GetKey("Up"))
+        {
+            inputVertical = 1.0f;
+        }
+        if (KeyManager.GetKey("Down"))
+        {
+            inputVertical = -1.0f;
+        }
 
         if (inputVertical == 0.0f && inputHorizontal == 0.0f){
             if (cantstop)
@@ -237,15 +234,6 @@ public class Player : MonobitEngine.MonoBehaviour
                 Debug.Log("ChangeRot");
             }
         }
-
-        if (Input.GetButton("Fire1"))
-        {
-            Atack();
-        }
-        //if (KeyManager.GetKeyDown("Shot"))
-        //{
-        //    Atack();
-        //}
 
         pastposition = nowposition;
         pastdirection = direction;
@@ -457,8 +445,6 @@ public class Player : MonobitEngine.MonoBehaviour
         SoundManager.PlaySE(SoundData.SE_LIST.Down.ToString());
         GManager.GMInstance.SendPlayerDeath();
         NetworkManager.PlayerDeathflgOn();
-        ResultShow.ResultActive(1, NetworkManager.GetPlayerList().Length);
-        RemineShow.SetRemine(NetworkManager.GetPlayerList().Length-1, NetworkManager.GetPlayerList().Length);
     }
 
 
