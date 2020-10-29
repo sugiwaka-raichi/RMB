@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5701809111866233182}
   - component: {fileID: 307396736066478789}
   - component: {fileID: -250521867424709757}
-  - component: {fileID: 1966266971787675568}
   m_Layer: 0
   m_Name: WarterGuard
   m_TagString: Untagged
@@ -75,15 +74,3 @@ MonoBehaviour:
   prefixBackup: -1
   ownershipTransfer: 0
   compressedStream: 0
---- !u!114 &1966266971787675568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8385201261407257834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f8ffe10b7e1e4c46bbb48e6969e476d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
