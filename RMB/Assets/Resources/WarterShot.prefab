@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 9161190241095976963}
   - component: {fileID: 4986961268033012948}
   - component: {fileID: 9074601238749199155}
+  - component: {fileID: 4559354480247092927}
   m_Layer: 0
   m_Name: WarterShot
-  m_TagString: Untagged
+  m_TagString: AtkObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,7 +49,7 @@ MonoBehaviour:
   TimingOfUpdate: 0
   EmitterScale: 0
   effectAsset: {fileID: 11400000, guid: b243a213a1406014cbe4f1e4bf0467c6, type: 2}
-  playOnStart: 0
+  playOnStart: 1
   isLooping: 0
 --- !u!65 &4986961268033012948
 BoxCollider:
@@ -88,3 +89,16 @@ MonoBehaviour:
   prefixBackup: -1
   ownershipTransfer: 0
   compressedStream: 0
+--- !u!114 &4559354480247092927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6415082554280799216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83bd092ef82f4241bb1f3a549c90892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 3
