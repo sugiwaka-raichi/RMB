@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3652beab38260474d8e348b660a03f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackObj: {fileID: 7628197462350782298, guid: 279bd4d1b8eeea04c96c5a4e22809e10,
+  attackObj: {fileID: 6415082554280799216, guid: 9a48a9c9efc64c940a9a884b35467b1b,
     type: 3}
   diffenceObj: {fileID: 8385201261407257834, guid: 8df4e158d8fa7ce438287d9a2fa526ba,
     type: 3}
