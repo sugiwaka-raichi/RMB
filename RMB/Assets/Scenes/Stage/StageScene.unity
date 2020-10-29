@@ -999,10 +999,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1046516656751575361, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2398678114337165153, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3281629201548609029, guid: d18a36dd17360a84794030e565514311,
         type: 3}
       propertyPath: m_Name
       value: v2AliveCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281629201548609029, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3924434376526508426, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4624871576525587469, guid: d18a36dd17360a84794030e565514311,
         type: 3}
@@ -1109,6 +1129,21 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6263283493901959836, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355244314060448660, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504290964069874930, guid: d18a36dd17360a84794030e565514311,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d18a36dd17360a84794030e565514311, type: 3}
 --- !u!1 &1012963992
@@ -1122,6 +1157,7 @@ GameObject:
   - component: {fileID: 1012963995}
   - component: {fileID: 1012963994}
   - component: {fileID: 1012963993}
+  - component: {fileID: 1012963996}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1177,6 +1213,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1012963996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012963992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dea3cb5d59becb4590a2c8b6673d7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1076393109
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,7 +2577,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &2055302782
 RectTransform:
@@ -2559,10 +2607,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 155704867244612386, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 356143291584728894, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 837665509438239668, guid: 221be32eb2847f849a12e794021e23f2,
         type: 3}
       propertyPath: m_Name
       value: ResultCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 837665509438239668, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1170650352049982231, guid: 221be32eb2847f849a12e794021e23f2,
         type: 3}
@@ -2678,6 +2741,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: GoLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429033550429019369, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5949900213089522650, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8989492921331378745, guid: 221be32eb2847f849a12e794021e23f2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 221be32eb2847f849a12e794021e23f2, type: 3}

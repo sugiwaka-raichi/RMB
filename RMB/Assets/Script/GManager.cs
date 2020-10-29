@@ -191,7 +191,7 @@ public class GManager : MonobitEngine.MonoBehaviour
         }
 
         CreateMonster();
-        CreateUniqueMonster();
+        CreateUniqueMonster();  
     }
 
     /*============================= CreateMonster =============================*/
@@ -413,7 +413,7 @@ public class GManager : MonobitEngine.MonoBehaviour
     public void SendPlayerDeath()
     {
         ResultShow.ResultActive(playerNum, playerCount.Length);
-        monobitView.RPC("ReceivePlayerDeath", MonobitTargets.All, 1);
+        monobitView.RPC("ReceivePlayerDeath", MonobitTargets.Others, 1);
     }
 
     /*============================= ReceivePlayerDeath =============================*/
@@ -422,6 +422,12 @@ public class GManager : MonobitEngine.MonoBehaviour
     public void ReceivePlayerDeath(int _playerNum)
     {
         playerNum -= _playerNum;
+        RemineShow.SetRemine(playerNum, playerCount.Length);
+
+        if(playerNum <= 1)
+        {
+            ResultShow.ResultActive(playerNum, playerCount.Length);
+        }
     }
 
     /*============================= ReferPlayerNum =============================*/
