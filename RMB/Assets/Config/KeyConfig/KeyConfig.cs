@@ -34,6 +34,8 @@ public class KeyConfig : MonoBehaviour
     {
         inputFlg = true;
 
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemSelect.ToString());     //システムセレクトの音声を流す
+
         //keynameが登録されていなければ登録する
         if (KeyManager.CheckKeyType(keyName))
         {

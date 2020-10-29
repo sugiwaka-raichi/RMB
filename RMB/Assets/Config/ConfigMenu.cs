@@ -16,6 +16,7 @@ public class ConfigMenu : MonoBehaviour
     {
         KeyManager.SaveKey();       //キーを保存する
         SoundConfig.SoundConfSave();        //音量設定を記録
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //決定音声を流す
         this.gameObject.SetActive(false);       //最後に呼ぶ
     }
 
