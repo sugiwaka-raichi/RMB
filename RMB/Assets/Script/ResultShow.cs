@@ -27,6 +27,6 @@ public class ResultShow : MonoBehaviour
     {
         ResultCanvas.gameObject.SetActive(true);
 
-        ResultText.text = string.Format("あなたは {0} 人中 {1}　位でした", players, playerlank);
+        ResultText.text = string.Format("{0}     {1}", players, playerlank);
     }
 }
