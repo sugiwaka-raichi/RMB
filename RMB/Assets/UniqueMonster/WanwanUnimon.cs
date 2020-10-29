@@ -25,6 +25,8 @@ public class WanwanUnimon : AttackBase
     [SerializeField]
     private float reTrackingOffTimer;           // 再追跡オフタイマ
 
+    private bool seFlg = true;                 // se再生フラグ
+
     [Header("Can Move Wanwan Set XZ Position Min and Max")]
     [SerializeField]
     private float xMinPos = -5.0f;      // 移動可能範囲指定Minｘ
@@ -75,10 +77,16 @@ public class WanwanUnimon : AttackBase
             // タグがPlayerであるか
             if (other.gameObject.tag == "Player")
             {
+                if (seFlg == true)
+                {
+                    SoundManager.PlaySE("WanwanBark");
+                    seFlg = false;
+                }
                 // ここで計算結果を反映(実質移動)
                 wanwanPos = Vector3.MoveTowards(this.gameObject.transform.position, other.transform.position, speed);
             }
         }
+        // 原点に戻る
         else if(reTrackingFlag == false)
         {
             float speed = speedParameter * Time.deltaTime;
@@ -87,16 +95,20 @@ public class WanwanUnimon : AttackBase
 
         if (other.gameObject.tag == "Player")
         {
+            // 再追跡オン
             if (reTrackingTimer > reTrackingOnTimer && reTrackingFlag == false)
             {
                 reTrackingFlag = true;
                 reTrackingTimer = 0.0f;
+                seFlg = true;
             }
 
+            // 再追跡オフ
             if (reTrackingTimer > reTrackingOffTimer && reTrackingFlag == true)
             {
                 reTrackingFlag = false;
                 reTrackingTimer = 0.0f;
+                seFlg = false;
             }
             reTrackingTimer += Time.deltaTime;
         }
@@ -109,6 +121,7 @@ public class WanwanUnimon : AttackBase
         {
             reTrackingTimer = 0.0f;
             reTrackingFlag = false;
+            seFlg = false;
         }
     }
 
