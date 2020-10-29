@@ -124,6 +124,7 @@ public class Player : MonobitEngine.MonoBehaviour
             return;
         }
 
+        RemineShow.SetRemine(NetworkManager.GetPlayerList().Length, NetworkManager.GetPlayerList().Length);
         Renderer renderer = GetComponentInChildren<Renderer>();
         renderer.material = material;
         transform.position = new Vector3(transform.position.x + inputHorizontal * speed, transform.position.y, transform.position.z + inputVertical * speed);
@@ -457,6 +458,7 @@ public class Player : MonobitEngine.MonoBehaviour
         GManager.GMInstance.SendPlayerDeath();
         NetworkManager.PlayerDeathflgOn();
         ResultShow.ResultActive(1, NetworkManager.GetPlayerList().Length);
+        RemineShow.SetRemine(NetworkManager.GetPlayerList().Length-1, NetworkManager.GetPlayerList().Length);
     }
 
 
@@ -494,6 +496,19 @@ public class Player : MonobitEngine.MonoBehaviour
             if (defflg)
             {
                 monscript.Deffence();
+                atype = ABNORMAL_CONDITION_TYOE.AC_NONE;
+                if (FireStateObj != null)
+                {
+                    MonobitNetwork.Destroy(FireStateObj);
+                }
+                if (WaterStateObj != null)
+                {
+                    MonobitNetwork.Destroy(WaterStateObj);
+                }
+                if (WoodStateObj != null)
+                {
+                    MonobitNetwork.Destroy(WoodStateObj);
+                }
             }
             else
             {

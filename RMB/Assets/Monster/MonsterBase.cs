@@ -62,7 +62,7 @@ public class MonsterBase : MonobitEngine.MonoBehaviour
     virtual public void Deffence()
     {
         Debug.Log("Diffence");
-        Destroy(this.gameObject);       //防御したら消える
+        Destroy(this.gameObject);
     }
 
     //================================

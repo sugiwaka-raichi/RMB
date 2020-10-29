@@ -169,6 +169,8 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** サーバ切断. */
     public void DisconnectServer()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
+
         // 正常動作のため、bDisconnect を true にして、GUIウィンドウ表示をキャンセルする
         NetworkManager.DisconnectflgOn();
 
@@ -182,18 +184,21 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
     /** ルーム退室ボタン用. */
     public void LeaveRoomB()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         NetworkManager.LeaveRoom();
     }
 
     /** 準備完了. */
     public void Ready()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         customParams["ready"] = true;
         NetworkManager.SetPlayerCustomParameters(customParams);
     }
 
     public void MoveRoom()
     {
+        SoundManager.PlaySE(SoundData.SE_LIST.SystemDecision.ToString());       //システム決定流す
         NetworkManager.MoveRoom();
     }
     

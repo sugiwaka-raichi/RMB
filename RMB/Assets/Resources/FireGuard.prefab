@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2906865348510790591}
   - component: {fileID: 8614851023610825152}
   - component: {fileID: 1328363619260882926}
+  - component: {fileID: 8037504493681970948}
   m_Layer: 0
   m_Name: FireGuard
   m_TagString: Untagged
@@ -74,3 +75,16 @@ MonoBehaviour:
   prefixBackup: -1
   ownershipTransfer: 0
   compressedStream: 0
+--- !u!114 &8037504493681970948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215844032191935278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8ffe10b7e1e4c46bbb48e6969e476d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 2

@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 6006200136666094645}
   - component: {fileID: 6006200136667164797}
   - component: {fileID: 8629739419407638966}
-  - component: {fileID: 4586748356190764037}
+  - component: {fileID: -8006052132367633445}
+  - component: {fileID: 3722986285373538983}
   m_Layer: 0
   m_Name: WoodGuard
   m_TagString: AtkObj
@@ -106,7 +107,20 @@ MonoBehaviour:
   prefixBackup: 0
   ownershipTransfer: 0
   compressedStream: 0
---- !u!114 &4586748356190764037
+--- !u!114 &-8006052132367633445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938103046634194992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8ffe10b7e1e4c46bbb48e6969e476d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 3
+--- !u!114 &3722986285373538983
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,5 +135,5 @@ MonoBehaviour:
   TimingOfUpdate: 0
   EmitterScale: 0
   effectAsset: {fileID: 11400000, guid: ec0bebbd6efcb86429cf637c2820f93f, type: 2}
-  playOnStart: 0
+  playOnStart: 1
   isLooping: 0

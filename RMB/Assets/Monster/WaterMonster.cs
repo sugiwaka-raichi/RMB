@@ -45,7 +45,6 @@ public class WaterMonster : MonsterBase
         Vector3 pos = transform.parent.transform.position;
         pos.y += 4.5f;          //生成位置微調整
         GameObject gameObject = MonobitNetwork.Instantiate(diffenceObj.name, pos, Quaternion.identity, 0, null, false, false, true);
-        Destroy(gameObject, 2);
 
         base.Deffence();
 
