@@ -393,7 +393,7 @@ public class Player : MonobitEngine.MonoBehaviour
                     {
                         Debug.Log(_monobitviewID);
                         mymonsterobj = monsterobj;
-                        mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
+                        //mymonsterobj.GetComponent<MonobitTransformView>().m_SyncPosition.m_EnableSync = false;
                         mymonsterobj.transform.SetParent(playerobj.transform);
                         mymonsterobj.transform.localPosition = monsterpos;
                         mymonsterobj.transform.rotation = playerobj.transform.rotation;
@@ -401,7 +401,7 @@ public class Player : MonobitEngine.MonoBehaviour
                         monscript.SetCatchFlg(true);
                         monscript.SetPlayerID(NetworkManager.GetPlayer().ID);
                         havemonster = true;
-                        SoundManager.PlaySE("プレイヤー/装備時");
+                        SoundManager.PlaySE(SoundData.SE_LIST.Equipped.ToString());
                         break;
                     }
                 }
