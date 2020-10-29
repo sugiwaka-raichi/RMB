@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 174403752385568687}
   - component: {fileID: 6536549640155263412}
   - component: {fileID: 2361589258911100411}
+  - component: {fileID: 4872678632344430308}
   m_Layer: 5
   m_Name: v2AliveCanvas
   m_TagString: Untagged
@@ -99,6 +100,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4872678632344430308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281629201548609029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f29e4d21a5ebb478f3168a37d8621b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7076025518744013602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,6 +228,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AliveCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7424239792973080027, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7424239792973080027, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7424239792973080027, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617598915386154336, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617598915386154336, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617598915386154336, guid: 6ba5b68d5bad7b649b32a6778f33ea01,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ba5b68d5bad7b649b32a6778f33ea01, type: 3}
