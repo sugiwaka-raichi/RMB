@@ -153,9 +153,13 @@ public class NetworkControl : MonobitEngine.MonoBehaviour
             playerCount++;
         }
 
-        if (NetworkManager.GetPlayerList().Length >= 1)
+        if (NetworkManager.GetPlayerList().Length >= 4)
         {
             ReadyGameButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            ReadyGameButton.gameObject.SetActive(false);
         }
     }
 
